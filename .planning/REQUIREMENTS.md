@@ -126,67 +126,67 @@
 
 ## Traceability
 
-*(Preenchido pelo roadmapper)*
+*(Preenchido pelo roadmapper — 2026-06-20)*
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| ESTR-01 | — | Pending |
-| ESTR-02 | — | Pending |
-| ESTR-03 | — | Pending |
-| ESTR-04 | — | Pending |
-| ESTR-05 | — | Pending |
-| ESTR-06 | — | Pending |
-| TAT-01 | — | Pending |
-| TAT-02 | — | Pending |
-| TAT-03 | — | Pending |
-| TAT-04 | — | Pending |
-| TAT-05 | — | Pending |
-| TAT-06 | — | Pending |
-| MOD-01 | — | Pending |
-| MOD-02 | — | Pending |
-| MOD-03 | — | Pending |
-| MOD-04 | — | Pending |
-| DOM-01 | — | Pending |
-| DOM-02 | — | Pending |
-| DOM-03 | — | Pending |
-| DOM-04 | — | Pending |
-| DOM-05 | — | Pending |
-| DOM-06 | — | Pending |
-| DOM-07 | — | Pending |
-| DOM-08 | — | Pending |
-| DOM-09 | — | Pending |
-| DOM-10 | — | Pending |
-| APL-01 | — | Pending |
-| APL-02 | — | Pending |
-| APL-03 | — | Pending |
-| APL-04 | — | Pending |
-| APL-05 | — | Pending |
-| INF-01 | — | Pending |
-| INF-02 | — | Pending |
-| INF-03 | — | Pending |
-| INF-04 | — | Pending |
-| INF-05 | — | Pending |
-| INF-06 | — | Pending |
-| INF-07 | — | Pending |
-| IFX-01 | — | Pending |
-| IFX-02 | — | Pending |
-| IFX-03 | — | Pending |
-| DCK-01 | — | Pending |
-| DCK-02 | — | Pending |
-| DID-01 | — | Pending |
-| DID-02 | — | Pending |
-| DID-03 | — | Pending |
-| DID-04 | — | Pending |
-| DID-05 | — | Pending |
-| DID-06 | — | Pending |
-| DID-07 | — | Pending |
-| DID-08 | — | Pending |
+| ESTR-01 | Phase 1 | Pending |
+| ESTR-02 | Phase 1 | Pending |
+| ESTR-03 | Phase 1 | Pending |
+| ESTR-04 | Phase 1 | Pending |
+| ESTR-05 | Phase 1 | Pending |
+| ESTR-06 | Phase 1 | Pending |
+| TAT-01 | Phase 2 | Pending |
+| TAT-02 | Phase 2 | Pending |
+| TAT-03 | Phase 2 | Pending |
+| TAT-04 | Phase 2 | Pending |
+| TAT-05 | Phase 2 | Pending |
+| TAT-06 | Phase 2 | Pending |
+| MOD-01 | Phase 2 | Pending |
+| MOD-02 | Phase 2 | Pending |
+| MOD-03 | Phase 2 | Pending |
+| MOD-04 | Phase 2 | Pending |
+| DOM-01 | Phase 3 | Pending |
+| DOM-02 | Phase 3 | Pending |
+| DOM-03 | Phase 3 | Pending |
+| DOM-04 | Phase 3 | Pending |
+| DOM-05 | Phase 3 | Pending |
+| DOM-06 | Phase 3 | Pending |
+| DOM-07 | Phase 3 | Pending |
+| DOM-08 | Phase 3 | Pending |
+| DOM-09 | Phase 3 | Pending |
+| DOM-10 | Phase 3 | Pending |
+| APL-01 | Phase 3 | Pending |
+| APL-02 | Phase 3 | Pending |
+| APL-03 | Phase 3 | Pending |
+| APL-04 | Phase 3 | Pending |
+| APL-05 | Phase 3 | Pending |
+| INF-01 | Phase 3 | Pending |
+| INF-02 | Phase 3 | Pending |
+| INF-03 | Phase 3 | Pending |
+| INF-04 | Phase 3 | Pending |
+| INF-05 | Phase 3 | Pending |
+| INF-06 | Phase 3 | Pending |
+| INF-07 | Phase 3 | Pending |
+| IFX-01 | Phase 4 | Pending |
+| IFX-02 | Phase 4 | Pending |
+| IFX-03 | Phase 4 | Pending |
+| DCK-01 | Phase 4 | Pending |
+| DCK-02 | Phase 4 | Pending |
+| DID-01 | Phase 4 | Pending |
+| DID-02 | Phase 4 | Pending |
+| DID-03 | Phase 4 | Pending |
+| DID-04 | Phase 4 | Pending |
+| DID-05 | Phase 4 | Pending |
+| DID-06 | Phase 4 | Pending |
+| DID-07 | Phase 4 | Pending |
+| DID-08 | Phase 4 | Pending |
 
 **Coverage:**
-- v1 requirements: 48 total
-- Mapped to phases: 0 (roadmapper irá preencher)
-- Unmapped: 48 ⚠️
+- v1 requirements: 51 total (6 ESTR + 6 TAT + 4 MOD + 10 DOM + 5 APL + 7 INF + 3 IFX + 2 DCK + 8 DID)
+- Mapped to phases: 51 / 51
+- Unmapped: 0 — coverage complete
 
 ---
 *Requirements defined: 2026-06-20*
-*Last updated: 2026-06-20 after initial definition*
+*Last updated: 2026-06-20 — traceability filled by roadmapper*
