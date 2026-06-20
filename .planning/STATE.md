@@ -1,3 +1,18 @@
+---
+gsd_state_version: 1.0
+milestone: v1.0
+milestone_name: milestone
+current_phase: —
+status: planning
+last_updated: "2026-06-20T15:24:13.458Z"
+progress:
+  total_phases: 4
+  completed_phases: 0
+  total_plans: 0
+  completed_plans: 0
+  percent: 0
+---
+
 # Project State
 
 **Project:** ERP Matrícula — Projeto Didático DDD
@@ -52,6 +67,7 @@ See: .planning/PROJECT.md (updated 2026-06-20)
 ## Accumulated Context
 
 ### Key Constraints
+
 - Domínio implementado apenas: Bounded Context Matrícula
 - Stack obrigatória: Java 21, Spring Boot 3.x, MyBatis, PostgreSQL, Docker, Maven
 - MyBatis (não JPA) — decisão pedagógica central: mapeamento explícito evidencia separação domínio/persistência
@@ -59,12 +75,14 @@ See: .planning/PROJECT.md (updated 2026-06-20)
 - Diagramas em Mermaid — sem ferramentas externas
 
 ### Open Decisions (from research)
+
 - Granularidade do Aggregate Matrícula vs. Turma: opção (a) recomendada — ignorar vagas disponíveis no v1, foco nas invariantes de Matrícula
 - Optimistic locking: nota explicativa na Fase 3/INF com padrão `UPDATE ... WHERE version = ?`, sem implementação completa no v1
 - Projeções de leitura: abordagem (a) — query direta via Mapper retornando DTO de projeção, sem passar pelo Repository/Aggregate
 - Context Map em código: listeners stub com `@TransactionalEventListener` e Javadoc explicando o contrato (APL-05)
 
 ### Blockers
+
 *(None)*
 
 ---
