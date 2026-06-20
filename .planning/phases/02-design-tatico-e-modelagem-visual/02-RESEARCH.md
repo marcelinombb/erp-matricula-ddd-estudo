@@ -970,14 +970,14 @@ sequenceDiagram
 
 ---
 
-## Open Questions
+## Open Questions (RESOLVED)
 
-1. **Número fixo do limite de disciplinas**
+1. **Número fixo do limite de disciplinas** — RESOLVED: usar constante `LIMITE_DISCIPLINAS = 6` nomeada, configurável via constante da classe Matricula; não é uma regra de negócio imutável.
    - O que sabemos: `bounded-contexts.md` menciona "limite de N disciplinas" sem valor fixo
    - O que está incerto: se 6 é o número correto ou se deve ser configurável
    - Recomendação: usar constante nomeada `LIMITE_DISCIPLINAS = 6` nos snippets, com nota "(valor configurável — definido pela instituição)"
 
-2. **`Turma` como Aggregate**
+2. **`Turma` como Aggregate** — RESOLVED: Turma documentada como Entidade independente, referenciada por TurmaId conforme ADR-003; vagas disponíveis ignoradas no v1 (registrado em STATE.md).
    - O que sabemos: `bounded-contexts.md` cita "a turma possui vagas disponíveis" como regra do BC Matrícula, mas o STATE.md nota "granularidade do Aggregate Matrícula vs. Turma: ignorar vagas no v1"
    - O que está incerto: `Turma` é uma Entidade independente ou faz parte do Aggregate `Matricula`?
    - Recomendação: Documentar `Turma` como Entidade independente em `entidades.md`, sem Aggregate próprio no v1. A `Matricula` referencia `TurmaId` (não `Turma`) conforme ADR-003. A regra de vagas é mencionada como "verificada fora do escopo do v1" com nota sobre futura implementação.
