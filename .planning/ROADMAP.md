@@ -69,7 +69,7 @@ Plans:
 - [x] 02-03-PLAN.md — domain-services.md + domain-events.md + repositorios.md (TAT-04, TAT-05, TAT-06)
 
 **Wave 3** *(blocked on Wave 2 completion)*
-- [ ] 02-04-PLAN.md — modelagem.md + README.md update (MOD-01, MOD-02, MOD-03, MOD-04)
+- [x] 02-04-PLAN.md — modelagem.md + README.md update (MOD-01, MOD-02, MOD-03, MOD-04)
 
 ### Phase 3: Implementacao
 **Goal:** O código Java 21 das camadas de domínio, aplicação e infraestrutura está implementado, compilando e executando os três fluxos de negócio (matricular, adicionar disciplina, cancelar) com banco PostgreSQL real.
