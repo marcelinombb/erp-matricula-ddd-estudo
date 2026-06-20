@@ -65,7 +65,7 @@ Plans:
 - [x] 02-01-PLAN.md — value-objects.md + entidades.md (TAT-01, TAT-02)
 
 **Wave 2** *(paralelos — dependem de Wave 1)*
-- [ ] 02-02-PLAN.md — agregados.md (TAT-03)
+- [x] 02-02-PLAN.md — agregados.md (TAT-03)
 - [ ] 02-03-PLAN.md — domain-services.md + domain-events.md + repositorios.md (TAT-04, TAT-05, TAT-06)
 
 **Wave 3** *(blocked on Wave 2 completion)*
