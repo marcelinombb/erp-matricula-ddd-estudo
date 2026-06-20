@@ -13,6 +13,7 @@ Um desenvolvedor da equipe deve conseguir, sozinho, ler o projeto do início ao 
 ### Validated
 
 - [x] Documentação da Fase 1: Descoberta do Domínio — Problema de Negócio, Linguagem Ubíqua (glossário 4 colunas, seção de Conceitos Ambíguos), Subdomínios classificados, Bounded Contexts, Context Map Mermaid, 4 ADRs com code examples *(Validated in Phase 1: design-estrategico, 2026-06-20)*
+- [x] Documentação da Fase 2: Design Tático — 7 arquivos Markdown (Value Objects, Entidades, Agregados, Domain Services, Domain Events, Repositórios, Modelagem Visual com 4 diagramas Mermaid) com Java 21 snippets, seções ERRADO/CERTO e cross-references entre documentos *(Validated in Phase 2: design-tatico-e-modelagem-visual, 2026-06-20)*
 
 ### Active
 
