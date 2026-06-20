@@ -66,7 +66,7 @@ Plans:
 
 **Wave 2** *(paralelos — dependem de Wave 1)*
 - [x] 02-02-PLAN.md — agregados.md (TAT-03)
-- [ ] 02-03-PLAN.md — domain-services.md + domain-events.md + repositorios.md (TAT-04, TAT-05, TAT-06)
+- [x] 02-03-PLAN.md — domain-services.md + domain-events.md + repositorios.md (TAT-04, TAT-05, TAT-06)
 
 **Wave 3** *(blocked on Wave 2 completion)*
 - [ ] 02-04-PLAN.md — modelagem.md + README.md update (MOD-01, MOD-02, MOD-03, MOD-04)
