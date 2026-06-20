@@ -13,6 +13,8 @@ Siga esta sequência de leitura para construir o entendimento progressivo do pro
 3. [Bounded Contexts](docs/01-design-estrategico/bounded-contexts.md) — os contextos do sistema, seus limites e responsabilidades
 4. [Context Map](docs/01-design-estrategico/context-map.md) — como os contextos se relacionam e quais eventos cruzam suas fronteiras
 5. [ADRs](docs/adrs/ADR-001-mybatis-vs-jpa.md) — as decisões arquiteturais tomadas e por quê
+6. [Value Objects](docs/02-design-tatico/value-objects.md) — padrões táticos DDD: VOs, Entidades, Agregados, Serviços, Eventos e Repositórios (Fase 2)
+7. [Modelagem Visual](docs/02-design-tatico/modelagem.md) — diagramas Mermaid do modelo de domínio completo
 
 ## Documentação por fase
 
@@ -29,6 +31,16 @@ Siga esta sequência de leitura para construir o entendimento progressivo do pro
 - [ADR-002: Escopo do Bounded Context](docs/adrs/ADR-002-escopo-bounded-context.md)
 - [ADR-003: Referência por ID entre Aggregates](docs/adrs/ADR-003-referencia-por-id.md)
 - [ADR-004: Código em Português](docs/adrs/ADR-004-codigo-em-portugues.md)
+
+## Design Tático
+
+- [Value Objects](docs/02-design-tatico/value-objects.md)
+- [Entidades](docs/02-design-tatico/entidades.md)
+- [Agregados](docs/02-design-tatico/agregados.md)
+- [Domain Services](docs/02-design-tatico/domain-services.md)
+- [Domain Events](docs/02-design-tatico/domain-events.md)
+- [Repositórios](docs/02-design-tatico/repositorios.md)
+- [Modelagem Visual (Diagramas)](docs/02-design-tatico/modelagem.md)
 
 ## Stack técnico
 
