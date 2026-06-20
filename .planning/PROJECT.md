@@ -12,11 +12,10 @@ Um desenvolvedor da equipe deve conseguir, sozinho, ler o projeto do início ao 
 
 ### Validated
 
-(None yet — ship to validate)
+- [x] Documentação da Fase 1: Descoberta do Domínio — Problema de Negócio, Linguagem Ubíqua (glossário 4 colunas, seção de Conceitos Ambíguos), Subdomínios classificados, Bounded Contexts, Context Map Mermaid, 4 ADRs com code examples *(Validated in Phase 1: design-estrategico, 2026-06-20)*
 
 ### Active
 
-- [ ] Documentação da Fase 1: Descoberta do Domínio (Problema de Negócio, Linguagem Ubíqua, Subdomínios classificados como Core/Supporting/Generic)
 - [ ] Documentação da Fase 2: Design Estratégico (Bounded Contexts, Context Map em Mermaid, Decisões Arquiteturais)
 - [ ] Documentação da Fase 3: Design Tático (Entidades, Value Objects, Agregados, Domain Services, Domain Events, Repositórios — todos com justificativas pedagógicas)
 - [ ] Documentação da Fase 4: Modelagem (Diagrama de Classes, Agregados, Fluxos de Negócio, Sequence Diagrams — todos em Mermaid)
@@ -60,10 +59,10 @@ Um desenvolvedor da equipe deve conseguir, sozinho, ler o projeto do início ao 
 
 | Decision | Rationale | Outcome |
 |----------|-----------|---------|
-| MyBatis em vez de JPA/Hibernate | Mapeamento explícito evidencia a separação domínio/persistência — um ponto pedagógico central do DDD; JPA tende a vazar abstrações de persistência no domínio | — Pending |
-| Código em português | Reforça Linguagem Ubíqua; um glossário em inglês quebraria a coerência com os termos do negócio | — Pending |
-| Apenas contexto Matrícula implementado | Implementar Financeiro e Acadêmico adicionaria complexidade de integração sem acrescentar conceitos novos ao aprendizado de DDD tático | — Pending |
-| Referência por ID entre Aggregates | `Matricula` guarda `AlunoId` (não `Aluno`) — demonstra o padrão DDD de referência entre agregados sem acoplamento de carregamento | — Pending |
+| MyBatis em vez de JPA/Hibernate | Mapeamento explícito evidencia a separação domínio/persistência — um ponto pedagógico central do DDD; JPA tende a vazar abstrações de persistência no domínio | ADR-001 — Validated in Phase 1 |
+| Código em português | Reforça Linguagem Ubíqua; um glossário em inglês quebraria a coerência com os termos do negócio | ADR-004 — Validated in Phase 1 |
+| Apenas contexto Matrícula implementado | Implementar Financeiro e Acadêmico adicionaria complexidade de integração sem acrescentar conceitos novos ao aprendizado de DDD tático | ADR-002 — Validated in Phase 1 |
+| Referência por ID entre Aggregates | `Matricula` guarda `AlunoId` (não `Aluno`) — demonstra o padrão DDD de referência entre agregados sem acoplamento de carregamento | ADR-003 — Validated in Phase 1 |
 
 ---
 
@@ -85,4 +84,4 @@ Este documento evolui em transições de fase e marcos de milestone.
 4. Atualizar Context com estado atual
 
 ---
-*Last updated: 2026-06-20 after initialization*
+*Last updated: 2026-06-20 — Phase 1 (design-estrategico) complete*
