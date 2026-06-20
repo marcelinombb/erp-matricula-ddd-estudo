@@ -41,8 +41,11 @@
 **Plans:** 3 planos em 2 waves
 
 Plans:
+**Wave 1**
 - [ ] 01-01-PLAN.md — README.md + problema-negocio.md + linguagem-ubiqua.md (ESTR-01, ESTR-02)
 - [ ] 01-02-PLAN.md — bounded-contexts.md + context-map.md (ESTR-03, ESTR-04, ESTR-05)
+
+**Wave 2** *(blocked on Wave 1 completion)*
 - [ ] 01-03-PLAN.md — ADR-001 a ADR-004 (ESTR-06)
 
 ### Phase 2: Design Tatico e Modelagem Visual
