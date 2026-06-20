@@ -62,7 +62,7 @@ Plans:
 
 Plans:
 **Wave 1** *(paralelos — sem dependência entre si)*
-- [ ] 02-01-PLAN.md — value-objects.md + entidades.md (TAT-01, TAT-02)
+- [x] 02-01-PLAN.md — value-objects.md + entidades.md (TAT-01, TAT-02)
 
 **Wave 2** *(paralelos — dependem de Wave 1)*
 - [ ] 02-02-PLAN.md — agregados.md (TAT-03)
