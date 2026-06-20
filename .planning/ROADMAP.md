@@ -58,8 +58,18 @@ Plans:
   3. Um desenvolvedor lendo a documentação de Domain Events consegue dizer quem publica `AlunoMatriculado`, quem o consome e em qual contexto — e entende por que isso cruza fronteiras
   4. Um desenvolvedor visualiza o diagrama de classes em Mermaid e consegue identificar todos os elementos do domínio e seus relacionamentos sem consultar código
   5. Um desenvolvedor acompanha o sequence diagram de "Realizar Matrícula" do início ao fim e consegue descrever cada passo do fluxo (HTTP → Controller → UseCase → Agregado → Repositório → Evento)
-**Plans:** TBD
-**UI hint**: yes
+**Plans:** 4 planos em 3 waves
+
+Plans:
+**Wave 1** *(paralelos — sem dependência entre si)*
+- [ ] 02-01-PLAN.md — value-objects.md + entidades.md (TAT-01, TAT-02)
+
+**Wave 2** *(paralelos — dependem de Wave 1)*
+- [ ] 02-02-PLAN.md — agregados.md (TAT-03)
+- [ ] 02-03-PLAN.md — domain-services.md + domain-events.md + repositorios.md (TAT-04, TAT-05, TAT-06)
+
+**Wave 3** *(blocked on Wave 2 completion)*
+- [ ] 02-04-PLAN.md — modelagem.md + README.md update (MOD-01, MOD-02, MOD-03, MOD-04)
 
 ### Phase 3: Implementacao
 **Goal:** O código Java 21 das camadas de domínio, aplicação e infraestrutura está implementado, compilando e executando os três fluxos de negócio (matricular, adicionar disciplina, cancelar) com banco PostgreSQL real.
@@ -93,6 +103,6 @@ Plans:
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Design Estrategico | 0/3 | Planned | - |
-| 2. Design Tatico e Modelagem Visual | 0/1 | Not started | - |
+| 2. Design Tatico e Modelagem Visual | 0/4 | Planned | - |
 | 3. Implementacao | 0/2 | Not started | - |
 | 4. Interface, Docker e Material Didatico | 0/1 | Not started | - |
