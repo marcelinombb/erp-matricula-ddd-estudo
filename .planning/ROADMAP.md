@@ -46,7 +46,7 @@ Plans:
 - [x] 01-02-PLAN.md — bounded-contexts.md + context-map.md (ESTR-03, ESTR-04, ESTR-05)
 
 **Wave 2** *(blocked on Wave 1 completion)*
-- [ ] 01-03-PLAN.md — ADR-001 a ADR-004 (ESTR-06)
+- [x] 01-03-PLAN.md — ADR-001 a ADR-004 (ESTR-06)
 
 ### Phase 2: Design Tatico e Modelagem Visual
 **Goal:** O desenvolvedor compreende cada padrão tático DDD — Entidade, Value Object, Agregado, Domain Service, Domain Event, Repositório — através de documentação que explica o problema que cada padrão resolve, acompanhada de diagramas visuais do modelo de domínio.
