@@ -38,7 +38,12 @@
   3. Um desenvolvedor consegue classificar cada subdomínio (Core, Supporting, Generic) lendo a documentação com justificativa explícita de por que cada um pertence à categoria
   4. Um desenvolvedor visualiza o Context Map em Mermaid e compreende os limites do Bounded Context Matrícula, suas dependências downstream (Financeiro, Acadêmico) e os eventos que cruzam fronteiras
   5. Um desenvolvedor encontra todas as decisões arquiteturais com alternativas consideradas, vantagens, desvantagens e motivo da escolha final documentados
-**Plans:** TBD
+**Plans:** 3 planos em 2 waves
+
+Plans:
+- [ ] 01-01-PLAN.md — README.md + problema-negocio.md + linguagem-ubiqua.md (ESTR-01, ESTR-02)
+- [ ] 01-02-PLAN.md — bounded-contexts.md + context-map.md (ESTR-03, ESTR-04, ESTR-05)
+- [ ] 01-03-PLAN.md — ADR-001 a ADR-004 (ESTR-06)
 
 ### Phase 2: Design Tatico e Modelagem Visual
 **Goal:** O desenvolvedor compreende cada padrão tático DDD — Entidade, Value Object, Agregado, Domain Service, Domain Event, Repositório — através de documentação que explica o problema que cada padrão resolve, acompanhada de diagramas visuais do modelo de domínio.
@@ -84,7 +89,7 @@
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Design Estrategico | 0/1 | Not started | - |
+| 1. Design Estrategico | 0/3 | Planned | - |
 | 2. Design Tatico e Modelagem Visual | 0/1 | Not started | - |
 | 3. Implementacao | 0/2 | Not started | - |
 | 4. Interface, Docker e Material Didatico | 0/1 | Not started | - |
