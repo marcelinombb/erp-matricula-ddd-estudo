@@ -81,7 +81,18 @@ Plans:
   3. Um desenvolvedor executa os seeds Flyway e consegue chamar os três casos de uso (matricular, adicionar disciplina, cancelar) com dados reais persistidos no PostgreSQL
   4. Um desenvolvedor lê `MatriculaRowMapper.java` e consegue ver explicitamente a conversão entre modelo relacional (`MatriculaRow`) e modelo de domínio (`Matricula`) — sem magia de framework
   5. Os listeners stub `FinanceiroEventListener` e `AcademicoEventListener` recebem `AlunoMatriculado` após persistência — demonstrando integração via eventos sem acoplamento direto
-**Plans:** TBD
+**Plans:** 4 planos em 3 waves
+
+Plans:
+**Wave 1** *(paralelos — sem dependência entre si)*
+- [ ] 03-01-PLAN.md — pom.xml + ErpMatriculaApplication.java + application.yml + estrutura de diretórios (bootstrap do projeto)
+- [ ] 03-02-PLAN.md — camada de domínio completa: VOs, Entidades, Aggregate Root, Domain Events, Repositório, Domain Service, Exceções (DOM-01..10)
+
+**Wave 2** *(blocked on Wave 1 completion — depende do domínio compilando)*
+- [ ] 03-03-PLAN.md — camada de aplicação: 3 UseCases + Commands + DTO (APL-01..04)
+
+**Wave 3** *(blocked on Wave 1 + Wave 2 — depende de domínio e aplicação)*
+- [ ] 03-04-PLAN.md — camada de infraestrutura: schema Flyway, seeds, MatriculaMapper.xml, TypeHandlers, MatriculaRow/Mapper, MatriculaRepositorioMyBatis, listeners stub, DemoRunner (INF-01..07, APL-05)
 
 ### Phase 4: Interface, Docker e Material Didatico
 **Goal:** O projeto está completo e operacional: API REST documentada expõe os três fluxos, Docker Compose sobe o ambiente com um comando, e o material didático comparativo transforma o código em lição compreensível para qualquer desenvolvedor vindo de arquitetura em camadas.
@@ -104,5 +115,5 @@ Plans:
 |-------|----------------|--------|-----------|
 | 1. Design Estrategico | 0/3 | Planned | - |
 | 2. Design Tatico e Modelagem Visual | 0/4 | Planned | - |
-| 3. Implementacao | 0/2 | Not started | - |
+| 3. Implementacao | 0/4 | Planned | - |
 | 4. Interface, Docker e Material Didatico | 0/1 | Not started | - |
