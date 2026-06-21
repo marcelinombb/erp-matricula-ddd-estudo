@@ -13,6 +13,12 @@ import java.util.UUID;
  *
  * <p>{@code matriculaId} é necessário para o INSERT em lote ({@code inserirItens} no
  * {@code MatriculaMapper.xml}): cada item precisa do UUID da matrícula pai para a FK.</p>
+ *
+ * <p><strong>Por que campos públicos?</strong> MyBatis popula campos públicos diretamente
+ * via reflexão sem necessidade de construtores ou setters — abordagem mais simples e legível
+ * para uma classe que é exclusivamente um contêiner de dados de persistência.
+ * Este padrão é consistente com {@link MatriculaRow}. Em produção, prefira campos
+ * package-private com getters para evitar mutação não controlada de fora do pacote.</p>
  */
 public class ItemMatriculaRow {
 
