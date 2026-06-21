@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Módulo erp-matricula-camadas — arquitetura tradicional Controller->Service->Repository.
+  Os 6 anti-padrões coexistem neste módulo de forma integrada e realista.
+  Este é o "antes" — o módulo erp-matricula-ddd é o "depois".
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+             https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- ======================================================
+         Parent: Parent POM local do projeto multi-module
+         Herda do erp-matricula-parent que, por sua vez, herda do
+         spring-boot-starter-parent — BOM centralizado.
+         ====================================================== -->
+    <parent>
+        <groupId>br.com.escola</groupId>
+        <artifactId>erp-matricula-parent</artifactId>
+        <version>0.1.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <!-- ======================================================
+         Coordenadas do módulo camadas
+         ====================================================== -->
+    <groupId>br.com.escola</groupId>
+    <artifactId>erp-matricula-camadas</artifactId>
+    <version>0.1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <name>ERP Matrícula — Módulo Camadas (arquitetura tradicional — o "antes" didático)</name>
+    <description>Módulo de arquitetura em camadas (Controller-Service-Repository) — demonstra os 6 anti-padrões do DDD. Contraste com erp-matricula-ddd.</description>
+
+    <!-- ======================================================
+         Propriedades
+         ====================================================== -->
+    <properties>
+        <java.version>21</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    </properties>
+
+    <!-- ======================================================
+         Dependências — idênticas ao erp-matricula-ddd
+         Os dois módulos têm o mesmo stack tecnológico; a diferença é a
+         organização do código (DDD vs. arquitetura em camadas).
+         ====================================================== -->
+    <dependencies>
+
+        <!-- Spring Boot core — base para todos os outros starters -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+
+        <!-- Camada Web REST — ativa servidor HTTP Tomcat embutido (porta 8080 por padrão).
+             Inclui Jackson para serialização JSON automática dos DTOs para resposta HTTP.
+             Versão gerenciada pelo Spring Boot BOM (spring-boot-starter-parent 3.5.3) -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <!-- Validação de entrada — Bean Validation (JSR-380) para @Valid nos Controllers.
+             Permite @NotBlank, @NotNull, @Size nas classes de request recebidas via HTTP.
+             Versão gerenciada pelo Spring Boot BOM -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+
+        <!-- MyBatis — mapeamento explícito modelo ↔ persistência
+             Versão EXPLÍCITA: 3.0.5 compatível com Spring Boot 3.5.x
+             Não gerenciado pelo Spring Boot BOM — versão verificada em Maven Central 2026-06-20 -->
+        <dependency>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
+            <version>3.0.5</version>
+        </dependency>
+
+        <!-- Driver JDBC PostgreSQL — versão gerenciada pelo Spring Boot BOM -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+        </dependency>
+
+        <!-- Flyway core — migrações de schema versionadas -->
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+            <!-- versão gerenciada pelo Spring Boot BOM -->
+        </dependency>
+
+        <!-- OBRIGATÓRIO para Flyway 10+ com PostgreSQL:
+             Flyway 10 separou suporte de bancos em módulos separados.
+             Sem esta dependência: "No dialect found for database 'PostgreSQL'" ao iniciar.
+             Versão gerenciada pelo Spring Boot BOM -->
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-database-postgresql</artifactId>
+            <!-- versão gerenciada pelo Spring Boot BOM -->
+        </dependency>
+
+        <!-- Testes — scope test -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+    <!-- ======================================================
+         Plugins
+         ====================================================== -->
+    <build>
+        <plugins>
+            <!-- spring-boot-maven-plugin: permite `mvn spring-boot:run`
+                 Sem <skip> — este módulo É um JAR executável (ao contrário do parent POM) -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
