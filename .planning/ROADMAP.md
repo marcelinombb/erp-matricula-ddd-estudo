@@ -41,7 +41,7 @@ Full details: [.planning/milestones/v1.0-ROADMAP.md](milestones/v1.0-ROADMAP.md)
 Plans:
 - [x] 05-01-PLAN.md — Infraestrutura Maven multi-module: renomear erp-matricula-app → erp-matricula-ddd, criar parent POM, Dockerfiles, docker-compose.yml dual-service
 - [x] 05-02-PLAN.md — Módulo camadas: pom.xml, main class, quatro model classes anêmicas (DIAG-02, DIAG-06)
-- [ ] 05-03-PLAN.md — Módulo camadas: quatro @Mapper repositories, XMLs MyBatis, migrations V1-V3 copiadas (DIAG-06)
+- [x] 05-03-PLAN.md — Módulo camadas: quatro @Mapper repositories, XMLs MyBatis, migrations V1-V3 copiadas (DIAG-06)
 - [ ] 05-04-PLAN.md — Módulo camadas: MatriculaServiceImpl 200+ linhas (DIAG-01, DIAG-03, DIAG-04, DIAG-06) + DisciplinaServiceImpl
 - [ ] 05-05-PLAN.md — Módulo camadas: MatriculaController com DIAG-05 (Regras na Interface)
 - [x] 05-06-PLAN.md — Documentação Markdown docs/00-ddd-sem-mudar-arquitetura/ (7 arquivos, todos 6 anti-padrões)
