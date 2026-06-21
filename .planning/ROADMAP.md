@@ -104,8 +104,18 @@ Plans:
   3. Um desenvolvedor lendo "DDD para quem vem da Arquitetura em Camadas" consegue identificar o equivalente DDD de cada artefato tradicional (Service → UseCase + DomainService, Repository interface + impl, Entity com comportamento) usando exemplos concretos do fluxo de matrícula
   4. Um desenvolvedor lendo os ADRs (ADR-001 a ADR-004) consegue explicar cada decisão arquitetural — MyBatis vs JPA, escopo único do BC, referência por ID entre agregados, código em português — com o problema original, a decisão tomada e o trade-off honesto
   5. Um desenvolvedor consulta o Guia de Consulta e navega diretamente do conceito DDD ("Aggregate Root") ao arquivo concreto (`Matricula.java`) sem precisar procurar na estrutura de pastas
-**Plans:** TBD
-**UI hint**: yes
+**Plans:** 4 planos em 3 waves
+
+Plans:
+**Wave 1**
+- [ ] 04-01-PLAN.md — pom.xml + application.yml + Flyway V3 + ItemMatriculaRow + MatriculaMapper.xml + MatriculaDto + DemoRunner (IFX-03, DCK-01 foundation)
+
+**Wave 2** *(paralelos — ambos dependem do Wave 1)*
+- [ ] 04-02-PLAN.md — MatriculaController + ExcecaoHandler (IFX-01, IFX-02, IFX-03)
+- [ ] 04-03-PLAN.md — Dockerfile + docker-compose.yml + README.md Docker section (DCK-01, DCK-02)
+
+**Wave 3** *(blocked on Wave 1 + Wave 2 — material didático referencia código implementado)*
+- [ ] 04-04-PLAN.md — ddd-vs-camadas.md + guia-consulta.md + licoes-aprendidas.md + estrutura-pastas.md + ADRs enriquecidos (DID-01..08)
 
 ---
 
@@ -116,4 +126,4 @@ Plans:
 | 1. Design Estrategico | 0/3 | Planned | - |
 | 2. Design Tatico e Modelagem Visual | 0/4 | Planned | - |
 | 3. Implementacao | 0/4 | Planned | - |
-| 4. Interface, Docker e Material Didatico | 0/1 | Not started | - |
+| 4. Interface, Docker e Material Didatico | 0/4 | Planned | - |
