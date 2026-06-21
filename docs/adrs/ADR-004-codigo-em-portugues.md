@@ -112,3 +112,25 @@ public interface MatriculaRepositorio {
 - Domain-Driven Design — Eric Evans (Capítulo 2: Comunicação e uso da linguagem)
 - contexto-matricula.md §2 (Ubiquitous Language)
 - Ubiquitous Language — Martin Fowler: https://martinfowler.com/bliki/UbiquitousLanguage.html
+
+## Na prática
+
+O código implementado nas Fases 3 e 4 demonstra a decisão em todos os níveis:
+
+**Nomes de classes e interfaces:**
+- `MatricularAlunoUseCase` (não `EnrollStudentUseCase`)
+- `VerificadorElegibilidadeMatricula` (não `EligibilityChecker`)
+- `MatriculaRepositorio` (não `MatriculaRepository`)
+- `ExcecaoHandler` (não `ExceptionHandler`)
+
+**Nomes de métodos de domínio:**
+- `adicionarDisciplina()` (não `addDiscipline()`)
+- `cancelar()` (não `cancel()`)
+- `coletarEventos()` (não `collectEvents()`)
+- `estaAtivo()` (não `isActive()`)
+- `buscarPorId()` (não `findById()`)
+- `existeMatriculaAtiva()` (não `hasActiveEnrollment()`)
+
+Em inglês, os equivalentes seriam: `EnrollStudentUseCase`, `EligibilityChecker`, `addDiscipline()`, `cancel()`. O impacto é mais visível quando um especialista de matrícula escolar lê `verificador.verificar(aluno, turma, periodo)` — ele reconhece imediatamente a operação de negócio que está sendo executada.
+
+A Linguagem Ubíqua foi definida em [docs/01-design-estrategico/linguagem-ubiqua.md](../../docs/01-design-estrategico/linguagem-ubiqua.md) — o código é a implementação direta dessa linguagem. Os termos do glossário ("Matrícula", "Aluno", "Turma", "PeriodoLetivo") aparecem sem tradução tanto nos documentos quanto nas classes Java.

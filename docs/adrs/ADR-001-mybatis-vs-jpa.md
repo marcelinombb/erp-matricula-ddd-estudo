@@ -112,3 +112,17 @@ grep -r "import org.apache.ibatis" src/main/java/br/com/erp/dominio/
 - MyBatis Result Maps (oficial): https://mybatis.org/mybatis-3/sqlmap-xml.html
 - Separating Persistence and Domain Models: https://urgo.medium.com/separating-persistence-and-domain-models-cc3a7e7cd4e5
 - mybatis-spring-boot-starter releases: https://github.com/mybatis/spring-boot-starter/releases
+
+## Na prática
+
+Esta decisão é visível em dois arquivos que devem ser lidos juntos:
+
+**[MatriculaRow.java](../../erp-matricula-app/src/main/java/br/com/escola/matricula/infraestrutura/persistencia/MatriculaRow.java)** — o modelo relacional plano. É um objeto Java sem comportamento, sem anotações de domínio, sem métodos de negócio. Seus campos espelham diretamente as colunas da tabela `matriculas`: `id`, `alunoId`, `turmaId`, `periodoInicio`, `periodoFim`, `status`, `canceladaEm`, `concluidaEm`. O MyBatis popula este objeto; o domínio nunca o vê.
+
+**[MatriculaRowMapper.java](../../erp-matricula-app/src/main/java/br/com/escola/matricula/infraestrutura/persistencia/MatriculaRowMapper.java)** — a classe que separa explicitamente os dois mundos. O Javadoc da linha 17 nomeia isso diretamente: "ÚNICO arquivo que conhece tanto `MatriculaRow` quanto `Matricula`."
+
+O padrão de conversão é explícito e navegável:
+- **Banco → domínio:** `MatriculaRowMapper.toDomain()` converte `MatriculaRow` em `Matricula`, reconstruindo os Value Objects (`AlunoId`, `TurmaId`, `PeriodoLetivo`) e a sealed interface `StatusMatricula`.
+- **Domínio → banco:** `MatriculaRowMapper.fromDomain()` converte `Matricula` em `MatriculaRow`, serializando os Value Objects de volta para tipos primitivos e strings.
+
+Nenhuma linha de código do domínio sabe que o banco existe. Qualquer mudança no schema (adicionar coluna, renomear campo) impacta `MatriculaRow` e `MatriculaRowMapper` — nunca `Matricula.java`.
