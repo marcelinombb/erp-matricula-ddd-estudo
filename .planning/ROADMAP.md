@@ -115,7 +115,7 @@ Plans:
 - [x] 04-03-PLAN.md — Dockerfile + docker-compose.yml + README.md Docker section (DCK-01, DCK-02)
 
 **Wave 3** *(blocked on Wave 1 + Wave 2 — material didático referencia código implementado)*
-- [ ] 04-04-PLAN.md — ddd-vs-camadas.md + guia-consulta.md + licoes-aprendidas.md + estrutura-pastas.md + ADRs enriquecidos (DID-01..08)
+- [x] 04-04-PLAN.md — ddd-vs-camadas.md + guia-consulta.md + licoes-aprendidas.md + estrutura-pastas.md + ADRs enriquecidos (DID-01..08)
 
 ---
 
