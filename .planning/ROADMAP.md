@@ -111,8 +111,8 @@ Plans:
 - [x] 04-01-PLAN.md — pom.xml + application.yml + Flyway V3 + ItemMatriculaRow + MatriculaMapper.xml + MatriculaDto + DemoRunner (IFX-03, DCK-01 foundation)
 
 **Wave 2** *(paralelos — ambos dependem do Wave 1)*
-- [ ] 04-02-PLAN.md — MatriculaController + ExcecaoHandler (IFX-01, IFX-02, IFX-03)
-- [ ] 04-03-PLAN.md — Dockerfile + docker-compose.yml + README.md Docker section (DCK-01, DCK-02)
+- [x] 04-02-PLAN.md — MatriculaController + ExcecaoHandler (IFX-01, IFX-02, IFX-03)
+- [x] 04-03-PLAN.md — Dockerfile + docker-compose.yml + README.md Docker section (DCK-01, DCK-02)
 
 **Wave 3** *(blocked on Wave 1 + Wave 2 — material didático referencia código implementado)*
 - [ ] 04-04-PLAN.md — ddd-vs-camadas.md + guia-consulta.md + licoes-aprendidas.md + estrutura-pastas.md + ADRs enriquecidos (DID-01..08)
