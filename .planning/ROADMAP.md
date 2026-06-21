@@ -108,7 +108,7 @@ Plans:
 
 Plans:
 **Wave 1**
-- [ ] 04-01-PLAN.md — pom.xml + application.yml + Flyway V3 + ItemMatriculaRow + MatriculaMapper.xml + MatriculaDto + DemoRunner (IFX-03, DCK-01 foundation)
+- [x] 04-01-PLAN.md — pom.xml + application.yml + Flyway V3 + ItemMatriculaRow + MatriculaMapper.xml + MatriculaDto + DemoRunner (IFX-03, DCK-01 foundation)
 
 **Wave 2** *(paralelos — ambos dependem do Wave 1)*
 - [ ] 04-02-PLAN.md — MatriculaController + ExcecaoHandler (IFX-01, IFX-02, IFX-03)
