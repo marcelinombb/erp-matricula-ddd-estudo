@@ -4,6 +4,24 @@
 
 Projeto de treinamento completo em Domain-Driven Design (DDD), usando o domínio de Matrícula Escolar como campo de prática. Construído para desenvolvedores que dominam Spring Boot e arquitetura em camadas (Controller → Service → Repository) mas nunca aplicaram DDD de forma estruturada. O projeto é uma referência autônoma — se explica sem instrutor, através de documentação progressiva que acompanha cada decisão de código.
 
+### O que é Domínio?
+
+Em desenvolvimento de software, **domínio** é o "coração" do negócio. Ele representa a área de conhecimento, os processos e as regras de negócio do mundo real que o sistema precisa resolver ou automatizar. Exemplo: em um banco, o domínio envolve contas, transferências e empréstimos.
+
+O **Domain-Driven Design (DDD)** utiliza o domínio como guia principal para estruturar o código e o design da aplicação — o software reflete diretamente a linguagem e os conceitos do negócio.
+
+### Como o Domínio é dividido no DDD?
+
+Para lidar com sistemas complexos, o domínio maior é fragmentado em partes menores para manter o código organizado:
+
+| Parte | O que é |
+|-------|---------|
+| **Domínio Central (Core Domain)** | O principal motivo da existência do sistema — o grande diferencial competitivo do negócio. É aqui que o time deve concentrar mais esforço e cuidado. |
+| **Subdomínios de Suporte** | Áreas que apoiam o Core Domain, mas não são o diferencial. Podem ser desenvolvidos internamente com menos rigor. |
+| **Subdomínios Genéricos** | Funcionalidades comuns a muitos negócios (ex: autenticação, envio de e-mail). Podem ser terceirizados ou usar soluções prontas. |
+
+Neste projeto, o **Core Domain é Matrícula** — é ele que contém as regras de negócio modeladas com DDD tático.
+
 ## Por onde começar
 
 Siga esta sequência de leitura para construir o entendimento progressivo do projeto:
@@ -25,14 +43,14 @@ Siga esta sequência de leitura para construir o entendimento progressivo do pro
 - [Bounded Contexts](docs/01-design-estrategico/bounded-contexts.md)
 - [Context Map](docs/01-design-estrategico/context-map.md)
 
-### Decisões Arquiteturais (ADRs)
+#### Decisões Arquiteturais (ADRs)
 
 - [ADR-001: MyBatis vs JPA](docs/adrs/ADR-001-mybatis-vs-jpa.md)
 - [ADR-002: Escopo do Bounded Context](docs/adrs/ADR-002-escopo-bounded-context.md)
 - [ADR-003: Referência por ID entre Aggregates](docs/adrs/ADR-003-referencia-por-id.md)
 - [ADR-004: Código em Português](docs/adrs/ADR-004-codigo-em-portugues.md)
 
-## Design Tático
+### Fase 2 Design Tático
 
 - [Value Objects](docs/02-design-tatico/value-objects.md)
 - [Entidades](docs/02-design-tatico/entidades.md)
