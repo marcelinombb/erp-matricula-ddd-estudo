@@ -143,11 +143,12 @@ public class MatriculaController {
         );
 
         // 3. Construir Turma placeholder — nome e capacidade não relevantes para o UseCase de matrícula
+        //    vagasMaximas=1 satisfaz o guard do construtor (> 0); o valor não é lido pelo UseCase
         var turma = new Turma(
                 new TurmaId(UUID.fromString(request.turmaId())),
                 "N/A",
                 periodo,
-                0
+                1   // placeholder — capacidade não é relevante para este UseCase
         );
 
         // 4. Construir Command e executar o UseCase — retorna o ID da nova matrícula
