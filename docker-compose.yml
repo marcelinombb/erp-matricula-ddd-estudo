@@ -1,0 +1,56 @@
+# ERP Matrícula — Docker Compose
+# Sobe PostgreSQL + aplicação Spring Boot com um único comando.
+#
+# Como executar:
+#   docker compose up          — sobe em foreground (Ctrl+C para parar)
+#   docker compose up -d       — sobe em background
+#   docker compose down        — para e remove containers
+#   docker compose down -v     — para, remove containers E volumes (reset do banco)
+#
+# Variáveis de ambiente opcionais:
+#   DB_USER=outro docker compose up
+#   DB_PASSWORD=outra docker compose up
+
+services:
+
+  # ---------------------------------------------------------------------------
+  # PostgreSQL 16 — banco de dados
+  # postgres:16-alpine alinhado com o schema desenvolvido no projeto (V1__schema.sql)
+  # ---------------------------------------------------------------------------
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: erp_matricula
+      POSTGRES_USER: ${DB_USER:-matricula}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-matricula}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-matricula} -d erp_matricula"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  # ---------------------------------------------------------------------------
+  # Aplicação Spring Boot — compilada via Dockerfile multi-stage
+  # ---------------------------------------------------------------------------
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      # SPRING_DATASOURCE_URL sobrescreve application.yml via convenção Spring Boot — sem perfis separados
+      # "postgres" é o nome do service acima — Docker Compose resolve via DNS interno
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/erp_matricula
+      SPRING_DATASOURCE_USERNAME: ${DB_USER:-matricula}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD:-matricula}
+    depends_on:
+      postgres:
+        # depends_on com condition: service_healthy garante que o banco está pronto antes de Flyway conectar
+        # Sem isso: race condition — app inicia antes do PostgreSQL aceitar conexões
+        condition: service_healthy
+
+volumes:
+  # postgres_data persiste os dados entre restarts.
+  # Para resetar o banco completamente: docker compose down -v
+  postgres_data:

@@ -51,6 +51,57 @@ Siga esta sequência de leitura para construir o entendimento progressivo do pro
 - Docker
 - Maven (single-module)
 
-## Como executar
+## Como Executar (Docker)
 
-Instruções de execução serão adicionadas na Fase 3 (Implementação).
+**Pré-requisito:** [Docker](https://docs.docker.com/get-docker/) instalado (inclui Docker Compose). Não é necessário Java ou Maven no host.
+
+### Subir o ambiente
+
+```bash
+docker compose up
+```
+
+Isso compila a aplicação dentro do container (Stage 1 do Dockerfile) e sobe PostgreSQL + Spring Boot. Na primeira execução, o download das imagens pode levar alguns minutos.
+
+Para rodar em background:
+
+```bash
+docker compose up -d
+```
+
+### Testar que está funcionando
+
+Aguarde a mensagem `Started ErpMatriculaApplication` no log e então faça uma requisição:
+
+```bash
+# Matricular um aluno (substitua o alunoId por um UUID válido dos seeds)
+curl -s -X POST http://localhost:8080/matriculas \
+  -H "Content-Type: application/json" \
+  -d '{"alunoId": "00000000-0000-0000-0000-000000000001", "periodoLetivo": "2024.1"}' \
+  | jq .
+```
+
+### Parar o ambiente
+
+```bash
+docker compose down
+```
+
+### Resetar o banco de dados (apagar todos os dados)
+
+```bash
+docker compose down -v
+```
+
+O flag `-v` remove o volume `postgres_data`, apagando todos os dados persistidos. Na próxima vez que subir, o Flyway recria o schema do zero.
+
+---
+
+## Material Didático
+
+Documentação pedagógica da Fase 4 — explica DDD na prática, com paralelos diretos à arquitetura em camadas:
+
+- [DDD para quem vem da Arquitetura em Camadas](docs/04-material-didatico/ddd-vs-camadas.md) — comparação lado a lado: o que mudou, por que mudou e os benefícios de cada decisão
+- [Guia de Consulta: conceito DDD → arquivo](docs/04-material-didatico/guia-consulta.md) — mapa de conceitos DDD (Aggregate, Value Object, Repository...) para os arquivos concretos do projeto
+- [Lições Aprendidas](docs/04-material-didatico/licoes-aprendidas.md) — decisões que pareceram estranhas no início e o raciocínio que as justifica
+- [Estrutura de Pastas Explicada](docs/04-material-didatico/estrutura-pastas.md) — por que `domain/`, `application/`, `infrastructure/` e `interfaces/` existem e o que cada uma pode ou não pode fazer
