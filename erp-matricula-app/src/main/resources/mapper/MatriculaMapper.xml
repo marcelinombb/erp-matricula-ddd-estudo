@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+  MatriculaMapper.xml — Mapeamento SQL do Aggregate Matricula
+  Namespace aponta para a interface Java @Mapper correspondente.
+
+  PADRÃO CENTRAL: JOIN + <collection notNullColumn>
+    Reconstrução do Aggregate completo (Matricula + List<ItemMatricula>) em UMA ÚNICA query.
+    Sem N+1 — sem nested select. Ver RESEARCH.md Seção 1.
+
+  PITFALLS MITIGADOS:
+    Pitfall 1 — notNullColumn="item_disciplina":
+      LEFT JOIN retorna linha com NULLs para matrículas sem itens.
+      Sem notNullColumn, MyBatis cria um ItemMatriculaRow(null) — lista fantasma.
+      Com notNullColumn, MyBatis ignora a linha se item_disciplina for NULL.
+      Regra: SEMPRE usar notNullColumn quando a collection usa LEFT JOIN.
+
+    Pitfall 2 — jdbcType=OTHER para parâmetros UUID:
+      PostgreSQL tem tipo nativo UUID. MyBatis passa UUID como VARCHAR por default.
+      Resultado: "ERROR: operator does not exist: uuid = character varying"
+      Solução: #{param, jdbcType=OTHER} em TODOS os parâmetros UUID.
+-->
+<mapper namespace="br.com.escola.matricula.infraestrutura.persistencia.MatriculaMapper">
+
+  <!--
+    MatriculaResultMap — mapeia o resultado do JOIN para MatriculaRow + List<ItemMatriculaRow>
+    O alias "matricula_id" diferencia a coluna id da matrícula de outros ids no JOIN.
+    O alias "item_disciplina" é usado pelo notNullColumn para detectar matrículas sem itens.
+  -->
+  <resultMap id="MatriculaResultMap" type="MatriculaRow">
+    <id     property="id"            column="matricula_id"/>
+    <result property="alunoId"       column="aluno_id"/>
+    <result property="turmaId"       column="turma_id"/>
+    <result property="periodoInicio" column="periodo_inicio"/>
+    <result property="periodoFim"    column="periodo_fim"/>
+    <result property="status"        column="status"/>
+    <result property="canceladaEm"   column="cancelada_em"/>
+    <result property="concluidaEm"   column="concluida_em"/>
+
+    <!--
+      collection: mapeia as linhas do JOIN para a List<ItemMatriculaRow> em MatriculaRow.itens.
+
+      notNullColumn="item_disciplina" (CRÍTICO — Pitfall 1):
+        Se item_disciplina for NULL (matrícula sem itens no LEFT JOIN),
+        MyBatis NÃO cria um ItemMatriculaRow — a lista fica vazia como esperado.
+        Sem esta anotação, a lista teria um elemento com disciplina=null.
+    -->
+    <collection property="itens"
+                ofType="ItemMatriculaRow"
+                notNullColumn="item_disciplina">
+      <result property="disciplina" column="item_disciplina"/>
+    </collection>
+  </resultMap>
+
+  <!--
+    buscarPorId — busca um Aggregate completo pelo ID.
+
+    LEFT JOIN (não INNER JOIN): matrícula pode existir sem itens ainda.
+    Com INNER JOIN, a query não retornaria a matrícula se ela não tiver itens.
+    Alias "AS matricula_id" necessário porque o ResultMap usa "matricula_id" como column.
+    jdbcType=OTHER em #{id}: obrigatório para UUID nativo PostgreSQL (Pitfall 2).
+  -->
+  <select id="buscarPorId" resultMap="MatriculaResultMap">
+    SELECT
+      m.id             AS matricula_id,
+      m.aluno_id       AS aluno_id,
+      m.turma_id       AS turma_id,
+      m.periodo_inicio AS periodo_inicio,
+      m.periodo_fim    AS periodo_fim,
+      m.status         AS status,
+      m.cancelada_em   AS cancelada_em,
+      m.concluida_em   AS concluida_em,
+      i.disciplina     AS item_disciplina
+    FROM matriculas m
+    LEFT JOIN itens_matricula i ON i.matricula_id = m.id
+    WHERE m.id = #{id, jdbcType=OTHER}
+  </select>
+
+  <!--
+    buscarPorAluno — lista todos os Aggregates de um aluno.
+
+    Mesma estrutura do buscarPorId — reutiliza o mesmo ResultMap.
+    MyBatis agrupa automaticamente as linhas por matricula_id graças ao <id> no ResultMap.
+    Um aluno com 3 matrículas (cada uma com 2 itens) retorna 6 linhas do JOIN,
+    que são agrupadas em 3 MatriculaRow, cada uma com List<ItemMatriculaRow> de 2 elementos.
+  -->
+  <select id="buscarPorAluno" resultMap="MatriculaResultMap">
+    SELECT
+      m.id             AS matricula_id,
+      m.aluno_id       AS aluno_id,
+      m.turma_id       AS turma_id,
+      m.periodo_inicio AS periodo_inicio,
+      m.periodo_fim    AS periodo_fim,
+      m.status         AS status,
+      m.cancelada_em   AS cancelada_em,
+      m.concluida_em   AS concluida_em,
+      i.disciplina     AS item_disciplina
+    FROM matriculas m
+    LEFT JOIN itens_matricula i ON i.matricula_id = m.id
+    WHERE m.aluno_id = #{alunoId, jdbcType=OTHER}
+  </select>
+
+  <!--
+    existeMatriculaAtiva — verifica duplicidade antes de matricular.
+
+    Usado por VerificadorElegibilidadeMatricula via MatriculaRepositorioMyBatis.
+    COUNT(*) > 0 retorna boolean — true se existe matrícula ativa no período.
+
+    periodoInicio e periodoFim são LocalDate (não UUID) — não precisam de jdbcType=OTHER.
+    alunoId é UUID — precisa de jdbcType=OTHER.
+  -->
+  <select id="existeMatriculaAtiva" resultType="boolean">
+    SELECT COUNT(*) > 0
+    FROM matriculas
+    WHERE aluno_id      = #{alunoId, jdbcType=OTHER}
+      AND periodo_inicio = #{periodoInicio}
+      AND periodo_fim    = #{periodoFim}
+      AND status         = 'ATIVA'
+  </select>
+
+  <!--
+    inserirMatricula — INSERT inicial do Aggregate Root.
+
+    cancelada_em e concluida_em não são inseridos aqui — são NULL no estado inicial.
+    São atualizados posteriormente via atualizarMatricula quando o status muda.
+    Todos os campos UUID usam jdbcType=OTHER (Pitfall 2).
+  -->
+  <insert id="inserirMatricula" parameterType="MatriculaRow">
+    INSERT INTO matriculas
+      (id, aluno_id, turma_id, periodo_inicio, periodo_fim, status)
+    VALUES
+      (#{id, jdbcType=OTHER},
+       #{alunoId, jdbcType=OTHER},
+       #{turmaId, jdbcType=OTHER},
+       #{periodoInicio},
+       #{periodoFim},
+       #{status})
+  </insert>
+
+  <!--
+    atualizarMatricula — UPDATE do status e timestamps de estado.
+
+    Atualiza apenas os campos mutáveis do Aggregate (status, cancelada_em, concluida_em).
+    Campos imutáveis (aluno_id, turma_id, periodo*) não são atualizados — reflete a imutabilidade
+    do Aggregate: um aluno não muda de turma depois de matriculado.
+
+    Estratégia replace-all (D-12): este UPDATE é chamado primeiro no salvar().
+    Se retornar 0 (registro não existe), o chamador executa inserirMatricula.
+    jdbcType=OTHER em #{id} para comparação UUID nativa no PostgreSQL.
+  -->
+  <update id="atualizarMatricula" parameterType="MatriculaRow">
+    UPDATE matriculas SET
+      status       = #{status},
+      cancelada_em = #{canceladaEm},
+      concluida_em = #{concluidaEm}
+    WHERE id = #{id, jdbcType=OTHER}
+  </update>
+
+  <!--
+    deletarItensPorMatriculaId — parte da estratégia replace-all (D-12).
+
+    DELETE de TODOS os itens antes do INSERT — o Aggregate é tratado como unidade atômica.
+    Pedagogicamente explícito: "o estado atual completo do Aggregate é sempre persistido".
+    jdbcType=OTHER para o UUID (Pitfall 2).
+  -->
+  <delete id="deletarItensPorMatriculaId">
+    DELETE FROM itens_matricula WHERE matricula_id = #{matriculaId, jdbcType=OTHER}
+  </delete>
+
+  <!--
+    inserirItens — INSERT em lote de todos os itens do Aggregate.
+
+    <foreach>: itera sobre List<ItemMatriculaRow> e gera VALUES múltiplos em um INSERT.
+    Um único statement SQL para N itens — mais eficiente que N INSERTs individuais.
+    Parâmetro "list" é o @Param("list") da interface MatriculaMapper.
+    item.matriculaId usa jdbcType=OTHER (UUID — Pitfall 2).
+    item.disciplina é String VARCHAR — sem jdbcType especial.
+  -->
+  <insert id="inserirItens">
+    INSERT INTO itens_matricula (matricula_id, disciplina)
+    VALUES
+    <foreach collection="list" item="item" separator=",">
+      (#{item.matriculaId, jdbcType=OTHER}, #{item.disciplina})
+    </foreach>
+  </insert>
+
+</mapper>
