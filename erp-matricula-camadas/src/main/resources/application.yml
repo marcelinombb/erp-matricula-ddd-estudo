@@ -1,0 +1,62 @@
+# =============================================================================
+# Módulo camadas — banco separado erp_matricula_camadas evita conflito com
+# Flyway do módulo DDD (ver RESEARCH.md Pitfall 1)
+# =============================================================================
+
+spring:
+
+  # ---------------------------------------------------------------------------
+  # Datasource — PostgreSQL local de desenvolvimento
+  # Banco separado de erp_matricula para evitar conflito na tabela
+  # flyway_schema_history quando os dois módulos rodam simultaneamente.
+  # ---------------------------------------------------------------------------
+  datasource:
+    url: jdbc:postgresql://localhost:5432/erp_matricula_camadas
+    username: matricula
+    password: matricula
+    driver-class-name: org.postgresql.Driver
+
+  # ---------------------------------------------------------------------------
+  # Flyway — Migrações de schema versionadas
+  # ---------------------------------------------------------------------------
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+# =============================================================================
+# MyBatis — Configuração do mapeamento modelo ↔ persistência
+# =============================================================================
+mybatis:
+
+  # Localização dos arquivos XML de mapeamento SQL.
+  mapper-locations: classpath:mapper/**/*.xml
+
+  # Pacote dos Repositories (que no módulo camadas são diretamente os @Mapper MyBatis).
+  # Contraste: no módulo DDD, type-aliases-package aponta para infraestrutura.persistencia
+  # onde ficam as Row classes separadas do modelo de domínio.
+  type-aliases-package: br.com.escola.matricula.repository
+
+  configuration:
+    # map-underscore-to-camel-case: false (Pitfall 10 do RESEARCH.md)
+    # Com aliases explícitos no SQL (ex: "m.aluno_id AS alunoId"), o
+    # auto-camelCase pode interferir e gerar mapeamentos incorretos.
+    # Manter false e usar aliases explícitos: mais verboso, mais pedagógico.
+    map-underscore-to-camel-case: false
+
+    # lazy-loading-enabled: false
+    # Queries JOIN carregam os dados necessários de uma vez.
+    lazy-loading-enabled: false
+
+# =============================================================================
+# Logging — DEBUG para leitura pedagógica dos SQL executados
+# =============================================================================
+logging:
+  level:
+    br.com.escola.matricula: DEBUG
+    org.mybatis: DEBUG
+
+# =============================================================================
+# Server — porta 8080 no container (docker-compose mapeia para 8081 no host)
+# =============================================================================
+server:
+  port: 8080
