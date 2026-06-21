@@ -65,10 +65,13 @@ public class MatriculaController {
      * é um ponto pedagógico: demonstra que tipos primitivos HTTP não entram
      * no domínio sem validação e tipagem adequada.</p>
      *
+     * <p>O semestre ({@code PeriodoLetivo}) é derivado automaticamente de {@code periodoInicio}:
+     * meses 1-6 → semestre 1; meses 7-12 → semestre 2. Não há campo {@code periodoFim}
+     * na requisição — o servidor infere o período com base no mês de início.</p>
+     *
      * @param alunoId      UUID do aluno em formato String — obrigatório
      * @param turmaId      UUID da turma em formato String — obrigatório
-     * @param periodoInicio data de início do período letivo — obrigatória
-     * @param periodoFim    data de fim do período letivo — obrigatória
+     * @param periodoInicio data de início do período letivo — obrigatória; semestre inferido do mês
      */
     public record MatricularAlunoRequest(
             @NotNull(message = "O ID do aluno é obrigatório")
@@ -78,10 +81,7 @@ public class MatriculaController {
             String turmaId,
 
             @NotNull(message = "A data de início do período é obrigatória")
-            LocalDate periodoInicio,
-
-            @NotNull(message = "A data de fim do período é obrigatória")
-            LocalDate periodoFim
+            LocalDate periodoInicio
     ) {}
 
     /**
@@ -120,7 +120,7 @@ public class MatriculaController {
      * Os campos {@code totalDisciplinas=0} e {@code disciplinas=[]} refletem
      * o estado inicial da matrícula — sem disciplinas adicionadas ainda.</p>
      *
-     * @param request dados da matrícula (alunoId, turmaId, periodoInicio, periodoFim)
+     * @param request dados da matrícula (alunoId, turmaId, periodoInicio)
      * @return MatriculaDto com o ID da matrícula criada e status "ATIVA"
      */
     @PostMapping
