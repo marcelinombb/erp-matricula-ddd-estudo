@@ -2,10 +2,10 @@
 <!--
   ERP Matrícula — Projeto Didático DDD
   =====================================
-  NOTA: spring-boot-starter-web NÃO está incluído intencionalmente.
-  Esta é uma demonstração pedagógica de DDD: o domínio de negócio não depende
-  de HTTP. Controllers REST e exposição web são adicionados na Fase 4.
-  Decisão: D-07 (03-CONTEXT.md) — "Não incluir spring-boot-starter-web"
+  Fase 4 ativa a camada web: spring-boot-starter-web e spring-boot-starter-validation
+  foram adicionados nesta fase. O domínio DDD não depende de HTTP — a ativação é feita
+  na camada de interface (Controllers REST) sem contaminar o modelo de domínio.
+  Decisão: D-04-01 — Controllers REST adicionados na Fase 4 (interface-docker-e-material-didatico)
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -48,10 +48,26 @@
          ====================================================== -->
     <dependencies>
 
-        <!-- Spring Boot core sem Tomcat — DDD não depende de HTTP (Fase 4 adiciona web) -->
+        <!-- Spring Boot core — base para todos os outros starters -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+
+        <!-- Fase 4: Camada Web REST — ativa servidor HTTP Tomcat embutido (porta 8080 por padrão).
+             Inclui Jackson para serialização JSON automática dos DTOs para resposta HTTP.
+             Versão gerenciada pelo Spring Boot BOM (spring-boot-starter-parent 3.5.3) -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <!-- Fase 4: Validação de entrada — Bean Validation (JSR-380) para @Valid nos Controllers.
+             Permite @NotBlank, @NotNull, @Size nas classes de Command recebidas via HTTP.
+             Versão gerenciada pelo Spring Boot BOM -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
 
         <!-- MyBatis — mapeamento explícito domínio ↔ persistência (ADR-001)
