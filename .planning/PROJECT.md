@@ -10,6 +10,18 @@ Projeto de treinamento completo em Domain-Driven Design (DDD), usando o domínio
 
 Um desenvolvedor da equipe deve conseguir, sozinho, ler o projeto do início ao fim e entender **por que** DDD existe, **onde** ele diverge da arquitetura tradicional e **como** aplicar cada padrão tático no código Java real.
 
+## Current Milestone: v1.1 DDD sem Mudar a Arquitetura
+
+**Goal:** Criar módulo pedagógico "Fase 0" que demonstra a aplicação dos princípios fundamentais do DDD dentro da arquitetura em camadas tradicional (Controller→Service→Repository), sem introduzir Clean Architecture, Hexagonal Architecture ou padrões táticos avançados.
+
+**Target features:**
+- Diagnóstico de anti-padrões: exemplos Java com Service Anêmico, Entidade Anêmica, Service Deus, Duplicação de Regras, Regras na Interface e Acoplamento ao Banco
+- Refatoração DDD dentro da mesma arquitetura: Application Service orquestrador + modelo de domínio rico
+- Exercício de classificação: Regras de Domínio vs. Regras de Aplicação
+- Entidades Ricas: modelo comportamental (pedido.finalizar()) vs. anêmico (pedido.setStatus())
+- Introdução gradual de conceitos: Linguagem Ubíqua → Entidades → Value Objects → Agregados → Repositórios
+- Análise final: "Quais benefícios obtivemos aplicando DDD sem alterar a arquitetura?"
+
 ## Requirements
 
 ### Validated
@@ -28,7 +40,23 @@ Um desenvolvedor da equipe deve conseguir, sozinho, ler o projeto do início ao 
 
 ### Active
 
-*(Nenhum — todos os requirements v1 entregues. Próximos em v2)*
+- [ ] DIAG-01: Desenvolvedor identifica anti-padrão "Service Anêmico" em código exemplo com todas as regras no Service
+- [ ] DIAG-02: Desenvolvedor identifica anti-padrão "Entidade Anêmica" em código exemplo com apenas getters/setters
+- [ ] DIAG-03: Desenvolvedor identifica anti-padrão "Service Deus" em código exemplo com centenas de linhas
+- [ ] DIAG-04: Desenvolvedor identifica anti-padrão "Duplicação de Regras" em código exemplo com validações repetidas
+- [ ] DIAG-05: Desenvolvedor identifica anti-padrão "Regras na Interface" em código exemplo com validações só no Controller
+- [ ] DIAG-06: Desenvolvedor identifica anti-padrão "Acoplamento ao Banco" em código exemplo com regras moldadas por tabelas
+- [ ] REFD-01: Desenvolvedor visualiza a diferença entre Service anêmico e Application Service orquestrador no mesmo stack
+- [ ] REFD-02: Desenvolvedor visualiza entidade rica com comportamento vs. anêmica dentro da mesma arquitetura em camadas
+- [ ] REFD-03: Desenvolvedor classifica corretamente regras como "de Domínio" ou "de Aplicação" para cada funcionalidade
+- [ ] DDD-01: Projeto demonstra Linguagem Ubíqua — nomes de classes/métodos refletem termos do negócio no código Java
+- [ ] DDD-02: Projeto demonstra identidade e ciclo de vida de Entidades com exemplos concretos
+- [ ] DDD-03: Projeto demonstra Value Objects imutáveis (Email, CPF, Dinheiro, Periodo) substituindo tipos primitivos
+- [ ] DDD-04: Projeto demonstra Agregados como limites de consistência e invariantes com exemplos do domínio de matrícula
+- [ ] DDD-05: Projeto demonstra Repositórios como recuperadores de Agregados (não DAOs genéricos) dentro da arquitetura tradicional
+- [ ] DID-01: Módulo apresenta código "antes" (arquitetura tradicional com anti-padrões) completo e documentado
+- [ ] DID-02: Módulo apresenta código "depois" (DDD sem mudar a arquitetura) com comparativo explícito lado a lado
+- [ ] DID-03: Documento de análise final: "Quais benefícios obtivemos aplicando DDD sem alterar a arquitetura?" com comparativo Complexidade/Benefícios/Curva de Aprendizado/Adoção
 
 ### Out of Scope
 
@@ -81,4 +109,4 @@ Um desenvolvedor da equipe deve conseguir, sozinho, ler o projeto do início ao 
 4. Atualizar Context com estado atual
 
 ---
-*Last updated: 2026-06-21 — v1.0 milestone fechado — todos os 51 requirements entregues*
+*Last updated: 2026-06-21 — v1.1 milestone iniciado — módulo pedagógico DDD sem mudar a arquitetura*
