@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+  AlunoMapper.xml — Mapeamento SQL para Aluno no módulo erp-matricula-camadas.
+
+  Namespace aponta diretamente para o @Mapper que é o repositório:
+  br.com.escola.matricula.repository.AlunoRepository
+-->
+<mapper namespace="br.com.escola.matricula.repository.AlunoRepository">
+
+  <!--
+    AlunoResultMap — mapeia o resultado da query para Aluno.java.
+
+    Mapeamento direto coluna->campo. Aluno.java é diretamente o objeto de persistência —
+    não há separação entre modelo de domínio e modelo de persistência.
+  -->
+  <resultMap id="AlunoResultMap" type="br.com.escola.matricula.model.Aluno">
+    <id     property="id"   column="id"   javaType="java.util.UUID"/>
+    <result property="cpf"  column="cpf"/>
+    <result property="nome" column="nome"/>
+    <result property="ativo" column="ativo" javaType="boolean"/>
+  </resultMap>
+
+  <!--
+    findById — busca um Aluno pelo ID.
+  -->
+  <select id="findById" resultMap="AlunoResultMap">
+    SELECT id, cpf, nome, ativo
+    FROM alunos
+    WHERE id = #{id, jdbcType=OTHER}
+  </select>
+
+  <!--
+    findAll — lista todos os Alunos.
+  -->
+  <select id="findAll" resultMap="AlunoResultMap">
+    SELECT id, cpf, nome, ativo
+    FROM alunos
+    ORDER BY nome
+  </select>
+
+</mapper>

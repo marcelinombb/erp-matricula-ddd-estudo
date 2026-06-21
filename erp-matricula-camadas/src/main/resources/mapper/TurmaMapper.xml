@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+  TurmaMapper.xml — Mapeamento SQL para Turma no módulo erp-matricula-camadas.
+
+  Namespace aponta diretamente para o @Mapper que é o repositório:
+  br.com.escola.matricula.repository.TurmaRepository
+-->
+<mapper namespace="br.com.escola.matricula.repository.TurmaRepository">
+
+  <!--
+    TurmaResultMap — mapeia o resultado da query para Turma.java.
+
+    Nota: a coluna "nome" da tabela turmas é mapeada para o campo "codigo" em Turma.java.
+    Este é um exemplo de ANTI-PADRAO: Acoplamento ao Banco (DIAG-06) — o nome do campo
+    Java não corresponde ao conceito de domínio nem ao nome da coluna, criando
+    confusão entre o modelo de domínio e o schema de banco.
+  -->
+  <resultMap id="TurmaResultMap" type="br.com.escola.matricula.model.Turma">
+    <id     property="id"           column="id"            javaType="java.util.UUID"/>
+    <result property="codigo"       column="nome"/>
+    <result property="periodoInicio" column="periodo_inicio"/>
+    <result property="periodoFim"   column="periodo_fim"/>
+  </resultMap>
+
+  <!--
+    findById — busca uma Turma pelo ID.
+  -->
+  <select id="findById" resultMap="TurmaResultMap">
+    SELECT id, nome, periodo_inicio, periodo_fim
+    FROM turmas
+    WHERE id = #{id, jdbcType=OTHER}
+  </select>
+
+</mapper>

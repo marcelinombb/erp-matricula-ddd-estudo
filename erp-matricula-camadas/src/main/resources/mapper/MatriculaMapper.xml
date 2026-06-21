@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+  MatriculaMapper.xml — Mapeamento SQL do módulo erp-matricula-camadas
+
+  Namespace aponta diretamente para o @Mapper que é o repositório:
+  br.com.escola.matricula.repository.MatriculaRepository
+
+  ANTI-PADRAO: Acoplamento ao Banco (DIAG-06)
+  O resultMap mapeia colunas diretamente para campos da entidade Matricula.java.
+  No módulo DDD, o MatriculaMapper usa MatriculaRow (objeto de persistência separado
+  do modelo de domínio). Aqui Matricula.java É diretamente o objeto de persistência —
+  não há separação entre modelo de domínio e modelo de persistência.
+
+  Contraste:
+    erp-matricula-ddd: MatriculaMapper.xml → MatriculaRow → Matricula (dois modelos separados)
+    erp-matricula-camadas: MatriculaMapper.xml → Matricula (modelo único, acoplado ao banco)
+-->
+<mapper namespace="br.com.escola.matricula.repository.MatriculaRepository">
+
+  <!--
+    MatriculaResultMap — mapeia o resultado da query para Matricula.java.
+
+    ANTI-PADRAO: Acoplamento ao Banco (DIAG-06)
+    Mapeamento direto coluna->campo — no módulo DDD, o MatriculaMapper usa
+    MatriculaRow (objeto de persistência separado do modelo de domínio).
+    Aqui Matricula.java É diretamente o objeto de persistência.
+
+    Nota sobre map-underscore-to-camel-case=false (application.yml):
+    Com esta configuração desativada, os aliases SQL devem corresponder exatamente
+    aos nomes dos campos Java (camelCase explícito via AS alias).
+  -->
+  <resultMap id="MatriculaResultMap" type="br.com.escola.matricula.model.Matricula">
+    <id     property="id"           column="id"           javaType="java.util.UUID"/>
+    <result property="alunoId"      column="aluno_id"     javaType="java.util.UUID"/>
+    <result property="turmaId"      column="turma_id"     javaType="java.util.UUID"/>
+    <result property="periodoInicio" column="periodo_inicio"/>
+    <result property="periodoFim"   column="periodo_fim"/>
+    <result property="status"       column="status"/>
+  </resultMap>
+
+  <!--
+    findById — busca uma Matricula pelo ID.
+
+    jdbcType=OTHER em #{id}: obrigatório para UUID nativo PostgreSQL.
+    Sem jdbcType=OTHER, MyBatis passa UUID como VARCHAR e PostgreSQL lança:
+    "ERROR: operator does not exist: uuid = character varying"
+  -->
+  <select id="findById" resultMap="MatriculaResultMap">
+    SELECT id, aluno_id, turma_id, periodo_inicio, periodo_fim, status
+    FROM matriculas
+    WHERE id = #{id, jdbcType=OTHER}
+  </select>
+
+  <!--
+    findByAlunoId — lista todas as Matrículas de um aluno.
+  -->
+  <select id="findByAlunoId" resultMap="MatriculaResultMap">
+    SELECT id, aluno_id, turma_id, periodo_inicio, periodo_fim, status
+    FROM matriculas
+    WHERE aluno_id = #{alunoId, jdbcType=OTHER}
+  </select>
+
+  <!--
+    insert — INSERT de uma nova matrícula.
+
+    parameterType aponta para a entidade de domínio diretamente — ANTI-PADRAO (DIAG-06):
+    no módulo DDD, o parameterType seria MatriculaRow (objeto de persistência separado),
+    não a entidade de domínio Matricula.
+  -->
+  <insert id="insert" parameterType="br.com.escola.matricula.model.Matricula">
+    INSERT INTO matriculas (id, aluno_id, turma_id, periodo_inicio, periodo_fim, status)
+    VALUES (
+      #{id, jdbcType=OTHER},
+      #{alunoId, jdbcType=OTHER},
+      #{turmaId, jdbcType=OTHER},
+      #{periodoInicio},
+      #{periodoFim},
+      #{status}
+    )
+  </insert>
+
+  <!--
+    updateStatus — atualiza o status de uma matrícula.
+  -->
+  <update id="updateStatus">
+    UPDATE matriculas
+    SET status = #{status}
+    WHERE id = #{id, jdbcType=OTHER}
+  </update>
+
+  <!--
+    countDisciplinas — conta as disciplinas de uma matrícula.
+
+    ANTI-PADRAO: Acoplamento ao Banco (DIAG-06)
+    A regra "máximo 6 disciplinas" existe como query SQL — não como invariante no
+    modelo de domínio. Se você ler Matricula.java, não encontra essa regra.
+    Contraste: erp-matricula-ddd/.../dominio/modelo/Matricula.java verifica o limite
+    internamente dentro do método adicionarDisciplina() sem consultar o banco.
+  -->
+  <select id="countDisciplinas" resultType="int">
+    SELECT COUNT(*) FROM itens_matricula WHERE matricula_id = #{matriculaId, jdbcType=OTHER}
+  </select>
+
+</mapper>

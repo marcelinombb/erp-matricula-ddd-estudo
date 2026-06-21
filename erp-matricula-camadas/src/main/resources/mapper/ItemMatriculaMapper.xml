@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+  ItemMatriculaMapper.xml — Mapeamento SQL para ItemMatricula no módulo erp-matricula-camadas.
+
+  Namespace aponta diretamente para o @Mapper que é o repositório:
+  br.com.escola.matricula.repository.ItemMatriculaRepository
+-->
+<mapper namespace="br.com.escola.matricula.repository.ItemMatriculaRepository">
+
+  <!--
+    ItemMatriculaResultMap — mapeia o resultado da query para ItemMatricula.java.
+
+    Nota: a coluna "incluida_em" da tabela itens_matricula NÃO é mapeada —
+    o campo Java é "adicionadaEm" que corresponde à coluna "adicionada_em"
+    adicionada na migration V3. A coluna original "incluida_em" fica sem mapeamento,
+    demonstrando como a evolução do schema sem refatoração do modelo cria inconsistências.
+  -->
+  <resultMap id="ItemMatriculaResultMap" type="br.com.escola.matricula.model.ItemMatricula">
+    <id     property="id"           column="id"           javaType="java.util.UUID"/>
+    <result property="matriculaId"  column="matricula_id" javaType="java.util.UUID"/>
+    <result property="disciplina"   column="disciplina"/>
+    <result property="adicionadaEm" column="adicionada_em"/>
+  </resultMap>
+
+  <!--
+    findByMatriculaId — lista todos os itens de uma matrícula.
+  -->
+  <select id="findByMatriculaId" resultMap="ItemMatriculaResultMap">
+    SELECT id, matricula_id, disciplina, adicionada_em
+    FROM itens_matricula
+    WHERE matricula_id = #{matriculaId, jdbcType=OTHER}
+  </select>
+
+  <!--
+    insert — INSERT de um novo item de matrícula.
+  -->
+  <insert id="insert" parameterType="br.com.escola.matricula.model.ItemMatricula">
+    INSERT INTO itens_matricula (matricula_id, disciplina, adicionada_em)
+    VALUES (
+      #{matriculaId, jdbcType=OTHER},
+      #{disciplina},
+      NOW()
+    )
+  </insert>
+
+  <!--
+    countByMatriculaId — conta os itens de uma matrícula.
+
+    ANTI-PADRAO: Acoplamento ao Banco (DIAG-06)
+    Contagem de disciplinas via SQL — a regra "máximo 6 disciplinas" existe
+    como query SQL no repositório, não como invariante no objeto Matricula.
+    Contraste: erp-matricula-ddd/.../dominio/modelo/Matricula.java verifica o limite
+    internamente dentro do método adicionarDisciplina() sem consultar o banco.
+  -->
+  <select id="countByMatriculaId" resultType="int">
+    SELECT COUNT(*) FROM itens_matricula WHERE matricula_id = #{matriculaId, jdbcType=OTHER}
+  </select>
+
+</mapper>
