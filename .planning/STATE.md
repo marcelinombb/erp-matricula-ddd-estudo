@@ -2,10 +2,10 @@
 gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: DDD sem Mudar a Arquitetura
-current_phase: 04
+current_phase: 05
 status: executing
-last_updated: "2026-06-21T22:24:19.318Z"
-last_activity: 2026-06-21 -- Phase 05 planning complete
+last_updated: "2026-06-21T22:26:09.115Z"
+last_activity: 2026-06-21 -- Phase 05 execution started
 progress:
   total_phases: 3
   completed_phases: 0
@@ -17,8 +17,8 @@ progress:
 # Project State
 
 **Project:** ERP Matrícula — Projeto Didático DDD
-**Status:** Ready to execute
-**Current Phase:** 04
+**Status:** Executing Phase 05
+**Current Phase:** 05
 **Last Updated:** 2026-06-20
 
 ---
@@ -28,7 +28,7 @@ progress:
 See: .planning/PROJECT.md (updated 2026-06-20)
 
 **Core value:** Um desenvolvedor deve conseguir, sozinho, ler o projeto do início ao fim e entender por que DDD existe, onde diverge da arquitetura tradicional e como aplicar cada padrão tático em código Java real.
-**Current focus:** Phase 04 — interface-docker-e-material-didatico
+**Current focus:** Phase 05 — diagnostico-codigo-com-anti-padroes
 
 ---
 
@@ -45,10 +45,10 @@ See: .planning/PROJECT.md (updated 2026-06-20)
 
 ## Current Position
 
-Phase: Not started (defining requirements)
-Plan: —
-Status: Ready to execute
-Last activity: 2026-06-21 -- Phase 05 planning complete
+Phase: 05 (diagnostico-codigo-com-anti-padroes) — EXECUTING
+Plan: 1 of 6
+Status: Executing Phase 05
+Last activity: 2026-06-21 -- Phase 05 execution started
 
 ## Performance Metrics
 
