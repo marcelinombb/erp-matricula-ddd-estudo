@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ERP Matrícula — Projeto Didático DDD
+  =====================================
+  NOTA: spring-boot-starter-web NÃO está incluído intencionalmente.
+  Esta é uma demonstração pedagógica de DDD: o domínio de negócio não depende
+  de HTTP. Controllers REST e exposição web são adicionados na Fase 4.
+  Decisão: D-07 (03-CONTEXT.md) — "Não incluir spring-boot-starter-web"
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+             https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- ======================================================
+         Parent: Spring Boot BOM gerencia versões de dependências
+         ====================================================== -->
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.5.3</version>
+        <relativePath/>
+    </parent>
+
+    <!-- ======================================================
+         Coordenadas do projeto (D-06)
+         ====================================================== -->
+    <groupId>br.com.escola</groupId>
+    <artifactId>erp-matricula</artifactId>
+    <version>0.1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <name>ERP Matrícula</name>
+    <description>Projeto didático DDD — Domínio de Matrícula Escolar em Java 21 + Spring Boot 3.x + MyBatis</description>
+
+    <!-- ======================================================
+         Propriedades
+         ====================================================== -->
+    <properties>
+        <java.version>21</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    </properties>
+
+    <!-- ======================================================
+         Dependências (D-07)
+         ====================================================== -->
+    <dependencies>
+
+        <!-- Spring Boot core sem Tomcat — DDD não depende de HTTP (Fase 4 adiciona web) -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+
+        <!-- MyBatis — mapeamento explícito domínio ↔ persistência (ADR-001)
+             Versão EXPLÍCITA: 3.0.5 compatível com Spring Boot 3.5.x
+             Não gerenciado pelo Spring Boot BOM — versão verificada em Maven Central 2026-06-20 -->
+        <dependency>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
+            <version>3.0.5</version>
+        </dependency>
+
+        <!-- Driver JDBC PostgreSQL — versão gerenciada pelo Spring Boot BOM -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+        </dependency>
+
+        <!-- Flyway core — migrações de schema versionadas -->
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+            <!-- versão gerenciada pelo Spring Boot BOM -->
+        </dependency>
+
+        <!-- OBRIGATÓRIO para Flyway 10+ com PostgreSQL:
+             Flyway 10 separou suporte de bancos em módulos separados.
+             Sem esta dependência: "No dialect found for database 'PostgreSQL'" ao iniciar.
+             Pitfall 3 do RESEARCH.md — versão gerenciada pelo Spring Boot BOM -->
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-database-postgresql</artifactId>
+            <!-- versão gerenciada pelo Spring Boot BOM -->
+        </dependency>
+
+        <!-- Testes — scope test -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+    <!-- ======================================================
+         Plugins
+         ====================================================== -->
+    <build>
+        <plugins>
+            <!-- spring-boot-maven-plugin: permite `mvn spring-boot:run` -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

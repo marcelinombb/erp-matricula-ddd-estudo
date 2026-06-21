@@ -1,0 +1,82 @@
+# =============================================================================
+# ERP Matrícula — Configuração da Fase 3 (Implementação DDD)
+# =============================================================================
+# Esta configuração demonstra que uma aplicação DDD completa pode funcionar
+# sem HTTP. Controllers REST e configurações web são adicionados na Fase 4.
+# =============================================================================
+
+spring:
+
+  # ---------------------------------------------------------------------------
+  # Datasource — PostgreSQL local de desenvolvimento
+  # Credenciais simples de desenvolvimento (não produção).
+  # Decisão D-08: banco erp_matricula, usuário matricula/matricula.
+  # Fase 4 introduzirá variáveis de ambiente via Docker Compose.
+  # ---------------------------------------------------------------------------
+  datasource:
+    url: jdbc:postgresql://localhost:5432/erp_matricula
+    username: matricula
+    password: matricula
+    driver-class-name: org.postgresql.Driver
+
+  # ---------------------------------------------------------------------------
+  # Flyway — Migrações de schema versionadas
+  # V1__schema.sql: cria tabelas alunos, turmas, matriculas, itens_matricula
+  # V2__seeds.sql: insere dados para demonstrar os 3 fluxos de negócio
+  # ---------------------------------------------------------------------------
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+  # ---------------------------------------------------------------------------
+  # web-application-type: none
+  # Ponto pedagógico central da Fase 3: DDD não depende de HTTP.
+  # O contexto Spring sobe, Flyway roda as migrations, os UseCases são
+  # executáveis — tudo sem abrir uma porta TCP.
+  # Sem esta configuração, Spring Boot tenta detectar servidor web e pode
+  # emitir warnings desnecessários.
+  # ---------------------------------------------------------------------------
+  main:
+    web-application-type: none
+
+# =============================================================================
+# MyBatis — Configuração do mapeamento domínio ↔ persistência
+# =============================================================================
+mybatis:
+
+  # Localização dos arquivos XML de mapeamento SQL.
+  # Os Mappers ficam em src/main/resources/mapper/
+  # O padrão **/*.xml permite subdiretórios para organização futura.
+  mapper-locations: classpath:mapper/**/*.xml
+
+  # Pacote onde MyBatis busca as classes Row (MatriculaRow, ItemMatriculaRow)
+  # para simplificar referências no XML (type="MatriculaRow" em vez de FQCN).
+  # Decisão D-04: as Row classes ficam em infraestrutura.persistencia
+  type-aliases-package: br.com.escola.matricula.infraestrutura.persistencia
+
+  # Pacote para descoberta automática de TypeHandlers personalizados.
+  # TypeHandlers mapeiam Value Objects do domínio para tipos JDBC:
+  # Ex: CpfTypeHandler converte Cpf ↔ VARCHAR(11) no PostgreSQL
+  type-handlers-package: br.com.escola.matricula.infraestrutura.persistencia.typehandler
+
+  configuration:
+    # map-underscore-to-camel-case: false (Pitfall 10 do RESEARCH.md)
+    # Com aliases explícitos no SQL (ex: "m.aluno_id AS alunoId"), o
+    # auto-camelCase pode interferir e gerar mapeamentos incorretos.
+    # Manter false e usar aliases explícitos: mais verboso, mais pedagógico.
+    map-underscore-to-camel-case: false
+
+    # lazy-loading-enabled: false
+    # Aggregates são carregados completos em uma única query (JOIN).
+    # Lazy loading não se aplica ao padrão DDD de Aggregate como unidade de leitura.
+    lazy-loading-enabled: false
+
+# =============================================================================
+# Logging — DEBUG para leitura pedagógica dos SQL e eventos
+# =============================================================================
+logging:
+  level:
+    # Ver SQL gerado, parâmetros e eventos de domínio publicados
+    br.com.escola.matricula: DEBUG
+    # Ver SQL MyBatis executado, parâmetros bindados e ResultMaps aplicados
+    org.mybatis: DEBUG
