@@ -105,3 +105,11 @@ No schema SQL: `aluno_id UUID NOT NULL` na tabela `matricula`, sem `FOREIGN KEY 
 - Consistency Boundary — James Hickey: https://www.jamesmichaelhickey.com/consistency-boundary/
 - Implementing Domain-Driven Design — Vaughn Vernon (Aggregates e referências por ID)
 - contexto-matricula.md §15 (Relacionamentos Entre Aggregates)
+
+## Na prática
+
+**[Matricula.java](../../erp-matricula-app/src/main/java/br/com/escola/matricula/dominio/modelo/Matricula.java)** — os campos são `AlunoId alunoId` e `TurmaId turmaId` (não `Aluno aluno` e `Turma turma`). Verifique os campos nas linhas 58-63: `private final AlunoId alunoId` e `private final TurmaId turmaId`. O Aggregate Matrícula não carrega o objeto `Aluno` completo — carrega apenas `AlunoId`. Isso significa que uma mudança no modelo de `Aluno` (adicionar campos, renomear atributos) não invalida automaticamente o Aggregate Matrícula.
+
+**[MatriculaController.java](../../erp-matricula-app/src/main/java/br/com/escola/matricula/interfaces/MatriculaController.java)** — o Controller constrói um `Aluno` placeholder com dados mínimos (apenas o ID e um CPF fixo) porque o BC Matrícula não tem repositório de `Aluno`. Isso justifica por que a referência por ID é suficiente: o `VerificadorElegibilidadeMatricula` precisa apenas de `aluno.estaAtivo()` — dado que vem com o objeto `Aluno` construído com o campo `ativo=true` (representando a premissa de que o Controller validou que o aluno existe e está ativo antes de criar o Command).
+
+Cada Bounded Context gerencia seu próprio ciclo de vida: o BC Matrícula não tem repositório de `Aluno` porque o modelo de `Aluno` relevante para matrícula (tem CPF, está ativo?) é diferente do modelo de `Aluno` relevante para o BC Financeiro (tem endereço de cobrança, tem responsável?) e para o BC Acadêmico (tem histórico de notas, tem vínculo com turmas?).
