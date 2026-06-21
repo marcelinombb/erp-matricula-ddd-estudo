@@ -43,7 +43,7 @@ Plans:
 - [x] 05-02-PLAN.md — Módulo camadas: pom.xml, main class, quatro model classes anêmicas (DIAG-02, DIAG-06)
 - [x] 05-03-PLAN.md — Módulo camadas: quatro @Mapper repositories, XMLs MyBatis, migrations V1-V3 copiadas (DIAG-06)
 - [x] 05-04-PLAN.md — Módulo camadas: MatriculaServiceImpl 200+ linhas (DIAG-01, DIAG-03, DIAG-04, DIAG-06) + DisciplinaServiceImpl
-- [ ] 05-05-PLAN.md — Módulo camadas: MatriculaController com DIAG-05 (Regras na Interface)
+- [x] 05-05-PLAN.md — Módulo camadas: MatriculaController com DIAG-05 (Regras na Interface)
 - [x] 05-06-PLAN.md — Documentação Markdown docs/00-ddd-sem-mudar-arquitetura/ (7 arquivos, todos 6 anti-padrões)
 
 ### Phase 6: Refatoracao DDD na Arquitetura Tradicional
