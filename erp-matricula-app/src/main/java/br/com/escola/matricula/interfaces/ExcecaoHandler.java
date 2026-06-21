@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Único ponto do sistema onde exceções do pacote dominio.excecao.* se transformam em respostas HTTP.
@@ -232,7 +231,7 @@ public class ExcecaoHandler {
                         fieldError.getField(),
                         fieldError.getDefaultMessage()
                 ))
-                .collect(Collectors.toList());
+                .toList();
 
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
