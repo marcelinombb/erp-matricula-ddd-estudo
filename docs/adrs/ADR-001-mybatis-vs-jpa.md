@@ -86,7 +86,7 @@ Usamos **MyBatis** (`mybatis-spring-boot-starter` 3.0.5). O mapeamento SQL é ex
 O domínio (`dominio/`) não importa nenhuma classe do MyBatis. A verificação é simples:
 
 ```bash
-grep -r "import org.apache.ibatis" src/main/java/br/com/erp/dominio/
+grep -r "import org.apache.ibatis" src/main/java/br/com/escola/matricula/dominio/
 # Resultado esperado: nenhuma ocorrência
 ```
 
