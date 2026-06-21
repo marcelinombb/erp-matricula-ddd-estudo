@@ -50,7 +50,8 @@
     <collection property="itens"
                 ofType="ItemMatriculaRow"
                 notNullColumn="item_disciplina">
-      <result property="disciplina" column="item_disciplina"/>
+      <result property="disciplina"  column="item_disciplina"/>
+      <result property="adicionadaEm" column="item_adicionada_em"/>
     </collection>
   </resultMap>
 
@@ -72,7 +73,8 @@
       m.status         AS status,
       m.cancelada_em   AS cancelada_em,
       m.concluida_em   AS concluida_em,
-      i.disciplina     AS item_disciplina
+      i.disciplina     AS item_disciplina,
+      i.adicionada_em  AS item_adicionada_em
     FROM matriculas m
     LEFT JOIN itens_matricula i ON i.matricula_id = m.id
     WHERE m.id = #{id, jdbcType=OTHER}
@@ -96,7 +98,8 @@
       m.status         AS status,
       m.cancelada_em   AS cancelada_em,
       m.concluida_em   AS concluida_em,
-      i.disciplina     AS item_disciplina
+      i.disciplina     AS item_disciplina,
+      i.adicionada_em  AS item_adicionada_em
     FROM matriculas m
     LEFT JOIN itens_matricula i ON i.matricula_id = m.id
     WHERE m.aluno_id = #{alunoId, jdbcType=OTHER}

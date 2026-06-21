@@ -1,5 +1,6 @@
 package br.com.escola.matricula.infraestrutura.persistencia;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 /**
@@ -20,4 +21,10 @@ public class ItemMatriculaRow {
 
     /** Nome da disciplina — coluna {@code itens_matricula.disciplina} */
     public String disciplina;
+
+    /**
+     * Timestamp de quando a disciplina foi adicionada — coluna {@code itens_matricula.adicionada_em} (Fase 4, D-04).
+     * Populado pelo MyBatis a partir do alias SQL {@code item_adicionada_em} no {@code MatriculaMapper.xml}.
+     */
+    public LocalDateTime adicionadaEm;
 }
