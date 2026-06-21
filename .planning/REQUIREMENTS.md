@@ -68,6 +68,7 @@ Módulo pedagógico "Fase 0": demonstrar DDD aplicado na arquitetura tradicional
 | DIAG-04 | Phase 5 | Pending |
 | DIAG-05 | Phase 5 | Pending |
 | DIAG-06 | Phase 5 | Pending |
+| DID-01 | Phase 5 | Pending |
 | REFD-01 | Phase 6 | Pending |
 | REFD-02 | Phase 6 | Pending |
 | REFD-03 | Phase 6 | Pending |
@@ -76,7 +77,6 @@ Módulo pedagógico "Fase 0": demonstrar DDD aplicado na arquitetura tradicional
 | DDD-03 | Phase 6 | Pending |
 | DDD-04 | Phase 6 | Pending |
 | DDD-05 | Phase 6 | Pending |
-| DID-01 | Phase 5 | Pending |
 | DID-02 | Phase 6 | Pending |
 | DID-03 | Phase 7 | Pending |
 
@@ -87,4 +87,4 @@ Módulo pedagógico "Fase 0": demonstrar DDD aplicado na arquitetura tradicional
 
 ---
 *Requirements defined: 2026-06-21*
-*Last updated: 2026-06-21 after initial definition for milestone v1.1*
+*Last updated: 2026-06-21 — traceability confirmed by ROADMAP.md v1.1 creation*
