@@ -180,12 +180,17 @@
     Parâmetro "list" é o @Param("list") da interface MatriculaMapper.
     item.matriculaId usa jdbcType=OTHER (UUID — Pitfall 2).
     item.disciplina é String VARCHAR — sem jdbcType especial.
+
+    adicionada_em: explicitamente preenchida com NOW() no INSERT.
+    Após V3__adicionar_adicionada_em.sql a coluna é NOT NULL. Incluir o valor
+    explicitamente evita dependência silenciosa no DEFAULT do banco — qualquer
+    alteração futura no DEFAULT não quebrará este INSERT silenciosamente.
   -->
   <insert id="inserirItens">
-    INSERT INTO itens_matricula (matricula_id, disciplina)
+    INSERT INTO itens_matricula (matricula_id, disciplina, adicionada_em)
     VALUES
     <foreach collection="list" item="item" separator=",">
-      (#{item.matriculaId, jdbcType=OTHER}, #{item.disciplina})
+      (#{item.matriculaId, jdbcType=OTHER}, #{item.disciplina}, NOW())
     </foreach>
   </insert>
 
