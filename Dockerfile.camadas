@@ -1,6 +1,9 @@
 # =============================================================================
-# ERP Matrícula — Dockerfile Multi-Stage
+# ERP Matrícula — Dockerfile do módulo erp-matricula-camadas
 # =============================================================================
+# Dockerfile do módulo erp-matricula-camadas (arquitetura em camadas — o "antes" didático).
+# Módulo com os 6 anti-padrões para comparação com erp-matricula-ddd (porta 8080).
+# Este módulo sobe na porta 8081 via docker-compose.yml.
 # Build sem dependências no host: apenas Docker é necessário.
 # Para construir e executar: docker compose up
 # =============================================================================
@@ -19,11 +22,11 @@ RUN apk add --no-cache maven
 # Copiar o projeto inteiro para o contexto de build
 COPY . .
 
-# Compilar apenas o módulo DDD, ignorando testes
+# Compilar apenas o módulo camadas, ignorando testes
 # -DskipTests: testes automatizados são v2 (TEST-01..03 no REQUIREMENTS.md)
 # -pl seleciona o módulo dentro do multi-module (parent POM na raiz — Fase 5)
-# JAR gerado em: erp-matricula-ddd/target/erp-matricula-0.1.0-SNAPSHOT.jar
-RUN mvn -q package -DskipTests -pl erp-matricula-ddd
+# JAR gerado em: erp-matricula-camadas/target/erp-matricula-camadas-0.1.0-SNAPSHOT.jar
+RUN mvn -q package -DskipTests -pl erp-matricula-camadas
 
 # =============================================================================
 # Stage 2: Runtime — apenas JRE (menor que JDK) + o JAR compilado
@@ -34,6 +37,6 @@ FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
 
 # Copiar apenas o JAR do stage anterior — resultado: imagem final ~200MB (sem Maven/JDK)
-COPY --from=builder /build/erp-matricula-ddd/target/erp-matricula-*.jar app.jar
+COPY --from=builder /build/erp-matricula-camadas/target/erp-matricula-camadas-*.jar app.jar
 
 ENTRYPOINT ["java", "-jar", "app.jar"]

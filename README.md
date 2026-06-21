@@ -60,6 +60,17 @@ Siga esta sequência de leitura para construir o entendimento progressivo do pro
 - [Repositórios](docs/02-design-tatico/repositorios.md)
 - [Modelagem Visual (Diagramas)](docs/02-design-tatico/modelagem.md)
 
+## Estrutura de módulos
+
+O projeto tem dois módulos Maven que implementam o mesmo domínio de Matrícula Escolar de formas opostas:
+
+| Módulo | Porta | Arquitetura | Descrição |
+|--------|-------|-------------|-----------|
+| `erp-matricula-ddd` | 8080 | DDD | O "depois" — domínio rico, UseCases, Value Objects, Aggregate Root |
+| `erp-matricula-camadas` | 8081 | Camadas | O "antes" — Controller→Service→Repository com os 6 anti-padrões identificados |
+
+Esta separação física (Maven multi-module) É o ponto pedagógico central da Fase 5: o desenvolvedor vê dois sistemas completos com o mesmo domínio resolvidos de formas opostas — mesmas requisições HTTP, mesmos dados no banco, decisões de design completamente diferentes.
+
 ## Stack técnico
 
 - Java 21
@@ -67,7 +78,7 @@ Siga esta sequência de leitura para construir o entendimento progressivo do pro
 - MyBatis 3.0.5 (mybatis-spring-boot-starter)
 - PostgreSQL
 - Docker
-- Maven (single-module)
+- Maven (multi-module — exceção documentada em pom.xml)
 
 ## Como Executar (Docker)
 
@@ -89,11 +100,17 @@ docker compose up -d
 
 ### Testar que está funcionando
 
-Aguarde a mensagem `Started ErpMatriculaApplication` no log e então faça uma requisição:
+Aguarde as mensagens `Started ErpMatriculaApplication` (módulo DDD, porta 8080) e `Started ErpMatriculaCamadasApplication` (módulo camadas, porta 8081) no log.
 
 ```bash
-# Matricular um aluno (substitua o alunoId por um UUID válido dos seeds)
+# Módulo DDD (porta 8080) — arquitetura DDD com domínio rico
 curl -s -X POST http://localhost:8080/matriculas \
+  -H "Content-Type: application/json" \
+  -d '{"alunoId": "00000000-0000-0000-0000-000000000001", "periodoLetivo": "2024.1"}' \
+  | jq .
+
+# Módulo Camadas (porta 8081) — arquitetura em camadas com anti-padrões
+curl -s -X POST http://localhost:8081/matriculas \
   -H "Content-Type: application/json" \
   -d '{"alunoId": "00000000-0000-0000-0000-000000000001", "periodoLetivo": "2024.1"}' \
   | jq .

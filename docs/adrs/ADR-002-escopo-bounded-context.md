@@ -91,9 +91,9 @@ O stub serve como prova de que a integração existe — o contrato do evento es
 
 Os dois stubs de integração demonstram o padrão de evento sem implementar a lógica real dos contextos downstream:
 
-**[FinanceiroEventListener.java](../../erp-matricula-app/src/main/java/br/com/escola/matricula/infraestrutura/eventos/FinanceiroEventListener.java)** — escuta `AlunoMatriculado` e `MatriculaCancelada` via `@TransactionalEventListener`. No método `aoMatricular()`, o Javadoc documenta a implementação real esperada: "criar contrato de cobrança para o período letivo."
+**[FinanceiroEventListener.java](../../erp-matricula-ddd/src/main/java/br/com/escola/matricula/infraestrutura/eventos/FinanceiroEventListener.java)** — escuta `AlunoMatriculado` e `MatriculaCancelada` via `@TransactionalEventListener`. No método `aoMatricular()`, o Javadoc documenta a implementação real esperada: "criar contrato de cobrança para o período letivo."
 
-**[AcademicoEventListener.java](../../erp-matricula-app/src/main/java/br/com/escola/matricula/infraestrutura/eventos/AcademicoEventListener.java)** — escuta `AlunoMatriculado` e `DisciplinaAdicionada` via `@TransactionalEventListener`. No método `aoMatricular()`, o Javadoc documenta: "registrar vínculo aluno-turma no sistema acadêmico, gerar lista de chamada."
+**[AcademicoEventListener.java](../../erp-matricula-ddd/src/main/java/br/com/escola/matricula/infraestrutura/eventos/AcademicoEventListener.java)** — escuta `AlunoMatriculado` e `DisciplinaAdicionada` via `@TransactionalEventListener`. No método `aoMatricular()`, o Javadoc documenta: "registrar vínculo aluno-turma no sistema acadêmico, gerar lista de chamada."
 
 Os dois listeners são `@Component` com `@TransactionalEventListener`: recebem o evento após o commit da matrícula, sem que `Matricula.java` conheça a existência deles. A integração existe via evento, não via chamada direta. `Matricula.java` não tem nenhuma referência a `FinanceiroEventListener` ou `AcademicoEventListener` — zero acoplamento entre o Core Domain e os Supporting Domains.
 

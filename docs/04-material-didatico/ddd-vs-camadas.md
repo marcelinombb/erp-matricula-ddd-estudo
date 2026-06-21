@@ -33,20 +33,20 @@ Três papéis separados:
 
 ```java
 // 1. Domain Service: decide se pode matricular (lança exceção se não pode)
-//    erp-matricula-app/src/main/java/br/com/escola/matricula/dominio/servico/VerificadorElegibilidadeMatricula.java
+//    erp-matricula-ddd/src/main/java/br/com/escola/matricula/dominio/servico/VerificadorElegibilidadeMatricula.java
 verificador.verificar(aluno, turma, periodo);
 
 // 2. Aggregate: decide o estado inicial e protege invariantes
-//    erp-matricula-app/src/main/java/br/com/escola/matricula/dominio/modelo/Matricula.java
+//    erp-matricula-ddd/src/main/java/br/com/escola/matricula/dominio/modelo/Matricula.java
 Matricula matricula = Matricula.criar(alunoId, turmaId, periodo);
 
 // 3. UseCase: orquestra sem decidir — sequência obrigatória
-//    erp-matricula-app/src/main/java/br/com/escola/matricula/aplicacao/MatricularAlunoUseCase.java
+//    erp-matricula-ddd/src/main/java/br/com/escola/matricula/aplicacao/MatricularAlunoUseCase.java
 repositorio.salvar(matricula);
 matricula.coletarEventos().forEach(publicador::publishEvent);
 ```
 
-Ver: [`MatricularAlunoUseCase.java`](../erp-matricula-app/src/main/java/br/com/escola/matricula/aplicacao/MatricularAlunoUseCase.java) — o Javadoc documenta explicitamente "O que este UseCase faz" e "O que NÃO faz".
+Ver: [`MatricularAlunoUseCase.java`](../erp-matricula-ddd/src/main/java/br/com/escola/matricula/aplicacao/MatricularAlunoUseCase.java) — o Javadoc documenta explicitamente "O que este UseCase faz" e "O que NÃO faz".
 
 **Por que importa:** O `@Service` tradicional cresce e vira God Object. O `UseCase` orquestra e o `Domain Service` encapsula regras — papéis separados, responsabilidades claras. Quando a regra de elegibilidade muda, só `VerificadorElegibilidadeMatricula` muda.
 
@@ -79,7 +79,7 @@ As anotações `@Entity`, `@Id`, `@Column`, `@OneToMany` entram na classe de dom
 ### DDD (neste projeto)
 
 ```java
-// erp-matricula-app/src/main/java/br/com/escola/matricula/dominio/modelo/Matricula.java
+// erp-matricula-ddd/src/main/java/br/com/escola/matricula/dominio/modelo/Matricula.java
 public class Matricula {
     private final MatriculaId id;
     private final AlunoId alunoId;
@@ -123,7 +123,7 @@ Dois arquivos com papéis opostos:
 
 ```java
 // 1. Interface no DOMÍNIO — o domínio define o contrato
-//    erp-matricula-app/src/main/java/br/com/escola/matricula/dominio/repositorio/MatriculaRepositorio.java
+//    erp-matricula-ddd/src/main/java/br/com/escola/matricula/dominio/repositorio/MatriculaRepositorio.java
 public interface MatriculaRepositorio {
     Optional<Matricula> buscarPorId(MatriculaId id);
     List<Matricula> buscarPorAluno(AlunoId alunoId);
@@ -133,7 +133,7 @@ public interface MatriculaRepositorio {
 }
 
 // 2. Implementação na INFRAESTRUTURA — a infraestrutura obedece
-//    erp-matricula-app/src/main/java/br/com/escola/matricula/infraestrutura/persistencia/MatriculaRepositorioMyBatis.java
+//    erp-matricula-ddd/src/main/java/br/com/escola/matricula/infraestrutura/persistencia/MatriculaRepositorioMyBatis.java
 @Repository
 public class MatriculaRepositorioMyBatis implements MatriculaRepositorio {
     // MyBatis aqui — o domínio não sabe que este arquivo existe
@@ -163,7 +163,7 @@ Nenhuma garantia em tempo de compilação. Um novo estado adicionado anos depois
 ### DDD (neste projeto)
 
 ```java
-// erp-matricula-app/src/main/java/br/com/escola/matricula/dominio/modelo/StatusMatricula.java
+// erp-matricula-ddd/src/main/java/br/com/escola/matricula/dominio/modelo/StatusMatricula.java
 public sealed interface StatusMatricula
         permits StatusMatricula.Ativa, StatusMatricula.Cancelada, StatusMatricula.Concluida {
     record Ativa() implements StatusMatricula {}
@@ -206,7 +206,7 @@ O handler HTTP recebe uma `RuntimeException` com uma mensagem String. Para retor
 ### DDD (neste projeto)
 
 ```java
-// erp-matricula-app/src/main/java/br/com/escola/matricula/dominio/excecao/LimiteDisciplinasExcedidoException.java
+// erp-matricula-ddd/src/main/java/br/com/escola/matricula/dominio/excecao/LimiteDisciplinasExcedidoException.java
 public class LimiteDisciplinasExcedidoException extends RuntimeException {
     private final int limite;
     private final int atual;
@@ -219,7 +219,7 @@ public class LimiteDisciplinasExcedidoException extends RuntimeException {
 O `ExcecaoHandler` usa os dados diretamente:
 
 ```java
-// erp-matricula-app/src/main/java/br/com/escola/matricula/interfaces/ExcecaoHandler.java
+// erp-matricula-ddd/src/main/java/br/com/escola/matricula/interfaces/ExcecaoHandler.java
 @ExceptionHandler(LimiteDisciplinasExcedidoException.class)
 @ResponseStatus(UNPROCESSABLE_ENTITY)
 public ErroLimiteResponse handleLimite(LimiteDisciplinasExcedidoException ex) {

@@ -7,7 +7,7 @@ Cada pacote reflete uma camada da arquitetura DDD. A localização do arquivo é
 ## Estrutura Java
 
 ```
-erp-matricula-app/src/main/java/br/com/escola/matricula/
+erp-matricula-ddd/src/main/java/br/com/escola/matricula/
 ├── dominio/               — O coração do sistema. Zero imports de framework. Compilável sem Spring.
 │   ├── excecao/           — Exceções tipadas com dados contextuais (não RuntimeException genérica)
 │   ├── evento/            — Domain Events: records imutáveis representando fatos do negócio

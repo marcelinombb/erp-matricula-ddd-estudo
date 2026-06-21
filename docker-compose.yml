@@ -1,5 +1,9 @@
 # ERP Matrícula — Docker Compose
-# Sobe PostgreSQL + aplicação Spring Boot com um único comando.
+# Sobe PostgreSQL + dois módulos Spring Boot com um único comando.
+#
+# Módulos:
+#   app-ddd     (porta 8080) — erp-matricula-ddd: arquitetura DDD (o "depois")
+#   app-camadas (porta 8081) — erp-matricula-camadas: arquitetura em camadas (o "antes")
 #
 # Como executar:
 #   docker compose up          — sobe em foreground (Ctrl+C para parar)
@@ -16,6 +20,7 @@ services:
   # ---------------------------------------------------------------------------
   # PostgreSQL 16 — banco de dados
   # postgres:16-alpine alinhado com o schema desenvolvido no projeto (V1__schema.sql)
+  # init-db.sql cria o banco erp_matricula_camadas na inicialização
   # ---------------------------------------------------------------------------
   postgres:
     image: postgres:16-alpine
@@ -30,12 +35,17 @@ services:
       retries: 5
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
 
   # ---------------------------------------------------------------------------
-  # Aplicação Spring Boot — compilada via Dockerfile multi-stage
+  # app-ddd — módulo DDD (o "depois")
+  # Porta 8080: arquitetura DDD com domínio rico, UseCases, Value Objects
+  # Banco: erp_matricula
   # ---------------------------------------------------------------------------
-  app:
-    build: .
+  app-ddd:
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "8080:8080"
     environment:
@@ -48,6 +58,26 @@ services:
       postgres:
         # depends_on com condition: service_healthy garante que o banco está pronto antes de Flyway conectar
         # Sem isso: race condition — app inicia antes do PostgreSQL aceitar conexões
+        condition: service_healthy
+
+  # ---------------------------------------------------------------------------
+  # app-camadas — módulo arquitetura em camadas (o "antes")
+  # Porta 8081: arquitetura tradicional Controller→Service→Repository com 6 anti-padrões
+  # Banco: erp_matricula_camadas (separado para evitar conflito de Flyway migrations)
+  # Ver: Pitfall 1 em .planning/phases/05-diagnostico-codigo-com-anti-padroes/05-RESEARCH.md
+  # ---------------------------------------------------------------------------
+  app-camadas:
+    build:
+      context: .
+      dockerfile: Dockerfile.camadas
+    ports:
+      - "8081:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/erp_matricula_camadas
+      SPRING_DATASOURCE_USERNAME: ${DB_USER:-matricula}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD:-matricula}
+    depends_on:
+      postgres:
         condition: service_healthy
 
 volumes:

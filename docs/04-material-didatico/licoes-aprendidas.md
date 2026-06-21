@@ -12,7 +12,7 @@ Este documento não é marketing de DDD. É uma análise honesta do que funciono
 
 Em uma arquitetura tradicional, essa lógica provavelmente estaria em `MatriculaService.adicionarDisciplina()`. Com o tempo, um segundo ponto de entrada (`MatriculaAdminService`, por exemplo) poderia adicionar disciplinas sem passar pelas mesmas verificações. Com o Aggregate, isso é estruturalmente impossível: a única forma de adicionar uma disciplina é via `adicionarDisciplina()`.
 
-Ver: [`Matricula.java` método `adicionarDisciplina()`](../erp-matricula-app/src/main/java/br/com/escola/matricula/dominio/modelo/Matricula.java)
+Ver: [`Matricula.java` método `adicionarDisciplina()`](../erp-matricula-ddd/src/main/java/br/com/escola/matricula/dominio/modelo/Matricula.java)
 
 ### Exceções com semântica — dados chegam ao HTTP sem parsing
 
@@ -28,7 +28,7 @@ Ver: [`Matricula.java` método `adicionarDisciplina()`](../erp-matricula-app/src
 
 Com `RuntimeException("Limite excedido")`, o handler teria que parsear a string de mensagem para extrair esses valores — frágil e acoplado ao formato do texto. Com a exceção tipada, o contrato entre domínio e interface é explícito.
 
-Ver: [`LimiteDisciplinasExcedidoException.java`](../erp-matricula-app/src/main/java/br/com/escola/matricula/dominio/excecao/LimiteDisciplinasExcedidoException.java) e [`ExcecaoHandler.java`](../erp-matricula-app/src/main/java/br/com/escola/matricula/interfaces/ExcecaoHandler.java)
+Ver: [`LimiteDisciplinasExcedidoException.java`](../erp-matricula-ddd/src/main/java/br/com/escola/matricula/dominio/excecao/LimiteDisciplinasExcedidoException.java) e [`ExcecaoHandler.java`](../erp-matricula-ddd/src/main/java/br/com/escola/matricula/interfaces/ExcecaoHandler.java)
 
 ### Separação domínio/persistência — mudança cirúrgica no banco
 
@@ -36,7 +36,7 @@ Ver: [`LimiteDisciplinasExcedidoException.java`](../erp-matricula-app/src/main/j
 
 Adicionar um campo ao banco é cirúrgico: só muda `MatriculaRow` (o campo), `MatriculaRowMapper` (a conversão), e o XML MyBatis (o alias no SELECT). `Matricula.java` não é tocado.
 
-Ver: [`MatriculaRowMapper.java`](../erp-matricula-app/src/main/java/br/com/escola/matricula/infraestrutura/persistencia/MatriculaRowMapper.java)
+Ver: [`MatriculaRowMapper.java`](../erp-matricula-ddd/src/main/java/br/com/escola/matricula/infraestrutura/persistencia/MatriculaRowMapper.java)
 
 ### Domain Events para integração sem acoplamento
 
@@ -44,7 +44,7 @@ Ver: [`MatriculaRowMapper.java`](../erp-matricula-app/src/main/java/br/com/escol
 
 A ordem de execução é garantida: `@TransactionalEventListener` usa `AFTER_COMMIT` por padrão. Os listeners só são chamados após o commit da transação do UseCase — o BC Financeiro nunca processa um evento de uma operação que ainda pode sofrer rollback.
 
-Ver: [`FinanceiroEventListener.java`](../erp-matricula-app/src/main/java/br/com/escola/matricula/infraestrutura/eventos/FinanceiroEventListener.java) e [`AcademicoEventListener.java`](../erp-matricula-app/src/main/java/br/com/escola/matricula/infraestrutura/eventos/AcademicoEventListener.java)
+Ver: [`FinanceiroEventListener.java`](../erp-matricula-ddd/src/main/java/br/com/escola/matricula/infraestrutura/eventos/FinanceiroEventListener.java) e [`AcademicoEventListener.java`](../erp-matricula-ddd/src/main/java/br/com/escola/matricula/infraestrutura/eventos/AcademicoEventListener.java)
 
 ---
 
