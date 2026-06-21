@@ -3,20 +3,21 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 current_phase: 04
-status: milestone_complete
-last_updated: "2026-06-21T13:28:00.736Z"
+status: completed
+last_updated: "2026-06-21T14:56:59.676Z"
+last_activity: 2026-06-21 — Milestone v1.0 completed and archived
 progress:
   total_phases: 4
   completed_phases: 4
   total_plans: 15
-  completed_plans: 11
+  completed_plans: 15
   percent: 100
 ---
 
 # Project State
 
 **Project:** ERP Matrícula — Projeto Didático DDD
-**Status:** Milestone complete
+**Status:** v1.0 milestone complete
 **Current Phase:** 04
 **Last Updated:** 2026-06-20
 
@@ -44,13 +45,10 @@ See: .planning/PROJECT.md (updated 2026-06-20)
 
 ## Current Position
 
-Phase: 04 (interface-docker-e-material-didatico) — EXECUTING
-Plan: 1 of 4
-**Phase:** — (not started)
-**Plan:** Not started
-**Progress:** [----------] 0%
-
----
+Phase: Milestone v1.0 complete
+Plan: —
+Status: Awaiting next milestone
+Last activity: 2026-06-21 — Milestone v1.0 completed and archived
 
 ## Performance Metrics
 
@@ -89,7 +87,23 @@ Plan: 1 of 4
 
 ---
 
+## Deferred Items
+
+Items acknowledged and deferred at milestone close on 2026-06-21:
+
+| Category | Item | Status |
+|----------|------|--------|
+| verification_gap | Phase 04 — 04-VERIFICATION.md: 3 testes manuais (docker compose up + POST /matriculas, payload inválido, limite disciplinas) | human_needed — requer Docker rodando |
+
+Known deferred items at close: 1 (see STATE.md Deferred Items)
+
+---
+
 ## Session Continuity
 
-**To resume:** Read .planning/ROADMAP.md for phase structure, then run `/gsd-plan-phase 1` to begin planning Phase 1.
-**Last action:** Roadmap created (4 phases, 51 requirements mapped).
+**Milestone v1.0 fechado em 2026-06-21.**
+**Para iniciar próximo milestone:** `/gsd-new-milestone`
+
+## Operator Next Steps
+
+- Start the next milestone with /gsd-new-milestone
