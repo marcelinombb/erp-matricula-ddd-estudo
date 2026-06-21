@@ -137,8 +137,10 @@ public class DemoRunner implements CommandLineRunner {
             log.info("[DemoRunner] FLUXO 3: Matrícula {} cancelada", novaId.valor());
 
             log.info("=== DemoRunner concluído — todos os 3 fluxos executados com sucesso ===");
-        } catch (Exception e) {
-            log.warn("DemoRunner: fluxos já executados ou erro esperado na re-execução — {}", e.getMessage());
+        } catch (org.springframework.dao.DataIntegrityViolationException e) {
+            // Violação de unicidade esperada na re-execução (índice uq_matricula_aluno_periodo_ativa).
+            // Demais exceções propagam e falham o startup de forma visível.
+            log.warn("DemoRunner: matrícula já existe (re-execução detectada) — {}", e.getMessage());
         }
     }
 }
