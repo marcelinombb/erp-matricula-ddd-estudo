@@ -67,68 +67,78 @@ public class DemoRunner implements CommandLineRunner {
      * <p>Os UUIDs correspondem aos inseridos em V2__seeds.sql. Os objetos de domínio
      * ({@code Aluno}, {@code Turma}) são construídos em memória — na Fase 4, seriam
      * carregados de seus respectivos Aggregates via repositório próprio.</p>
+     *
+     * <p><strong>Proteção contra re-execução:</strong> o try/catch garante que a segunda
+     * execução da aplicação (quando os dados dos seeds e o índice único
+     * {@code uq_matricula_aluno_periodo_ativa} já existem) não derrube o startup.
+     * Na Fase 4, o ponto de entrada principal são os Controllers REST — este runner
+     * é mantido apenas como referência pedagógica do fluxo completo.</p>
      */
     @Override
     public void run(String... args) throws Exception {
-        log.info("=== DemoRunner iniciando execução dos 3 fluxos de negócio ===");
+        try {
+            log.info("=== DemoRunner iniciando execução dos 3 fluxos de negócio ===");
 
-        // -----------------------------------------------------------------------
-        // FLUXO 1 — Matricular Aluno
-        // Maria Silva (a0...001) ainda não tem matrícula no período 2026/1.
-        // VerificadorElegibilidadeMatricula verifica: ativa? período aberto? sem duplicata?
-        // -----------------------------------------------------------------------
-        log.info("--- FLUXO 1: Matricular aluno ---");
+            // -----------------------------------------------------------------------
+            // FLUXO 1 — Matricular Aluno
+            // Maria Silva (a0...001) ainda não tem matrícula no período 2026/1.
+            // VerificadorElegibilidadeMatricula verifica: ativa? período aberto? sem duplicata?
+            // -----------------------------------------------------------------------
+            log.info("--- FLUXO 1: Matricular aluno ---");
 
-        // Aluno Maria Silva — UUID e CPF correspondem ao seed em V2__seeds.sql
-        var maria = new Aluno(
-            new AlunoId(UUID.fromString("a0000000-0000-0000-0000-000000000001")),
-            new Cpf("52998224725"),   // CPF válido para o seed de Maria Silva
-            "Maria Silva",
-            true
-        );
+            // Aluno Maria Silva — UUID e CPF correspondem ao seed em V2__seeds.sql
+            var maria = new Aluno(
+                new AlunoId(UUID.fromString("a0000000-0000-0000-0000-000000000001")),
+                new Cpf("52998224725"),   // CPF válido para o seed de Maria Silva
+                "Maria Silva",
+                true
+            );
 
-        // Turma 2026-1 — UUID corresponde ao seed em V2__seeds.sql
-        var turma2026 = new Turma(
-            new TurmaId(UUID.fromString("b0000000-0000-0000-0000-000000000001")),
-            "Turma 2026-1",
-            new PeriodoLetivo(2026, 1),
-            30
-        );
+            // Turma 2026-1 — UUID corresponde ao seed em V2__seeds.sql
+            var turma2026 = new Turma(
+                new TurmaId(UUID.fromString("b0000000-0000-0000-0000-000000000001")),
+                "Turma 2026-1",
+                new PeriodoLetivo(2026, 1),
+                30
+            );
 
-        var periodo2026s1 = new PeriodoLetivo(2026, 1);
-        var command1 = new MatricularAlunoCommand(maria, turma2026, periodo2026s1);
-        MatriculaId novaId = matricularUseCase.executar(command1);
-        log.info("[DemoRunner] FLUXO 1: Matrícula criada com ID {}", novaId.valor());
+            var periodo2026s1 = new PeriodoLetivo(2026, 1);
+            var command1 = new MatricularAlunoCommand(maria, turma2026, periodo2026s1);
+            MatriculaId novaId = matricularUseCase.executar(command1);
+            log.info("[DemoRunner] FLUXO 1: Matrícula criada com ID {}", novaId.valor());
 
-        // -----------------------------------------------------------------------
-        // FLUXO 2 — Adicionar Disciplina
-        // Matrícula pré-existente do João Santos (c0...001) recebe "Física Quântica".
-        // Aggregate.adicionarDisciplina() verifica: estado ativo? limite? duplicata?
-        // -----------------------------------------------------------------------
-        log.info("--- FLUXO 2: Adicionar disciplina ---");
+            // -----------------------------------------------------------------------
+            // FLUXO 2 — Adicionar Disciplina
+            // Matrícula pré-existente do João Santos (c0...001) recebe "Física Quântica".
+            // Aggregate.adicionarDisciplina() verifica: estado ativo? limite? duplicata?
+            // -----------------------------------------------------------------------
+            log.info("--- FLUXO 2: Adicionar disciplina ---");
 
-        var matriculaExistente = new MatriculaId(
-            UUID.fromString("c0000000-0000-0000-0000-000000000001")
-        );
-        var command2 = new AdicionarDisciplinaCommand(
-            matriculaExistente,
-            new NomeDisciplina("Física Quântica")
-        );
-        adicionarUseCase.executar(command2);
-        log.info("[DemoRunner] FLUXO 2: Disciplina adicionada à matrícula {}",
-                 matriculaExistente.valor());
+            var matriculaExistente = new MatriculaId(
+                UUID.fromString("c0000000-0000-0000-0000-000000000001")
+            );
+            var command2 = new AdicionarDisciplinaCommand(
+                matriculaExistente,
+                new NomeDisciplina("Física Quântica")
+            );
+            adicionarUseCase.executar(command2);
+            log.info("[DemoRunner] FLUXO 2: Disciplina adicionada à matrícula {}",
+                     matriculaExistente.valor());
 
-        // -----------------------------------------------------------------------
-        // FLUXO 3 — Cancelar Matrícula
-        // A matrícula recém-criada no Fluxo 1 é cancelada.
-        // Aggregate.cancelar() verifica: não está cancelada? Transiciona para Cancelada.
-        // -----------------------------------------------------------------------
-        log.info("--- FLUXO 3: Cancelar matrícula ---");
+            // -----------------------------------------------------------------------
+            // FLUXO 3 — Cancelar Matrícula
+            // A matrícula recém-criada no Fluxo 1 é cancelada.
+            // Aggregate.cancelar() verifica: não está cancelada? Transiciona para Cancelada.
+            // -----------------------------------------------------------------------
+            log.info("--- FLUXO 3: Cancelar matrícula ---");
 
-        var command3 = new CancelarMatriculaCommand(novaId);
-        cancelarUseCase.executar(command3);
-        log.info("[DemoRunner] FLUXO 3: Matrícula {} cancelada", novaId.valor());
+            var command3 = new CancelarMatriculaCommand(novaId);
+            cancelarUseCase.executar(command3);
+            log.info("[DemoRunner] FLUXO 3: Matrícula {} cancelada", novaId.valor());
 
-        log.info("=== DemoRunner concluído — todos os 3 fluxos executados com sucesso ===");
+            log.info("=== DemoRunner concluído — todos os 3 fluxos executados com sucesso ===");
+        } catch (Exception e) {
+            log.warn("DemoRunner: fluxos já executados ou erro esperado na re-execução — {}", e.getMessage());
+        }
     }
 }

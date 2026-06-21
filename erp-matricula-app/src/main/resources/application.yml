@@ -1,8 +1,8 @@
 # =============================================================================
-# ERP Matrícula — Configuração da Fase 3 (Implementação DDD)
+# ERP Matrícula — Configuração da Fase 4 (Interface, Docker e Material Didático)
 # =============================================================================
-# Esta configuração demonstra que uma aplicação DDD completa pode funcionar
-# sem HTTP. Controllers REST e configurações web são adicionados na Fase 4.
+# Fase 4 ativa o servidor HTTP. Spring Boot detecta spring-boot-starter-web
+# automaticamente e sobe um servidor Tomcat embutido na porta 8080 (default).
 # =============================================================================
 
 spring:
@@ -27,17 +27,6 @@ spring:
   flyway:
     enabled: true
     locations: classpath:db/migration
-
-  # ---------------------------------------------------------------------------
-  # web-application-type: none
-  # Ponto pedagógico central da Fase 3: DDD não depende de HTTP.
-  # O contexto Spring sobe, Flyway roda as migrations, os UseCases são
-  # executáveis — tudo sem abrir uma porta TCP.
-  # Sem esta configuração, Spring Boot tenta detectar servidor web e pode
-  # emitir warnings desnecessários.
-  # ---------------------------------------------------------------------------
-  main:
-    web-application-type: none
 
 # =============================================================================
 # MyBatis — Configuração do mapeamento domínio ↔ persistência
