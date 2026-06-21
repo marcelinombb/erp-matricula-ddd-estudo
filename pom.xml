@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ERP Matrícula — Parent POM Multi-Module
+  ========================================
+  Exceção documentada à restrição CLAUDE.md sobre multi-module Maven.
+  A separação física entre erp-matricula-ddd e erp-matricula-camadas É o ponto
+  pedagógico central da Fase 5: o desenvolvedor vê dois sistemas completos com
+  o mesmo domínio resolvidos de formas opostas.
+  Decisão D-03 em .planning/phases/05-diagnostico-codigo-com-anti-padroes/05-CONTEXT.md
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+             https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- ======================================================
+         Parent: Spring Boot BOM gerencia versões de dependências
+         ====================================================== -->
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.5.3</version>
+        <relativePath/>
+    </parent>
+
+    <!-- ======================================================
+         Coordenadas do parent POM
+         ====================================================== -->
+    <groupId>br.com.escola</groupId>
+    <artifactId>erp-matricula-parent</artifactId>
+    <version>0.1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <name>ERP Matrícula — Parent</name>
+    <description>
+        Parent POM multi-module — Phase 5 (v1.1 DDD sem Mudar a Arquitetura)
+        Exceção documentada à restrição CLAUDE.md sobre multi-module Maven:
+        a separação física entre erp-matricula-ddd e erp-matricula-camadas
+        É o ponto pedagógico central desta fase. D-03 em 05-CONTEXT.md.
+    </description>
+
+    <!-- ======================================================
+         Módulos filhos
+         ====================================================== -->
+    <modules>
+        <module>erp-matricula-ddd</module>
+        <module>erp-matricula-camadas</module>
+    </modules>
+
+    <!-- ======================================================
+         Propriedades
+         ====================================================== -->
+    <properties>
+        <java.version>21</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    </properties>
+
+    <!-- ======================================================
+         Plugins
+         ====================================================== -->
+    <build>
+        <plugins>
+            <!-- Desabilita repackage no parent — só módulos com main class devem repacotar.
+                 Sem <skip>true</skip>, o build do parent falha porque packaging=pom não é
+                 um JAR executável. Pitfall 2 do 05-RESEARCH.md. -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

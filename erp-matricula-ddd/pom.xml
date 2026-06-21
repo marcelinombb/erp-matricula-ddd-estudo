@@ -14,13 +14,15 @@
     <modelVersion>4.0.0</modelVersion>
 
     <!-- ======================================================
-         Parent: Spring Boot BOM gerencia versões de dependências
+         Parent: Parent POM local do projeto multi-module
+         O parent local herda do spring-boot-starter-parent — BOM centralizado.
+         Fase 5: renomeado de erp-matricula-app para erp-matricula-ddd (D-02)
          ====================================================== -->
     <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.3</version>
-        <relativePath/>
+        <groupId>br.com.escola</groupId>
+        <artifactId>erp-matricula-parent</artifactId>
+        <version>0.1.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <!-- ======================================================
