@@ -84,9 +84,10 @@ public class DisciplinaServiceImpl {
         }
 
         // ANTI-PADRAO: Acoplamento ao Banco (DIAG-06)
-        // Mesma query countByMatriculaId() de MatriculaServiceImpl.adicionarDisciplina().
-        // A regra "máximo 6 disciplinas" está no repositório, não no modelo.
-        int qtd = itemMatriculaRepository.countByMatriculaId(matriculaId);
+        // Mesma query countDisciplinas() de MatriculaServiceImpl.adicionarDisciplina().
+        // A regra "máximo 6 disciplinas" está no repositório (matriculaRepository.countDisciplinas),
+        // não no modelo de domínio.
+        int qtd = matriculaRepository.countDisciplinas(matriculaId);
         if (qtd >= 6) {
             throw new RuntimeException("Limite atingido");
         }

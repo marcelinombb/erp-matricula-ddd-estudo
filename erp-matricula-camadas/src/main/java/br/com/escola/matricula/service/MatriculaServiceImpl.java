@@ -143,10 +143,10 @@ public class MatriculaServiceImpl implements MatriculaService {
         // A regra "máximo 6 disciplinas" não existe no modelo de domínio.
         // Ela existe como uma query SQL no repositório — COUNT(*) FROM itens_matricula.
         // Se você ler Matricula.java, não encontrará essa regra. Para descobri-la, precisa
-        // ler este Service e rastrear até o repositório.
+        // ler este Service e rastrear até matriculaRepository.countDisciplinas().
         // No módulo DDD: Matricula.adicionarDisciplina() verifica o limite internamente
         // via this.itens.size() — sem consultar o banco, sem depender de repositório.
-        int qtd = itemMatriculaRepository.countByMatriculaId(matriculaId);
+        int qtd = matriculaRepository.countDisciplinas(matriculaId);
         if (qtd >= 6) {
             throw new RuntimeException("Limite de 6 disciplinas atingido. Quantidade atual: " + qtd);
         }
