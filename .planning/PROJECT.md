@@ -46,16 +46,16 @@ Um desenvolvedor da equipe deve conseguir, sozinho, ler o projeto do início ao 
 - [ ] DIAG-04: Desenvolvedor identifica anti-padrão "Duplicação de Regras" em código exemplo com validações repetidas
 - [ ] DIAG-05: Desenvolvedor identifica anti-padrão "Regras na Interface" em código exemplo com validações só no Controller
 - [ ] DIAG-06: Desenvolvedor identifica anti-padrão "Acoplamento ao Banco" em código exemplo com regras moldadas por tabelas
-- [ ] REFD-01: Desenvolvedor visualiza a diferença entre Service anêmico e Application Service orquestrador no mesmo stack
-- [ ] REFD-02: Desenvolvedor visualiza entidade rica com comportamento vs. anêmica dentro da mesma arquitetura em camadas
-- [ ] REFD-03: Desenvolvedor classifica corretamente regras como "de Domínio" ou "de Aplicação" para cada funcionalidade
-- [ ] DDD-01: Projeto demonstra Linguagem Ubíqua — nomes de classes/métodos refletem termos do negócio no código Java
-- [ ] DDD-02: Projeto demonstra identidade e ciclo de vida de Entidades com exemplos concretos
-- [ ] DDD-03: Projeto demonstra Value Objects imutáveis (Email, CPF, Dinheiro, Periodo) substituindo tipos primitivos
-- [ ] DDD-04: Projeto demonstra Agregados como limites de consistência e invariantes com exemplos do domínio de matrícula
-- [ ] DDD-05: Projeto demonstra Repositórios como recuperadores de Agregados (não DAOs genéricos) dentro da arquitetura tradicional
+- ✓ REFD-01: Desenvolvedor visualiza diferença entre Service anêmico e Application Service orquestrador — comentários REFD-01 em MatricularAlunoUseCase.java *(Validated in Phase 6: refatoracao-ddd-na-arquitetura-tradicional, 2026-06-22)*
+- ✓ REFD-02: Desenvolvedor visualiza entidade rica vs. anêmica — comentários REFD-02 nos 5 pontos de invariante de Matricula.java *(Validated in Phase 6: refatoracao-ddd-na-arquitetura-tradicional, 2026-06-22)*
+- ✓ REFD-03: Desenvolvedor classifica regras como Domínio vs. Aplicação — exercicio-classificacao.md com 10 regras e gabarito *(Validated in Phase 6: refatoracao-ddd-na-arquitetura-tradicional, 2026-06-22)*
+- ✓ DDD-01: Linguagem Ubíqua demonstrada — 07-linguagem-ubiqua.md com ANTES/DEPOIS real do projeto *(Validated in Phase 6: refatoracao-ddd-na-arquitetura-tradicional, 2026-06-22)*
+- ✓ DDD-02: Entidades com identidade e ciclo de vida — 08-entidades.md com Aluno.estaAtivo(), desativar(), equals por AlunoId *(Validated in Phase 6: refatoracao-ddd-na-arquitetura-tradicional, 2026-06-22)*
+- ✓ DDD-03: Value Objects imutáveis demonstrados — 09-value-objects.md com PeriodoLetivo record *(Validated in Phase 6: refatoracao-ddd-na-arquitetura-tradicional, 2026-06-22)*
+- ✓ DDD-04: Agregados como limites de consistência — 10-agregados.md com Guards 1-3 reais de Matricula *(Validated in Phase 6: refatoracao-ddd-na-arquitetura-tradicional, 2026-06-22)*
+- ✓ DDD-05: Repositórios como recuperadores de Aggregates — 11-repositorios.md com contraste @Mapper vs interface pura *(Validated in Phase 6: refatoracao-ddd-na-arquitetura-tradicional, 2026-06-22)*
 - [ ] DID-01: Módulo apresenta código "antes" (arquitetura tradicional com anti-padrões) completo e documentado
-- [ ] DID-02: Módulo apresenta código "depois" (DDD sem mudar a arquitetura) com comparativo explícito lado a lado
+- ✓ DID-02: Módulo apresenta código "depois" com comparativo explícito — seção Fase 6 em 00-introducao.md com 7 artefatos linkados *(Validated in Phase 6: refatoracao-ddd-na-arquitetura-tradicional, 2026-06-22)*
 - [ ] DID-03: Documento de análise final: "Quais benefícios obtivemos aplicando DDD sem alterar a arquitetura?" com comparativo Complexidade/Benefícios/Curva de Aprendizado/Adoção
 
 ### Out of Scope
@@ -109,4 +109,4 @@ Um desenvolvedor da equipe deve conseguir, sozinho, ler o projeto do início ao 
 4. Atualizar Context com estado atual
 
 ---
-*Last updated: 2026-06-21 — v1.1 milestone iniciado — módulo pedagógico DDD sem mudar a arquitetura*
+*Last updated: 2026-06-22 after Phase 6 — comentários REFD inline + 5 docs DDD aplicados + 2 artefatos de navegação criados; 9/9 requirements da Fase 6 validados*
