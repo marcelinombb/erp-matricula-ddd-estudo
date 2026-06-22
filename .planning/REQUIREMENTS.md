@@ -20,13 +20,13 @@ Módulo pedagógico "Fase 0": demonstrar DDD aplicado na arquitetura tradicional
 
 - [x] **REFD-01**: Desenvolvedor visualiza diferença entre Service anêmico (contém regras) e Application Service orquestrador (delega ao domínio) na mesma arquitetura Controller→Service→Repository
 - [x] **REFD-02**: Desenvolvedor visualiza entidade rica com comportamento (`pedido.finalizar()`) vs. anêmica (`pedido.setStatus(FECHADO)`) e compreende o que foi encapsulado e qual regra passou a ser protegida
-- [ ] **REFD-03**: Desenvolvedor classifica corretamente regras como "de Domínio" (matrícula exige vaga disponível, nota entre 0 e 10) ou "de Aplicação" (abrir transação, enviar e-mail, coordenar agregados)
+- [x] **REFD-03**: Desenvolvedor classifica corretamente regras como "de Domínio" (matrícula exige vaga disponível, nota entre 0 e 10) ou "de Aplicação" (abrir transação, enviar e-mail, coordenar agregados)
 
 ### Conceitos DDD Introduzidos Gradualmente
 
 - [x] **DDD-01**: Projeto demonstra Linguagem Ubíqua — nomes de classes e métodos em código Java refletem termos utilizados pelos especialistas do domínio
 - [x] **DDD-02**: Projeto demonstra identidade e ciclo de vida de Entidades com exemplos concretos do domínio de matrícula
-- [ ] **DDD-03**: Projeto demonstra Value Objects imutáveis (Email, CPF, Dinheiro, Periodo) como alternativa a tipos primitivos, com imutabilidade explicada
+- [x] **DDD-03**: Projeto demonstra Value Objects imutáveis (Email, CPF, Dinheiro, Periodo) como alternativa a tipos primitivos, com imutabilidade explicada
 - [x] **DDD-04**: Projeto demonstra Agregados como limites de consistência e proteção de invariantes com exemplos concretos — sem definições excessivamente acadêmicas
 - [x] **DDD-05**: Projeto demonstra Repositórios como recuperadores de Agregados, diferenciando do DAO genérico, dentro da arquitetura tradicional
 
@@ -71,10 +71,10 @@ Módulo pedagógico "Fase 0": demonstrar DDD aplicado na arquitetura tradicional
 | DID-01 | Phase 5 | Pending |
 | REFD-01 | Phase 6 | Complete |
 | REFD-02 | Phase 6 | Complete |
-| REFD-03 | Phase 6 | Pending |
+| REFD-03 | Phase 6 | Complete |
 | DDD-01 | Phase 6 | Complete |
 | DDD-02 | Phase 6 | Complete |
-| DDD-03 | Phase 6 | Pending |
+| DDD-03 | Phase 6 | Complete |
 | DDD-04 | Phase 6 | Complete |
 | DDD-05 | Phase 6 | Complete |
 | DID-02 | Phase 6 | Complete |
