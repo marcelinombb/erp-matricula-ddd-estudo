@@ -84,7 +84,11 @@ Plans:
   2. Desenvolvedor identifica quais benefícios do DDD foram alcançados sem mudar a arquitetura e quais exigiriam uma reestruturação maior
   3. Desenvolvedor sai do módulo com uma posição informada: "quando vale a pena aplicar DDD dentro da arquitetura em camadas e quando não vale"
 
-**Plans**: TBD
+**Plans**: 1 plan
+
+Plans:
+
+- [ ] 07-01-PLAN.md — Criar 12-analise-final.md (DID-03) e atualizar 00-introducao.md com link de navegação
 
 ## Progress
 
@@ -96,4 +100,4 @@ Plans:
 | 4. Interface, Docker e Material Didatico | v1.0 | 4/4 | Complete | 2026-06-21 |
 | 5. Diagnostico — Codigo com Anti-padroes | v1.1 | 0/6 | Planned | - |
 | 6. Refatoracao DDD na Arquitetura Tradicional | v1.1 | 5/5 | Complete    | 2026-06-22 |
-| 7. Analise Final e Balanco Didatico | v1.1 | 0/? | Not started | - |
+| 7. Analise Final e Balanco Didatico | v1.1 | 0/1 | Planned | - |
