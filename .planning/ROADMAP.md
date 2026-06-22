@@ -59,7 +59,7 @@ Plans:
 **Plans**: 5 plans
 
 Plans:
-- [ ] 06-01-PLAN.md — Comentários REFD inline nos 3 pivots Java do módulo DDD (Matricula.java, MatricularAlunoUseCase.java, MatriculaRepositorio.java)
+- [x] 06-01-PLAN.md — Comentários REFD inline nos 3 pivots Java do módulo DDD (Matricula.java, MatricularAlunoUseCase.java, MatriculaRepositorio.java)
 - [ ] 06-02-PLAN.md — Docs de conceito DDD: 07-linguagem-ubiqua.md (DDD-01) e 08-entidades.md (DDD-02)
 - [ ] 06-03-PLAN.md — Docs de conceito DDD: 09-value-objects.md (DDD-03), 10-agregados.md (DDD-04), 11-repositorios.md (DDD-05)
 - [ ] 06-04-PLAN.md — Guia de leitura comparativo e exercício de classificação (REFD-01, REFD-02, REFD-03)
@@ -84,5 +84,5 @@ Plans:
 | 3. Implementacao | v1.0 | 4/4 | Complete | 2026-06-20 |
 | 4. Interface, Docker e Material Didatico | v1.0 | 4/4 | Complete | 2026-06-21 |
 | 5. Diagnostico — Codigo com Anti-padroes | v1.1 | 0/6 | Planned | - |
-| 6. Refatoracao DDD na Arquitetura Tradicional | v1.1 | 0/? | Not started | - |
+| 6. Refatoracao DDD na Arquitetura Tradicional | v1.1 | 1/5 | In Progress|  |
 | 7. Analise Final e Balanco Didatico | v1.1 | 0/? | Not started | - |
