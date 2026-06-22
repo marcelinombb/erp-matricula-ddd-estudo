@@ -37,6 +37,9 @@ import java.util.Optional;
  */
 public interface MatriculaRepositorio {
 
+    // REFD-05 (DDD-05): Compare com MatriculaRepository (camadas) — findById(UUID id) com @Mapper.
+    // Aqui: recebe MatriculaId (Value Object), não UUID cru. O compilador impede passar um
+    // TurmaId por engano — UUID cru não carrega semântica de domínio.
     /**
      * Busca uma matrícula pelo seu identificador único.
      *
@@ -45,6 +48,9 @@ public interface MatriculaRepositorio {
      */
     Optional<Matricula> buscarPorId(MatriculaId id);
 
+    // REFD-05 (DDD-05): Compare com MatriculaRepository (camadas) — findByAlunoId(UUID alunoId).
+    // Aqui: parâmetro AlunoId (Value Object com semântica) em vez de UUID cru. O tipo do
+    // parâmetro documenta a intenção; ao lado de buscarPorId(MatriculaId), a diferença é legível.
     /**
      * Busca todas as matrículas de um aluno (em qualquer estado).
      *
@@ -53,6 +59,9 @@ public interface MatriculaRepositorio {
      */
     List<Matricula> buscarPorAluno(AlunoId alunoId);
 
+    // REFD-05 (DDD-05): No módulo camadas não existe equivalente com semântica de negócio.
+    // MatriculaRepository.countDisciplinas(UUID) expõe uma contagem SQL como método — não uma pergunta
+    // de negócio. Aqui, o nome é uma frase de negócio: "existe matrícula ativa para aluno no período?".
     /**
      * Verifica se existe uma matrícula ativa para o aluno no período especificado.
      *
@@ -65,6 +74,9 @@ public interface MatriculaRepositorio {
      */
     boolean existeMatriculaAtiva(AlunoId alunoId, PeriodoLetivo periodo);
 
+    // REFD-05 (DDD-05): No módulo camadas, o Service chamava insert(Matricula) e itemMatriculaRepository.insert(item)
+    // separadamente — o chamador decidia como persistir as partes. Aqui, salvar() persiste o
+    // Aggregate inteiro (Matrícula + todos os ItemMatricula) como unidade atômica.
     /**
      * Persiste a matrícula (INSERT se nova, UPDATE se existente).
      *

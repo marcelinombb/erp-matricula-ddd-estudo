@@ -88,9 +88,15 @@ public class MatricularAlunoUseCase {
      */
     public MatriculaId executar(MatricularAlunoCommand command) {
         // 1. Validar elegibilidade (Domain Service — lança exceção se não elegível)
+        // REFD-01: Em MatriculaServiceImpl.matricular() (camadas), esta verificação era um bloco
+        // de ~10 linhas de if/else (aluno ativo, período aberto) dentro do próprio Service.
+        // Aqui, o UseCase delega ao Domain Service — zero decisões de negócio no UseCase.
         verificador.verificar(command.aluno(), command.turma(), command.periodo());
 
         // 2. Criar Aggregate (domínio decide — estado inicial ATIVA, evento AlunoMatriculado coletado)
+        // REFD-01: No módulo camadas (MatriculaServiceImpl.matricular()): new Matricula();
+        // matricula.setStatus("ATIVA"); matricula.setAlunoId(alunoId); — estado via setters fora do objeto.
+        // Aqui, Matricula.criar() encapsula o estado inicial — sem setter possível após criação.
         Matricula matricula = Matricula.criar(
                 command.aluno().getId(),
                 command.turma().getId(),
