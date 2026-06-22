@@ -154,6 +154,9 @@ public class Matricula {
      * @return nova instância de {@code Matricula} no estado {@code Ativa}
      */
     public static Matricula criar(AlunoId alunoId, TurmaId turmaId, PeriodoLetivo periodoLetivo) {
+        // REFD-02: No módulo camadas (MatriculaServiceImpl.matricular()), criação era:
+        // new Matricula(); matricula.setStatus("ATIVA"); — dois passos separáveis via setter público.
+        // Aqui, criar() garante status Ativa como parte da construção — sem setter público possível.
         return new Matricula(alunoId, turmaId, periodoLetivo);
     }
 
@@ -182,16 +185,25 @@ public class Matricula {
      */
     public void adicionarDisciplina(NomeDisciplina disciplina) {
         // Guard 1: estado — matrícula cancelada não aceita novas disciplinas
+        // REFD-02: No módulo camadas, esta verificação ficava em MatriculaServiceImpl.adicionarDisciplina():
+        // if (!"ATIVA".equals(matricula.getStatus())) — executada pelo Service, pulável por código externo.
+        // Aqui, o próprio Aggregate verifica seu estado — nenhum Service pode pular esta invariante.
         if (this.status instanceof StatusMatricula.Cancelada) {
             throw new MatriculaCanceladaException(this.id);
         }
 
         // Guard 2: limite — máximo de LIMITE_DISCIPLINAS disciplinas por matrícula
+        // REFD-02: No módulo camadas, a verificação usava itemMatriculaRepository.countByMatriculaId(matriculaId)
+        // em MatriculaServiceImpl.adicionarDisciplina() — uma query SQL separada da adição.
+        // Aqui, a contagem é em memória (this.disciplinas.size()), atômica com a adição.
         if (this.disciplinas.size() >= LIMITE_DISCIPLINAS) {
             throw new LimiteDisciplinasExcedidoException(LIMITE_DISCIPLINAS, this.disciplinas.size(), this.id);
         }
 
         // Guard 3: duplicidade — a mesma disciplina não pode aparecer duas vezes
+        // REFD-02: No módulo camadas (MatriculaServiceImpl), não havia verificação de duplicidade —
+        // era possível adicionar a mesma disciplina duas vezes sem erro. Aqui, o Aggregate
+        // protege esta invariante sem precisar de query SQL adicional.
         boolean jaMatriculada = this.disciplinas.stream()
             .anyMatch(item -> item.disciplina().equals(disciplina));
         if (jaMatriculada) {
@@ -284,6 +296,9 @@ public class Matricula {
      * parte da proteção T-03-02 (Threat Register: tampering via getter).</p>
      */
     public List<ItemMatricula> getDisciplinas() {
+        // REFD-02 (DDD-04): Sem setter público e retornando List.copyOf, código externo não pode
+        // modificar a lista interna do Aggregate. No módulo camadas, Matricula expunha setters e
+        // listas mutáveis — invariantes dependiam de disciplina dos chamadores, não do próprio objeto.
         return List.copyOf(disciplinas);
     }
 }
