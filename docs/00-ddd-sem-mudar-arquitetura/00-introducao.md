@@ -62,3 +62,21 @@ docker compose up
 Após ler os seis anti-padrões nesta pasta, a Fase 6 mostra como o módulo DDD resolve cada um deles. O ponto de comparação é direto: para cada anti-padrão identificado aqui, existe um equivalente DDD em `erp-matricula-ddd/` que resolve o mesmo problema de design.
 
 Ver: [docs/04-material-didatico/ddd-vs-camadas.md](../04-material-didatico/ddd-vs-camadas.md) para a comparação lado a lado de cada padrão.
+
+---
+
+## Fase 6 — O "depois" DDD: conceitos aplicados
+
+Após identificar os anti-padrões, esta seção mostra como o módulo `erp-matricula-ddd`
+resolve cada um. Comece pelo guia de leitura para ver a transformação completa de uma
+operação, depois mergulhe nos conceitos individuais.
+
+| Conceito | Documentação | Requirement |
+|----------|-------------|-------------|
+| Guia de leitura comparativo | [guia-leitura-comparativo.md](guia-leitura-comparativo.md) | REFD-01, REFD-02 |
+| Linguagem Ubíqua | [07-linguagem-ubiqua.md](07-linguagem-ubiqua.md) | DDD-01 |
+| Entidades | [08-entidades.md](08-entidades.md) | DDD-02 |
+| Value Objects | [09-value-objects.md](09-value-objects.md) | DDD-03 |
+| Agregados | [10-agregados.md](10-agregados.md) | DDD-04 |
+| Repositórios | [11-repositorios.md](11-repositorios.md) | DDD-05 |
+| Exercício de Classificação | [exercicio-classificacao.md](exercicio-classificacao.md) | REFD-03 |
