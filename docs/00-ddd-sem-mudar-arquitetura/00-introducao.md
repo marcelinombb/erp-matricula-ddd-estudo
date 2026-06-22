@@ -80,3 +80,4 @@ operação, depois mergulhe nos conceitos individuais.
 | Agregados | [10-agregados.md](10-agregados.md) | DDD-04 |
 | Repositórios | [11-repositorios.md](11-repositorios.md) | DDD-05 |
 | Exercício de Classificação | [exercicio-classificacao.md](exercicio-classificacao.md) | REFD-03 |
+| Análise Final | [12-analise-final.md](12-analise-final.md) | DID-03 |
