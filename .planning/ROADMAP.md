@@ -56,7 +56,14 @@ Plans:
   3. Desenvolvedor demonstra por que `pedido.finalizar()` protege uma invariante enquanto `pedido.setStatus(FECHADO)` não, apontando o método no código
   4. Desenvolvedor classifica corretamente uma lista de regras de negócio hipotéticas entre "de Domínio" e "de Aplicação" após estudar o módulo
   5. Desenvolvedor explica o papel de cada conceito DDD introduzido (Linguagem Ubíqua, Entidade, Value Object, Agregado, Repositório) usando exemplos do código Java do projeto
-**Plans**: TBD
+**Plans**: 5 plans
+
+Plans:
+- [ ] 06-01-PLAN.md — Comentários REFD inline nos 3 pivots Java do módulo DDD (Matricula.java, MatricularAlunoUseCase.java, MatriculaRepositorio.java)
+- [ ] 06-02-PLAN.md — Docs de conceito DDD: 07-linguagem-ubiqua.md (DDD-01) e 08-entidades.md (DDD-02)
+- [ ] 06-03-PLAN.md — Docs de conceito DDD: 09-value-objects.md (DDD-03), 10-agregados.md (DDD-04), 11-repositorios.md (DDD-05)
+- [ ] 06-04-PLAN.md — Guia de leitura comparativo e exercício de classificação (REFD-01, REFD-02, REFD-03)
+- [ ] 06-05-PLAN.md — Atualizar 00-introducao.md com links para todos os novos artefatos da Fase 6
 
 ### Phase 7: Analise Final e Balanco Didatico
 **Goal**: Desenvolvedor consegue avaliar criticamente a aplicação de DDD sem mudança de arquitetura, pesando Complexidade introduzida, Benefícios obtidos, Curva de aprendizado e Facilidade de adoção pela equipe
