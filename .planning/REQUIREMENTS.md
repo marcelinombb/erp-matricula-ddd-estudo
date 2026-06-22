@@ -24,8 +24,8 @@ Módulo pedagógico "Fase 0": demonstrar DDD aplicado na arquitetura tradicional
 
 ### Conceitos DDD Introduzidos Gradualmente
 
-- [ ] **DDD-01**: Projeto demonstra Linguagem Ubíqua — nomes de classes e métodos em código Java refletem termos utilizados pelos especialistas do domínio
-- [ ] **DDD-02**: Projeto demonstra identidade e ciclo de vida de Entidades com exemplos concretos do domínio de matrícula
+- [x] **DDD-01**: Projeto demonstra Linguagem Ubíqua — nomes de classes e métodos em código Java refletem termos utilizados pelos especialistas do domínio
+- [x] **DDD-02**: Projeto demonstra identidade e ciclo de vida de Entidades com exemplos concretos do domínio de matrícula
 - [ ] **DDD-03**: Projeto demonstra Value Objects imutáveis (Email, CPF, Dinheiro, Periodo) como alternativa a tipos primitivos, com imutabilidade explicada
 - [x] **DDD-04**: Projeto demonstra Agregados como limites de consistência e proteção de invariantes com exemplos concretos — sem definições excessivamente acadêmicas
 - [x] **DDD-05**: Projeto demonstra Repositórios como recuperadores de Agregados, diferenciando do DAO genérico, dentro da arquitetura tradicional
@@ -33,7 +33,7 @@ Módulo pedagógico "Fase 0": demonstrar DDD aplicado na arquitetura tradicional
 ### Material Didático
 
 - [ ] **DID-01**: Módulo apresenta código Java completo "antes" — arquitetura tradicional com anti-padrões identificados e anotados com comentários explicativos
-- [ ] **DID-02**: Módulo apresenta código Java completo "depois" — DDD aplicado na mesma arquitetura com comparativo explícito, mostrando o que mudou, o que foi encapsulado e qual regra passou a ser protegida
+- [x] **DID-02**: Módulo apresenta código Java completo "depois" — DDD aplicado na mesma arquitetura com comparativo explícito, mostrando o que mudou, o que foi encapsulado e qual regra passou a ser protegida
 - [ ] **DID-03**: Documento de análise final "Quais benefícios obtivemos aplicando DDD sem alterar a arquitetura?" comparando Complexidade introduzida, Benefícios obtidos, Curva de aprendizado e Facilidade de adoção pela equipe
 
 ## Futuro (v1.2+)
@@ -72,12 +72,12 @@ Módulo pedagógico "Fase 0": demonstrar DDD aplicado na arquitetura tradicional
 | REFD-01 | Phase 6 | Complete |
 | REFD-02 | Phase 6 | Complete |
 | REFD-03 | Phase 6 | Pending |
-| DDD-01 | Phase 6 | Pending |
-| DDD-02 | Phase 6 | Pending |
+| DDD-01 | Phase 6 | Complete |
+| DDD-02 | Phase 6 | Complete |
 | DDD-03 | Phase 6 | Pending |
 | DDD-04 | Phase 6 | Complete |
 | DDD-05 | Phase 6 | Complete |
-| DID-02 | Phase 6 | Pending |
+| DID-02 | Phase 6 | Complete |
 | DID-03 | Phase 7 | Pending |
 
 **Coverage:**
