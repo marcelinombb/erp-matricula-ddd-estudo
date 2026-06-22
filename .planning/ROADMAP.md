@@ -85,7 +85,6 @@ Plans:
   3. Desenvolvedor sai do módulo com uma posição informada: "quando vale a pena aplicar DDD dentro da arquitetura em camadas e quando não vale"
 
 **Plans**: 1 plan
-
 Plans:
 
 - [ ] 07-01-PLAN.md — Criar 12-analise-final.md (DID-03) e atualizar 00-introducao.md com link de navegação
