@@ -42,39 +42,52 @@ Full details: [.planning/milestones/v1.1-ROADMAP.md](milestones/v1.1-ROADMAP.md)
 ## Phase Details
 
 ### Phase 8: Testes Unitários do Domínio DDD
+
 **Goal**: Desenvolvedores podem executar testes unitários completos do módulo DDD sem nenhuma dependência de Spring ou banco, demonstrando que um domínio rico é inerentemente testável
 **Depends on**: Phase 7 (módulo erp-matricula-ddd implementado)
 **Requirements**: TDDD-01, TDDD-02, TDDD-03, TDDD-04
 **Success Criteria** (what must be TRUE):
+
   1. Desenvolvedor executa `mvn test` no módulo erp-matricula-ddd e todos os testes do Aggregate Matricula passam — as 3 invariantes de negócio verificadas sem Spring ou banco
   2. Desenvolvedor executa testes dos Value Objects (NomeAluno, CodigoDisciplina, StatusMatricula) e vê validação de regras de criação e igualdade por valor sendo verificadas com JUnit 5 puro
   3. Desenvolvedor executa testes do VerificadorElegibilidadeMatricula sem nenhum mock ou import de Spring — zero dependências de infraestrutura visíveis no arquivo de teste
   4. Desenvolvedor executa testes de Domain Events e vê asserções que confirmam MatriculaRealizada, DisciplinaAdicionada e MatriculaCancelada sendo emitidos nas operações corretas do Aggregate
-**Plans**: 4 plans
 
+**Plans**: 4 plans
 Plans:
+
 - [ ] 08-01-PLAN.md — VOs NomeDisciplina e PeriodoLetivo: 5+4 testes de validação e igualdade por valor
 - [ ] 08-02-PLAN.md — VOs Cpf e AlunoId: 4+3 testes de normalização, dígito verificador e identidade
 - [ ] 08-03-PLAN.md — Aggregate Matricula: 4 invariantes + 4 Domain Events (AlunoMatriculado, DisciplinaAdicionada, MatriculaCancelada)
 - [ ] 08-04-PLAN.md — Stub MatriculaRepositorioEmMemoria + 4 testes do VerificadorElegibilidadeMatricula sem Mockito
 
+**Cross-cutting constraints:**
+
+- Nenhum arquivo de teste contém import org.springframework.* — verificável por grep
+
 ### Phase 9: Testes Unitários do Módulo Camadas
+
 **Goal**: Desenvolvedores podem executar testes unitários do módulo camadas que evidenciam visualmente a dificuldade de testar um God Service — mocks pesados, acoplamento implícito e regras duplicadas
 **Depends on**: Phase 8
 **Requirements**: TCAM-01, TCAM-02, TCAM-03
 **Success Criteria** (what must be TRUE):
+
   1. Desenvolvedor executa testes do MatriculaServiceImpl e vê o bloco `@BeforeEach` de setup com vários mocks necessários para isolar o God Service — contraste perceptível com os testes do domínio DDD
   2. Desenvolvedor executa testes do DisciplinaServiceImpl e observa asserções duplicadas para regras que também aparecem no MatriculaServiceImpl — a duplicação de regras se manifesta como duplicação de testes
   3. Desenvolvedor executa testes do MatriculaController e vê a dificuldade: regras de negócio no controller obrigam mocks adicionais e testes de lógica que deveriam estar no domínio
+
 **Plans**: TBD
 
 ### Phase 10: Documentação Comparativa de Testabilidade
+
 **Goal**: Desenvolvedores podem ler documentação didática que sintetiza o comparativo de testabilidade com dados concretos do projeto, tornando o impacto do DDD na testabilidade inegável e quantificável
 **Depends on**: Phase 9
 **Requirements**: TDOC-01, TDOC-02
 **Success Criteria** (what must be TRUE):
+
   1. Desenvolvedor lê guia comparativo com dados concretos (número de mocks por teste, linhas de setup, número de imports de Spring) que mostram a diferença objetiva entre os módulos
   2. Desenvolvedor lê análise dos padrões de teste Given-When-Then aplicados ao domínio DDD versus o padrão Arrange-pesado-com-mocks do módulo camadas, com exemplos reais dos testes criados nas Phases 8 e 9
+
 **Plans**: TBD
 **UI hint**: no
 
