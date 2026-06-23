@@ -3,7 +3,7 @@
 ## Milestones
 
 - ✅ **v1.0 Projeto Didático DDD** — Phases 1-4 (shipped 2026-06-21)
-- **v1.1 DDD sem Mudar a Arquitetura** — Phases 5-7 (active)
+- ✅ **v1.1 DDD sem Mudar a Arquitetura** — Phases 5-7 (completed 2026-06-22)
 
 ## Phases
 
@@ -21,7 +21,7 @@ Full details: [.planning/milestones/v1.0-ROADMAP.md](milestones/v1.0-ROADMAP.md)
 
 ### v1.1 DDD sem Mudar a Arquitetura
 
-- [ ] **Phase 5: Diagnostico — Codigo com Anti-padroes** - Módulo "antes": seis exemplos Java documentados de anti-padrões comuns na arquitetura tradicional
+- [x] **Phase 5: Diagnostico — Codigo com Anti-padroes** - Módulo "antes": seis exemplos Java documentados de anti-padrões comuns na arquitetura tradicional (completed 2026-06-22)
 - [x] **Phase 6: Refatoracao DDD na Arquitetura Tradicional** - Módulo "depois": refatoração para modelo rico e Application Service, com comparativo explícito e introdução gradual de conceitos DDD (completed 2026-06-22)
 - [x] **Phase 7: Analise Final e Balanco Didatico** - Documento de síntese: "Quais benefícios obtivemos aplicando DDD sem alterar a arquitetura?" (completed 2026-06-22)
 
@@ -97,6 +97,6 @@ Plans:
 | 2. Design Tatico e Modelagem Visual | v1.0 | 4/4 | Complete | 2026-06-20 |
 | 3. Implementacao | v1.0 | 4/4 | Complete | 2026-06-20 |
 | 4. Interface, Docker e Material Didatico | v1.0 | 4/4 | Complete | 2026-06-21 |
-| 5. Diagnostico — Codigo com Anti-padroes | v1.1 | 0/6 | Planned | - |
+| 5. Diagnostico — Codigo com Anti-padroes | v1.1 | 6/6 | Complete | 2026-06-22 |
 | 6. Refatoracao DDD na Arquitetura Tradicional | v1.1 | 5/5 | Complete    | 2026-06-22 |
 | 7. Analise Final e Balanco Didatico | v1.1 | 1/1 | Complete   | 2026-06-22 |

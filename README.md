@@ -60,6 +60,51 @@ Siga esta sequência de leitura para construir o entendimento progressivo do pro
 - [Repositórios](docs/02-design-tatico/repositorios.md)
 - [Modelagem Visual (Diagramas)](docs/02-design-tatico/modelagem.md)
 
+### Fase 3: Implementação
+
+Código Java do módulo DDD (`erp-matricula-ddd`) com anotações pedagógicas inline:
+
+- [erp-matricula-ddd/src/…/domain/Matricula.java](erp-matricula-ddd/src/main/java/br/com/erp/matricula/domain/Matricula.java) — Aggregate Root com invariantes de domínio
+- [erp-matricula-ddd/src/…/application/MatricularAlunoUseCase.java](erp-matricula-ddd/src/main/java/br/com/erp/matricula/application/MatricularAlunoUseCase.java) — Application Service orquestrador
+- [erp-matricula-ddd/src/…/domain/MatriculaRepositorio.java](erp-matricula-ddd/src/main/java/br/com/erp/matricula/domain/MatriculaRepositorio.java) — porta de repositório (interface de domínio)
+
+### Fase 4: Material Didático
+
+- [DDD para quem vem da Arquitetura em Camadas](docs/04-material-didatico/ddd-vs-camadas.md) — comparação lado a lado: o que mudou, por que mudou e os benefícios de cada decisão
+- [Guia de Consulta: conceito DDD → arquivo](docs/04-material-didatico/guia-consulta.md) — mapa de conceitos DDD para os arquivos concretos do projeto
+- [Lições Aprendidas](docs/04-material-didatico/licoes-aprendidas.md) — decisões que pareceram estranhas no início e o raciocínio que as justifica
+- [Estrutura de Pastas Explicada](docs/04-material-didatico/estrutura-pastas.md) — por que `domain/`, `application/`, `infrastructure/` e `interfaces/` existem
+
+### Fase 5: Diagnóstico — Código com Anti-padrões
+
+Módulo `erp-matricula-camadas` — o "antes" com os seis anti-padrões anotados:
+
+- [Introdução ao módulo DDD sem mudar a arquitetura](docs/00-ddd-sem-mudar-arquitetura/00-introducao.md) — ponto de entrada para as Fases 5-7
+- [Anti-padrão 1: Service Anêmico](docs/00-ddd-sem-mudar-arquitetura/01-service-anemico.md)
+- [Anti-padrão 2: Entidade Anêmica](docs/00-ddd-sem-mudar-arquitetura/02-entidade-anemica.md)
+- [Anti-padrão 3: Service Deus](docs/00-ddd-sem-mudar-arquitetura/03-service-deus.md)
+- [Anti-padrão 4: Duplicação de Regras](docs/00-ddd-sem-mudar-arquitetura/04-duplicacao-regras.md)
+- [Anti-padrão 5: Regras na Interface](docs/00-ddd-sem-mudar-arquitetura/05-regras-na-interface.md)
+- [Anti-padrão 6: Acoplamento ao Banco](docs/00-ddd-sem-mudar-arquitetura/06-acoplamento-banco.md)
+
+### Fase 6: Refatoração DDD na Arquitetura Tradicional
+
+Conceitos DDD aplicados dentro do stack Controller→Service→Repository, com comparativo explícito ao módulo "antes":
+
+- [Linguagem Ubíqua](docs/00-ddd-sem-mudar-arquitetura/07-linguagem-ubiqua.md) — como a nomenclatura do código reflete o domínio
+- [Entidades](docs/00-ddd-sem-mudar-arquitetura/08-entidades.md) — identidade, ciclo de vida e diferença para Value Objects
+- [Value Objects](docs/00-ddd-sem-mudar-arquitetura/09-value-objects.md) — imutabilidade e igualdade por valor
+- [Agregados](docs/00-ddd-sem-mudar-arquitetura/10-agregados.md) — fronteira de consistência e Aggregate Root
+- [Repositórios](docs/00-ddd-sem-mudar-arquitetura/11-repositorios.md) — porta de domínio vs. detalhe de infraestrutura
+- [Guia de Leitura Comparativo](docs/00-ddd-sem-mudar-arquitetura/guia-leitura-comparativo.md) — percurso antes→depois com pontos de atenção por arquivo
+- [Exercício de Classificação](docs/00-ddd-sem-mudar-arquitetura/exercicio-classificacao.md) — regras de negócio para classificar entre "de Domínio" e "de Aplicação"
+
+### Fase 7: Análise Final e Balanço Didático
+
+- [Análise Final](docs/00-ddd-sem-mudar-arquitetura/12-analise-final.md) — balanço crítico: complexidade introduzida, benefícios obtidos, quando vale a pena adotar DDD dentro da arquitetura em camadas
+
+---
+
 ## Estrutura de módulos
 
 O projeto tem dois módulos Maven que implementam o mesmo domínio de Matrícula Escolar de formas opostas:
@@ -130,13 +175,3 @@ docker compose down -v
 
 O flag `-v` remove o volume `postgres_data`, apagando todos os dados persistidos. Na próxima vez que subir, o Flyway recria o schema do zero.
 
----
-
-## Material Didático
-
-Documentação pedagógica da Fase 4 — explica DDD na prática, com paralelos diretos à arquitetura em camadas:
-
-- [DDD para quem vem da Arquitetura em Camadas](docs/04-material-didatico/ddd-vs-camadas.md) — comparação lado a lado: o que mudou, por que mudou e os benefícios de cada decisão
-- [Guia de Consulta: conceito DDD → arquivo](docs/04-material-didatico/guia-consulta.md) — mapa de conceitos DDD (Aggregate, Value Object, Repository...) para os arquivos concretos do projeto
-- [Lições Aprendidas](docs/04-material-didatico/licoes-aprendidas.md) — decisões que pareceram estranhas no início e o raciocínio que as justifica
-- [Estrutura de Pastas Explicada](docs/04-material-didatico/estrutura-pastas.md) — por que `domain/`, `application/`, `infrastructure/` e `interfaces/` existem e o que cada uma pode ou não pode fazer
