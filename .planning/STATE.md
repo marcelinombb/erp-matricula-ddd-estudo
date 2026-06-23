@@ -1,18 +1,16 @@
 ---
 gsd_state_version: 1.0
-milestone: v1.1
-milestone_name: DDD sem Mudar a Arquitetura
-current_phase: null
-status: shipped
-stopped_at: Milestone v1.1 archived — run /gsd-new-milestone to start v1.2
-last_updated: "2026-06-23T00:00:00.000Z"
+milestone: v1.2
+milestone_name: Testes como Evidência de Design
+status: planning
+last_updated: "2026-06-23T15:00:40.817Z"
 last_activity: 2026-06-23
 progress:
-  total_phases: 3
-  completed_phases: 3
-  total_plans: 12
-  completed_plans: 12
-  percent: 100
+  total_phases: 0
+  completed_phases: 0
+  total_plans: 0
+  completed_plans: 0
+  percent: 0
 ---
 
 # Project State
@@ -46,10 +44,10 @@ See: .planning/PROJECT.md (updated 2026-06-20)
 
 ## Current Position
 
-Phase: 07 (analise-final-e-balanco-didatico) — EXECUTING
-Plan: 1 of 1
-Status: Phase complete — ready for verification
-Last activity: 2026-06-22
+Phase: Not started (defining requirements)
+Plan: —
+Status: Defining requirements
+Last activity: 2026-06-23 — Milestone v1.2 started
 
 ## Performance Metrics
 

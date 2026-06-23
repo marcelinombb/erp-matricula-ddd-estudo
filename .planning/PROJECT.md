@@ -30,6 +30,15 @@ O projeto está completo em dois milestones entregues:
 - `docs/` com 5 diretórios de documentação pedagógica progressiva
 - Docker Compose sobe ambos os módulos com um comando
 
+## Current Milestone: v1.2 Testes como Evidência de Design
+
+**Goal:** Demonstrar, através de comparativo de testabilidade, por que um domínio rico (DDD) é mais fácil de testar do que um God Service (arquitetura em camadas), usando testes reais em ambos os módulos.
+
+**Target features:**
+- Unit tests do módulo DDD (Aggregate Matricula, Value Objects, Domain Services) sem Spring — testabilidade pura do domínio
+- Unit tests do módulo camadas (MatriculaServiceImpl) — evidenciando a dificuldade: mocks pesados, acoplamento implícito
+- Documentação didática comparativa: por que um é mais difícil, o que o DDD tornou possível, analogias para o desenvolvedor
+
 ## Requirements
 
 ### Validated (v1.0 + v1.1)
@@ -48,12 +57,19 @@ O projeto está completo em dois milestones entregues:
 - ✓ DDD-01..05: Conceitos DDD introduzidos gradualmente — v1.1
 - ✓ DID-01..03 (v1.1): Módulo completo antes/depois + análise final — v1.1
 
+### Active (v1.2)
+
+- [ ] TEST-01: Unit tests do Aggregate Matricula e Value Objects (módulo DDD)
+- [ ] TEST-02: Unit tests do Domain Service VerificadorElegibilidade (módulo DDD)
+- [ ] TEST-03: Unit tests do MatriculaServiceImpl (módulo camadas) — evidenciando mocks pesados
+- [ ] TEST-04: Documentação didática comparativa de testabilidade
+
 ### Out of Scope (mantido)
 
 - Contextos Financeiro, Acadêmico e Secretaria implementados
 - Frontend / UI
 - Autenticação e autorização
-- Testes automatizados completos (v1.2 backlog: TEST-01..03)
+- Testes de integração com banco real (Testcontainers) — adiado para v1.3
 - Deploy em cloud
 - Lombok / MapStruct
 - JPA / Spring Data
@@ -113,4 +129,4 @@ O projeto está completo em dois milestones entregues:
 
 </details>
 
-*Last updated: 2026-06-23 — v1.1 milestone archived, project state updated*
+*Last updated: 2026-06-23 — v1.2 milestone started*
