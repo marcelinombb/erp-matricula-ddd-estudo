@@ -2,11 +2,11 @@
 gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: DDD sem Mudar a Arquitetura
-current_phase: 07
-status: verifying
-stopped_at: Completed Phase 07 Plan 01 - 12-analise-final.md created
-last_updated: "2026-06-22T18:58:07.965Z"
-last_activity: 2026-06-22
+current_phase: null
+status: shipped
+stopped_at: Milestone v1.1 archived — run /gsd-new-milestone to start v1.2
+last_updated: "2026-06-23T00:00:00.000Z"
+last_activity: 2026-06-23
 progress:
   total_phases: 3
   completed_phases: 3
@@ -90,11 +90,15 @@ Last activity: 2026-06-22
 
 ## Deferred Items
 
-Items acknowledged and deferred at milestone close on 2026-06-21:
+Items acknowledged and deferred at milestone close on 2026-06-23:
 
 | Category | Item | Status |
 |----------|------|--------|
 | verification_gap | Phase 04 — 04-VERIFICATION.md: 3 testes manuais (docker compose up + POST /matriculas, payload inválido, limite disciplinas) | human_needed — requer Docker rodando |
+| uat_gap | Phase 05 — 05-HUMAN-UAT.md: discrepância trail 06-acoplamento-banco.md (falsa positiva — countDisciplinas é chamado na linha 149) | partial — julgamento pedagógico, não bug |
+| uat_gap | Phase 05 — 05-HUMAN-UAT.md: DisciplinaServiceImpl não exposto via HTTP (DIAG-04 visível por leitura, não executável) | partial — julgamento pedagógico |
+| uat_gap | Phase 07 — 07-UAT.md: 3 verificações de capacidade argumentativa do leitor em 12-analise-final.md | testing — requer leitura humana do documento |
+| verification_gap | Phase 07 — 07-01-VERIFICATION.md: status human_needed (5/5 truths verificadas automaticamente) | human_needed — julgamento editorial |
 
 Known deferred items at close: 1 (see STATE.md Deferred Items)
 
