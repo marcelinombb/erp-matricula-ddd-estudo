@@ -151,8 +151,8 @@ flowchart TD
     VER_PERIODO -->|Não| ERR2[PeriodoFechadoException]
     VER_PERIODO -->|Sim| VER_DUP{Matrícula duplicada no período?}
     VER_DUP -->|Sim| ERR3[MatriculaDuplicadaException]
-    VER_DUP -->|Não| CRIA[Matricula.criar()]
-    CRIA --> SALVA[MatriculaRepositorio.salvar()]
+    VER_DUP -->|Não| CRIA[Matricula.criar]
+    CRIA --> SALVA[MatriculaRepositorio.salvar]
     SALVA --> EVENTO[Publica AlunoMatriculado]
     EVENTO --> FIN([Matrícula realizada])
     ERR1 --> FAIL([Falha — 422])
@@ -171,8 +171,8 @@ flowchart TD
     VER_DUP -->|Sim| ERR2[DisciplinaJaMatriculadaException]
     VER_DUP -->|Não| VER_LIMITE{Atingiu limite de disciplinas?}
     VER_LIMITE -->|Sim| ERR3[LimiteDisciplinasExcedidoException]
-    VER_LIMITE -->|Não| ADD[Matricula.adicionarDisciplina()]
-    ADD --> SALVA[MatriculaRepositorio.salvar()]
+    VER_LIMITE -->|Não| ADD[Matricula.adicionarDisciplina]
+    ADD --> SALVA[MatriculaRepositorio.salvar]
     SALVA --> EVENTO[Publica DisciplinaAdicionada]
     EVENTO --> FIN([Disciplina adicionada])
     ERR1 --> FAIL([Falha — 422])
@@ -189,8 +189,8 @@ flowchart TD
     VER_EXISTS -->|Não| ERR1[MatriculaNaoEncontradaException]
     VER_EXISTS -->|Sim| VER_CANCEL{Já está cancelada?}
     VER_CANCEL -->|Sim| ERR2[MatriculaJaCanceladaException]
-    VER_CANCEL -->|Não| CANCEL[Matricula.cancelar()]
-    CANCEL --> SALVA[MatriculaRepositorio.salvar()]
+    VER_CANCEL -->|Não| CANCEL[Matricula.cancelar]
+    CANCEL --> SALVA[MatriculaRepositorio.salvar]
     SALVA --> EVENTO[Publica MatriculaCancelada]
     EVENTO --> FIN([Matrícula cancelada])
     ERR1 --> FAIL([Falha — 404 / 422])
