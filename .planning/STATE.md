@@ -3,8 +3,9 @@ gsd_state_version: 1.0
 milestone: v1.2
 milestone_name: Testes como Evidência de Design
 status: planning
-last_updated: "2026-06-23"
-last_activity: 2026-06-23
+stopped_at: Phase 8 context gathered
+last_updated: "2026-06-23T17:15:22.969Z"
+last_activity: 2026-06-23 — Roadmap v1.2 created (Phases 8-10, 9 requirements mapped)
 progress:
   total_phases: 3
   completed_phases: 0
@@ -34,6 +35,7 @@ Progress: [░░░░░░░░░░] 0%
 ## Performance Metrics
 
 **Velocity (v1.2):**
+
 - Total plans completed: 0
 - Average duration: —
 - Total execution time: —
@@ -80,6 +82,6 @@ Items carregados do fechamento de v1.1 (2026-06-23):
 
 ## Session Continuity
 
-Last session: 2026-06-23
-Stopped at: Roadmap v1.2 criado — Phases 8-10 definidas, 9/9 requisitos mapeados
-Resume file: None
+Last session: 2026-06-23T17:15:22.966Z
+Stopped at: Phase 8 context gathered
+Resume file: .planning/phases/08-testes-unit-rios-do-dom-nio-ddd/08-CONTEXT.md
