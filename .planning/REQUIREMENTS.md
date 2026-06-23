@@ -44,25 +44,23 @@
 
 ## Traceability
 
-Mapeamento atualizado durante criação do roadmap.
-
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| TDDD-01 | — | Pending |
-| TDDD-02 | — | Pending |
-| TDDD-03 | — | Pending |
-| TDDD-04 | — | Pending |
-| TCAM-01 | — | Pending |
-| TCAM-02 | — | Pending |
-| TCAM-03 | — | Pending |
-| TDOC-01 | — | Pending |
-| TDOC-02 | — | Pending |
+| TDDD-01 | Phase 8 | Pending |
+| TDDD-02 | Phase 8 | Pending |
+| TDDD-03 | Phase 8 | Pending |
+| TDDD-04 | Phase 8 | Pending |
+| TCAM-01 | Phase 9 | Pending |
+| TCAM-02 | Phase 9 | Pending |
+| TCAM-03 | Phase 9 | Pending |
+| TDOC-01 | Phase 10 | Pending |
+| TDOC-02 | Phase 10 | Pending |
 
 **Coverage:**
 - v1.2 requirements: 9 total
-- Mapped to phases: 0 (pending roadmap)
-- Unmapped: 9 ⚠️
+- Mapped to phases: 9 ✓
+- Unmapped: 0 ✓
 
 ---
 *Requirements defined: 2026-06-23*
-*Last updated: 2026-06-23 after milestone v1.2 definition*
+*Last updated: 2026-06-23 — traceability mapped to Phases 8-10*

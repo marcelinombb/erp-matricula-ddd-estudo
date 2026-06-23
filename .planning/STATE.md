@@ -3,10 +3,10 @@ gsd_state_version: 1.0
 milestone: v1.2
 milestone_name: Testes como Evidência de Design
 status: planning
-last_updated: "2026-06-23T15:00:40.817Z"
+last_updated: "2026-06-23"
 last_activity: 2026-06-23
 progress:
-  total_phases: 0
+  total_phases: 3
   completed_phases: 0
   total_plans: 0
   completed_plans: 0
@@ -15,112 +15,71 @@ progress:
 
 # Project State
 
-**Project:** ERP Matrícula — Projeto Didático DDD
-**Status:** Phase complete — ready for verification
-**Current Phase:** 07
-**Last Updated:** 2026-06-20
-
----
-
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-06-20)
+See: .planning/PROJECT.md (updated 2026-06-23)
 
 **Core value:** Um desenvolvedor deve conseguir, sozinho, ler o projeto do início ao fim e entender por que DDD existe, onde diverge da arquitetura tradicional e como aplicar cada padrão tático em código Java real.
-**Current focus:** Phase 07 — analise-final-e-balanco-didatico
-
----
-
-## Phase Status
-
-| Phase | Status | Started | Completed |
-|-------|--------|---------|-----------|
-| 1. Design Estrategico | Pending | - | - |
-| 2. Design Tatico e Modelagem Visual | Pending | - | - |
-| 3. Implementacao | Pending | - | - |
-| 4. Interface, Docker e Material Didatico | Pending | - | - |
-
----
+**Current focus:** Phase 08 — testes-unitarios-dominio-ddd (ready to plan)
 
 ## Current Position
 
-Phase: Not started (defining requirements)
-Plan: —
-Status: Defining requirements
-Last activity: 2026-06-23 — Milestone v1.2 started
+Phase: 8 of 10 (Testes Unitários do Domínio DDD)
+Plan: — of TBD
+Status: Ready to plan
+Last activity: 2026-06-23 — Roadmap v1.2 created (Phases 8-10, 9 requirements mapped)
+
+Progress: [░░░░░░░░░░] 0%
 
 ## Performance Metrics
 
-- Plans completed: 0
-- Requirements delivered: 0 / 51
-- Phases completed: 0 / 4
+**Velocity (v1.2):**
+- Total plans completed: 0
+- Average duration: —
+- Total execution time: —
 
----
+**By Phase:**
 
-## Decisions Log
+| Phase | Plans | Total | Avg/Plan |
+|-------|-------|-------|----------|
+| — | — | — | — |
 
-*(Empty — populated during execution)*
-
----
+*Updated after each plan completion*
 
 ## Accumulated Context
 
 ### Key Constraints
 
-- Domínio implementado apenas: Bounded Context Matrícula
-- Stack obrigatória: Java 21, Spring Boot 3.x, MyBatis, PostgreSQL, Docker, Maven
-- MyBatis (não JPA) — decisão pedagógica central: mapeamento explícito evidencia separação domínio/persistência
-- Código em português — reforça Linguagem Ubíqua; nomes em inglês quebrariam a coerência
-- Diagramas em Mermaid — sem ferramentas externas
+- Testes unitários: JUnit 5 + Mockito via spring-boot-starter-test (sem Testcontainers)
+- Módulo DDD (erp-matricula-ddd, porta 8080): testes em src/test/java do módulo
+- Módulo Camadas (erp-matricula-camadas, porta 8081): testes em src/test/java do módulo
+- Ponto pedagógico central: testes do domínio DDD sem Spring ou banco (zero mocks de infra)
+- Contraste intencional: testes do módulo camadas devem mostrar acoplamento e mocks pesados
 
-### Open Decisions (from research)
+### Decisions
 
-- Granularidade do Aggregate Matrícula vs. Turma: opção (a) recomendada — ignorar vagas disponíveis no v1, foco nas invariantes de Matrícula
-- Optimistic locking: nota explicativa na Fase 3/INF com padrão `UPDATE ... WHERE version = ?`, sem implementação completa no v1
-- Projeções de leitura: abordagem (a) — query direta via Mapper retornando DTO de projeção, sem passar pelo Repository/Aggregate
-- Context Map em código: listeners stub com `@TransactionalEventListener` e Javadoc explicando o contrato (APL-05)
+- Phase 8 antes da Phase 9: testes DDD primeiro para o leitor ter o "benchmark limpo" antes do contraste
+- Phase 10 após ambos: documentação comparativa usa dados reais dos testes criados nas Phases 8 e 9
+- Testes de integração (Testcontainers) adiados para v1.3
 
-### Blockers
+### Blockers/Concerns
 
-*(None)*
-
----
+None.
 
 ## Deferred Items
 
-Items acknowledged and deferred at milestone close on 2026-06-23:
+Items carregados do fechamento de v1.1 (2026-06-23):
 
 | Category | Item | Status |
 |----------|------|--------|
-| verification_gap | Phase 04 — 04-VERIFICATION.md: 3 testes manuais (docker compose up + POST /matriculas, payload inválido, limite disciplinas) | human_needed — requer Docker rodando |
-| uat_gap | Phase 05 — 05-HUMAN-UAT.md: discrepância trail 06-acoplamento-banco.md (falsa positiva — countDisciplinas é chamado na linha 149) | partial — julgamento pedagógico, não bug |
-| uat_gap | Phase 05 — 05-HUMAN-UAT.md: DisciplinaServiceImpl não exposto via HTTP (DIAG-04 visível por leitura, não executável) | partial — julgamento pedagógico |
-| uat_gap | Phase 07 — 07-UAT.md: 3 verificações de capacidade argumentativa do leitor em 12-analise-final.md | testing — requer leitura humana do documento |
-| verification_gap | Phase 07 — 07-01-VERIFICATION.md: status human_needed (5/5 truths verificadas automaticamente) | human_needed — julgamento editorial |
-
-Known deferred items at close: 1 (see STATE.md Deferred Items)
-
----
-| Phase 06 P01 | 173 | 2 tasks | 3 files |
-| Phase 06 P03 | 20 | 2 tasks | 3 files |
-| Phase 06 P04 | 2 | 2 tasks | 2 files |
-| Phase 06 P05 | 1min | 1 tasks | 1 files |
-| Phase 07 P01 | 2 | 2 tasks | 2 files |
+| verification_gap | Phase 04 — 3 testes manuais (docker compose up + HTTP) | human_needed — requer Docker rodando |
+| uat_gap | Phase 05 — countDisciplinas trail (falsa positiva pedagógica) | partial — julgamento pedagógico |
+| uat_gap | Phase 05 — DisciplinaServiceImpl não exposto via HTTP | partial — julgamento pedagógico |
+| uat_gap | Phase 07 — 3 verificações de capacidade argumentativa do leitor | testing — requer leitura humana |
+| verification_gap | Phase 07 — 07-01-VERIFICATION.md human_needed (5/5 auto-verificadas) | human_needed — julgamento editorial |
 
 ## Session Continuity
 
-Last session: 2026-06-22T18:58:07.957Z
-Stopped at: Completed Phase 07 Plan 01 - 12-analise-final.md created
+Last session: 2026-06-23
+Stopped at: Roadmap v1.2 criado — Phases 8-10 definidas, 9/9 requisitos mapeados
 Resume file: None
-
-## Quick Tasks Completed
-
-| # | Description | Date | Commit | Directory |
-|---|-------------|------|--------|-----------|
-| 260621-q9s | commit the code from past milestones | 2026-06-21 | 7f64d74 | [260621-q9s-commit-the-code-from-past-milestones](./quick/260621-q9s-commit-the-code-from-past-milestones/) |
-
----
-
-## Operator Next Steps
-
-- Start the next milestone with /gsd-new-milestone
