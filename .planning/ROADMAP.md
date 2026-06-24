@@ -36,7 +36,7 @@ Full details: [.planning/milestones/v1.1-ROADMAP.md](milestones/v1.1-ROADMAP.md)
 **Milestone Goal:** Demonstrar, através de testes reais em ambos os módulos, que um domínio rico (DDD) é mais fácil de testar do que um God Service (arquitetura em camadas).
 
 - [x] **Phase 8: Testes Unitários do Domínio DDD** - Testes sem Spring/banco que evidenciam a testabilidade pura do domínio rico (completed 2026-06-24)
-- [ ] **Phase 9: Testes Unitários do Módulo Camadas** - Testes do God Service que evidenciam o custo de mocks pesados e regras duplicadas
+- [x] **Phase 9: Testes Unitários do Módulo Camadas** - Testes do God Service que evidenciam o custo de mocks pesados e regras duplicadas (completed 2026-06-24)
 - [ ] **Phase 10: Documentação Comparativa de Testabilidade** - Guia didático com dados concretos do comparativo de testabilidade
 
 ## Phase Details
@@ -78,9 +78,9 @@ Plans:
 
 **Plans**: 3 plansPlans:
 
-- [ ] 09-01-PLAN.md — MatriculaServiceImplTest: 7 testes Mockito puro com 4 @Mock — evidência DIAG-03 (TCAM-01)
-- [ ] 09-02-PLAN.md — DisciplinaServiceImplTest: 5 testes com duplicação de regras e divergência de mensagem — evidência DIAG-04 (TCAM-02)
-- [ ] 09-03-PLAN.md — MatriculaControllerTest: 3 testes @WebMvcTest com verify(service, never()) — evidência DIAG-05 (TCAM-03)
+- [x] 09-01-PLAN.md — MatriculaServiceImplTest: 7 testes Mockito puro com 4 @Mock — evidência DIAG-03 (TCAM-01)
+- [x] 09-02-PLAN.md — DisciplinaServiceImplTest: 5 testes com duplicação de regras e divergência de mensagem — evidência DIAG-04 (TCAM-02)
+- [x] 09-03-PLAN.md — MatriculaControllerTest: 3 testes @WebMvcTest com verify(service, never()) — evidência DIAG-05 (TCAM-03)
 
 ### Phase 10: Documentação Comparativa de Testabilidade
 
@@ -107,5 +107,5 @@ Plans:
 | 6. Refatoracao DDD na Arquitetura Tradicional | v1.1 | 5/5 | Complete | 2026-06-22 |
 | 7. Analise Final e Balanco Didatico | v1.1 | 1/1 | Complete | 2026-06-22 |
 | 8. Testes Unitários do Domínio DDD | v1.2 | 4/4 | Complete   | 2026-06-24 |
-| 9. Testes Unitários do Módulo Camadas | v1.2 | 0/3 | Not started | - |
+| 9. Testes Unitários do Módulo Camadas | v1.2 | 3/3 | Complete   | 2026-06-24 |
 | 10. Documentação Comparativa de Testabilidade | v1.2 | 0/TBD | Not started | - |
