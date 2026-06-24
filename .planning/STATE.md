@@ -4,13 +4,13 @@ milestone: v1.2
 milestone_name: Testes como Evidência de Design
 status: executing
 stopped_at: Phase 8 context gathered
-last_updated: "2026-06-23T17:51:25.393Z"
-last_activity: 2026-06-23 — Roadmap v1.2 created (Phases 8-10, 9 requirements mapped)
+last_updated: "2026-06-24T11:27:07.606Z"
+last_activity: 2026-06-24
 progress:
   total_phases: 3
   completed_phases: 0
-  total_plans: 0
-  completed_plans: 0
+  total_plans: 4
+  completed_plans: 1
   percent: 0
 ---
 
@@ -21,16 +21,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-06-23)
 
 **Core value:** Um desenvolvedor deve conseguir, sozinho, ler o projeto do início ao fim e entender por que DDD existe, onde diverge da arquitetura tradicional e como aplicar cada padrão tático em código Java real.
-**Current focus:** Phase 08 — testes-unitarios-dominio-ddd (ready to plan)
+**Current focus:** Phase 08 — testes-unitarios-dominio-ddd
 
 ## Current Position
 
-Phase: 8 of 10 (Testes Unitários do Domínio DDD)
-Plan: — of TBD
+Phase: 08 (testes-unitarios-dominio-ddd) — EXECUTING
+Plan: 2 of 4
 Status: Ready to execute
-Last activity: 2026-06-23 — Roadmap v1.2 created (Phases 8-10, 9 requirements mapped)
+Last activity: 2026-06-24
 
-Progress: [░░░░░░░░░░] 0%
+Progress: [███░░░░░░░] 25%
 
 ## Performance Metrics
 
@@ -82,6 +82,6 @@ Items carregados do fechamento de v1.1 (2026-06-23):
 
 ## Session Continuity
 
-Last session: 2026-06-23T17:15:22.966Z
+Last session: 2026-06-24T11:27:07.599Z
 Stopped at: Phase 8 context gathered
-Resume file: .planning/phases/08-testes-unit-rios-do-dom-nio-ddd/08-CONTEXT.md
+Resume file: None

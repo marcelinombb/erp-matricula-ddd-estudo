@@ -9,7 +9,7 @@
 ### Testes DDD (módulo erp-matricula-ddd)
 
 - [ ] **TDDD-01**: Desenvolvedor pode executar testes unitários do Aggregate Matricula que verificam as 3 invariantes de negócio sem Spring ou banco de dados
-- [ ] **TDDD-02**: Desenvolvedor pode executar testes unitários dos Value Objects (NomeAluno, CodigoDisciplina, StatusMatricula) verificando validação e igualdade por valor
+- [x] **TDDD-02**: Desenvolvedor pode executar testes unitários dos Value Objects (NomeAluno, CodigoDisciplina, StatusMatricula) verificando validação e igualdade por valor
 - [ ] **TDDD-03**: Desenvolvedor pode executar testes unitários do VerificadorElegibilidadeMatricula sem nenhum mock ou dependência de infraestrutura
 - [ ] **TDDD-04**: Desenvolvedor pode executar testes que verificam que Domain Events (MatriculaRealizada, DisciplinaAdicionada, MatriculaCancelada) são emitidos nas operações corretas
 
@@ -47,7 +47,7 @@
 | Requirement | Phase | Status |
 |-------------|-------|--------|
 | TDDD-01 | Phase 8 | Pending |
-| TDDD-02 | Phase 8 | Pending |
+| TDDD-02 | Phase 8 | Complete |
 | TDDD-03 | Phase 8 | Pending |
 | TDDD-04 | Phase 8 | Pending |
 | TCAM-01 | Phase 9 | Pending |

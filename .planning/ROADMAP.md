@@ -56,7 +56,7 @@ Full details: [.planning/milestones/v1.1-ROADMAP.md](milestones/v1.1-ROADMAP.md)
 **Plans**: 4 plans
 Plans:
 
-- [ ] 08-01-PLAN.md — VOs NomeDisciplina e PeriodoLetivo: 5+4 testes de validação e igualdade por valor
+- [x] 08-01-PLAN.md — VOs NomeDisciplina e PeriodoLetivo: 5+4 testes de validação e igualdade por valor
 - [ ] 08-02-PLAN.md — VOs Cpf e AlunoId: 4+3 testes de normalização, dígito verificador e identidade
 - [ ] 08-03-PLAN.md — Aggregate Matricula: 4 invariantes + 4 Domain Events (AlunoMatriculado, DisciplinaAdicionada, MatriculaCancelada)
 - [ ] 08-04-PLAN.md — Stub MatriculaRepositorioEmMemoria + 4 testes do VerificadorElegibilidadeMatricula sem Mockito
@@ -102,6 +102,6 @@ Plans:
 | 5. Diagnostico — Codigo com Anti-padroes | v1.1 | 6/6 | Complete | 2026-06-22 |
 | 6. Refatoracao DDD na Arquitetura Tradicional | v1.1 | 5/5 | Complete | 2026-06-22 |
 | 7. Analise Final e Balanco Didatico | v1.1 | 1/1 | Complete | 2026-06-22 |
-| 8. Testes Unitários do Domínio DDD | v1.2 | 0/4 | Not started | - |
+| 8. Testes Unitários do Domínio DDD | v1.2 | 1/4 | In Progress|  |
 | 9. Testes Unitários do Módulo Camadas | v1.2 | 0/TBD | Not started | - |
 | 10. Documentação Comparativa de Testabilidade | v1.2 | 0/TBD | Not started | - |
