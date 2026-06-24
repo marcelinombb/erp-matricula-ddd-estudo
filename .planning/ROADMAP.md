@@ -35,7 +35,7 @@ Full details: [.planning/milestones/v1.1-ROADMAP.md](milestones/v1.1-ROADMAP.md)
 
 **Milestone Goal:** Demonstrar, através de testes reais em ambos os módulos, que um domínio rico (DDD) é mais fácil de testar do que um God Service (arquitetura em camadas).
 
-- [ ] **Phase 8: Testes Unitários do Domínio DDD** - Testes sem Spring/banco que evidenciam a testabilidade pura do domínio rico
+- [x] **Phase 8: Testes Unitários do Domínio DDD** - Testes sem Spring/banco que evidenciam a testabilidade pura do domínio rico (completed 2026-06-24)
 - [ ] **Phase 9: Testes Unitários do Módulo Camadas** - Testes do God Service que evidenciam o custo de mocks pesados e regras duplicadas
 - [ ] **Phase 10: Documentação Comparativa de Testabilidade** - Guia didático com dados concretos do comparativo de testabilidade
 
@@ -59,7 +59,7 @@ Plans:
 - [x] 08-01-PLAN.md — VOs NomeDisciplina e PeriodoLetivo: 5+4 testes de validação e igualdade por valor
 - [x] 08-02-PLAN.md — VOs Cpf e AlunoId: 4+3 testes de normalização, dígito verificador e identidade
 - [x] 08-03-PLAN.md — Aggregate Matricula: 4 invariantes + 4 Domain Events (AlunoMatriculado, DisciplinaAdicionada, MatriculaCancelada)
-- [ ] 08-04-PLAN.md — Stub MatriculaRepositorioEmMemoria + 4 testes do VerificadorElegibilidadeMatricula sem Mockito
+- [x] 08-04-PLAN.md — Stub MatriculaRepositorioEmMemoria + 4 testes do VerificadorElegibilidadeMatricula sem Mockito
 
 **Cross-cutting constraints:**
 
@@ -102,6 +102,6 @@ Plans:
 | 5. Diagnostico — Codigo com Anti-padroes | v1.1 | 6/6 | Complete | 2026-06-22 |
 | 6. Refatoracao DDD na Arquitetura Tradicional | v1.1 | 5/5 | Complete | 2026-06-22 |
 | 7. Analise Final e Balanco Didatico | v1.1 | 1/1 | Complete | 2026-06-22 |
-| 8. Testes Unitários do Domínio DDD | v1.2 | 3/4 | In Progress|  |
+| 8. Testes Unitários do Domínio DDD | v1.2 | 4/4 | Complete   | 2026-06-24 |
 | 9. Testes Unitários do Módulo Camadas | v1.2 | 0/TBD | Not started | - |
 | 10. Documentação Comparativa de Testabilidade | v1.2 | 0/TBD | Not started | - |

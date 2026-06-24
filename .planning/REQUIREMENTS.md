@@ -10,7 +10,7 @@
 
 - [x] **TDDD-01**: Desenvolvedor pode executar testes unitários do Aggregate Matricula que verificam as 3 invariantes de negócio sem Spring ou banco de dados
 - [x] **TDDD-02**: Desenvolvedor pode executar testes unitários dos Value Objects (NomeAluno, CodigoDisciplina, StatusMatricula) verificando validação e igualdade por valor
-- [ ] **TDDD-03**: Desenvolvedor pode executar testes unitários do VerificadorElegibilidadeMatricula sem nenhum mock ou dependência de infraestrutura
+- [x] **TDDD-03**: Desenvolvedor pode executar testes unitários do VerificadorElegibilidadeMatricula sem nenhum mock ou dependência de infraestrutura
 - [x] **TDDD-04**: Desenvolvedor pode executar testes que verificam que Domain Events (MatriculaRealizada, DisciplinaAdicionada, MatriculaCancelada) são emitidos nas operações corretas
 
 ### Testes Camadas (módulo erp-matricula-camadas)
@@ -48,7 +48,7 @@
 |-------------|-------|--------|
 | TDDD-01 | Phase 8 | Complete |
 | TDDD-02 | Phase 8 | Complete |
-| TDDD-03 | Phase 8 | Pending |
+| TDDD-03 | Phase 8 | Complete |
 | TDDD-04 | Phase 8 | Complete |
 | TCAM-01 | Phase 9 | Pending |
 | TCAM-02 | Phase 9 | Pending |
