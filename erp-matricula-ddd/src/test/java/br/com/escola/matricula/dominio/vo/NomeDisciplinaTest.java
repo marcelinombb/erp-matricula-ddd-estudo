@@ -4,7 +4,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 /**
@@ -57,10 +56,9 @@ class NomeDisciplinaTest {
         var nome100Chars = "A".repeat(100);
 
         // when
-        assertThatCode(() -> new NomeDisciplina(nome100Chars)).doesNotThrowAnyException();
+        var vo = new NomeDisciplina(nome100Chars);
 
         // then
-        var vo = new NomeDisciplina(nome100Chars);
         assertThat(vo.valor()).hasSize(100);
     }
 

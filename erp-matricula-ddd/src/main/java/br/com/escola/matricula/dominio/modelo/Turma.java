@@ -77,18 +77,18 @@ public class Turma {
     }
 
     /**
-     * Verifica se o período letivo desta turma está aberto para matrículas.
+     * Verifica se o período letivo desta turma está aberto para matrículas na data informada.
      *
-     * <p>Regra: Semestre 1 abrange 01/fev a 31/jul. Semestre 2 abrange 01/ago a 31/dez.
-     * Retorna {@code true} se a data atual está dentro do intervalo do semestre.</p>
+     * <p>Regra: Semestre 1 abrange 01/fev a 31/jul. Semestre 2 abrange 01/ago a 31/dez.</p>
      *
-     * <p>O {@code VerificadorElegibilidadeMatricula} usa este método para verificar
-     * se o período está aberto antes de criar uma nova matrícula.</p>
+     * <p>Overload testável: aceita {@code hoje} como parâmetro para que testes unitários
+     * possam controlar a data sem depender de {@code LocalDate.now()} — evita testes
+     * frágeis que falham quando o semestre vira.</p>
      *
-     * @return {@code true} se hoje está dentro do período letivo desta turma
+     * @param hoje data de referência para a verificação
+     * @return {@code true} se {@code hoje} está dentro do intervalo do semestre
      */
-    public boolean periodoEstaAberto() {
-        LocalDate hoje = LocalDate.now();
+    public boolean periodoEstaAberto(LocalDate hoje) {
         int ano = periodoLetivo.ano();
         int semestre = periodoLetivo.semestre();
 
@@ -106,6 +106,18 @@ public class Turma {
         }
 
         return !hoje.isBefore(inicio) && !hoje.isAfter(fim);
+    }
+
+    /**
+     * Verifica se o período letivo desta turma está aberto para matrículas hoje.
+     *
+     * <p>Delegada a {@link #periodoEstaAberto(LocalDate)} com {@code LocalDate.now()}.
+     * Código de produção usa este método; testes usam o overload com data explícita.</p>
+     *
+     * @return {@code true} se hoje está dentro do período letivo desta turma
+     */
+    public boolean periodoEstaAberto() {
+        return periodoEstaAberto(LocalDate.now());
     }
 
     /**

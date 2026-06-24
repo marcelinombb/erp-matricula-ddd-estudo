@@ -141,6 +141,19 @@ class MatriculaTest {
             .isInstanceOf(DisciplinaJaMatriculadaException.class);
     }
 
+    @Test
+    @DisplayName("deve lançar exceção ao cancelar matrícula já cancelada")
+    void deveLancarExcecaoAoCancelarMatriculaJaCancelada() {
+        // given — matrícula ativa cancelada uma vez
+        Matricula matricula = criarMatriculaAtiva();
+        matricula.cancelar();
+        matricula.coletarEventos(); // descarta MatriculaCancelada
+
+        // when / then — segundo cancelamento deve lançar MatriculaCanceladaException
+        assertThatThrownBy(() -> matricula.cancelar())
+            .isInstanceOf(MatriculaCanceladaException.class);
+    }
+
     // =========================================================================
     // Task 2 — Domain Events (AlunoMatriculado, DisciplinaAdicionada, MatriculaCancelada)
     //          e contrato de coletarEventos() como limpeza de lista

@@ -90,10 +90,11 @@ class VerificadorElegibilidadeMatriculaTest {
         var stub = new MatriculaRepositorioEmMemoria().semMatriculaExistente();
         var verificador = new VerificadorElegibilidadeMatricula(stub);
         var alunoAtivo = criarAlunoAtivo();
-        // NOTA: PeriodoLetivo(2026, 1) — semestre 1 (fev-jul de 2026).
-        // periodoEstaAberto() retorna true se executado entre fev e jul de 2026.
-        var periodo = new PeriodoLetivo(2026, 1);
-        var turma = new Turma(new TurmaId(UUID.randomUUID()), "Turma A", periodo, 30);
+        // Turma com período "aberto" fixo: 01/jan a 31/dez de 9999 — independe de LocalDate.now()
+        var periodo = new PeriodoLetivo(9999, 2);
+        var turma = new Turma(new TurmaId(UUID.randomUUID()), "Turma A", periodo, 30) {
+            @Override public boolean periodoEstaAberto() { return true; }
+        };
 
         // when / then — não deve lançar nenhuma exceção (happy path)
         assertThatCode(() -> verificador.verificar(alunoAtivo, turma, periodo))
@@ -140,12 +141,13 @@ class VerificadorElegibilidadeMatriculaTest {
         var stub = new MatriculaRepositorioEmMemoria().comMatriculaExistente();
         var verificador = new VerificadorElegibilidadeMatricula(stub);
         var alunoAtivo = criarAlunoAtivo();
-        // NOTA: PeriodoLetivo(2026, 1) — semestre 1 (fev-jul de 2026).
-        // O verificador verifica o período ANTES de verificar duplicidade — o período
-        // deve estar aberto para que a execução chegue até a verificação de duplicidade.
-        // periodoEstaAberto() retorna true se executado entre fev e jul de 2026.
-        var periodo = new PeriodoLetivo(2026, 1);
-        var turma = new Turma(new TurmaId(UUID.randomUUID()), "Turma B", periodo, 30);
+        // Turma com período "aberto" fixo — independe de LocalDate.now()
+        // O verificador verifica o período ANTES da duplicidade; o período deve estar aberto
+        // para que a execução chegue até a verificação de MatriculaDuplicadaException.
+        var periodo = new PeriodoLetivo(9999, 2);
+        var turma = new Turma(new TurmaId(UUID.randomUUID()), "Turma B", periodo, 30) {
+            @Override public boolean periodoEstaAberto() { return true; }
+        };
 
         // when / then
         assertThatThrownBy(() -> verificador.verificar(alunoAtivo, turma, periodo))
