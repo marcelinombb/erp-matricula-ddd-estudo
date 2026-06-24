@@ -76,7 +76,12 @@ Plans:
   2. Desenvolvedor executa testes do DisciplinaServiceImpl e observa asserções duplicadas para regras que também aparecem no MatriculaServiceImpl — a duplicação de regras se manifesta como duplicação de testes
   3. Desenvolvedor executa testes do MatriculaController e vê a dificuldade: regras de negócio no controller obrigam mocks adicionais e testes de lógica que deveriam estar no domínio
 
-**Plans**: TBD
+**Plans**: 3 plans
+Plans:
+
+- [ ] 09-01-PLAN.md — MatriculaServiceImplTest: 7 testes Mockito puro com 4 @Mock — evidência DIAG-03 (TCAM-01)
+- [ ] 09-02-PLAN.md — DisciplinaServiceImplTest: 5 testes com duplicação de regras e divergência de mensagem — evidência DIAG-04 (TCAM-02)
+- [ ] 09-03-PLAN.md — MatriculaControllerTest: 3 testes @WebMvcTest com verify(service, never()) — evidência DIAG-05 (TCAM-03)
 
 ### Phase 10: Documentação Comparativa de Testabilidade
 
@@ -103,5 +108,5 @@ Plans:
 | 6. Refatoracao DDD na Arquitetura Tradicional | v1.1 | 5/5 | Complete | 2026-06-22 |
 | 7. Analise Final e Balanco Didatico | v1.1 | 1/1 | Complete | 2026-06-22 |
 | 8. Testes Unitários do Domínio DDD | v1.2 | 4/4 | Complete   | 2026-06-24 |
-| 9. Testes Unitários do Módulo Camadas | v1.2 | 0/TBD | Not started | - |
+| 9. Testes Unitários do Módulo Camadas | v1.2 | 0/3 | Not started | - |
 | 10. Documentação Comparativa de Testabilidade | v1.2 | 0/TBD | Not started | - |
