@@ -1,7 +1,8 @@
 # ADR-003: Referência Entre Aggregates por ID, Não por Objeto
 
-**Status:** Aceito
+**Status:** Aceito (revisado em 2026-06-25)
 **Data:** 2026-06-20
+**Revisão:** 2026-06-25 — IDs tipados substituídos por UUID direto (ver seção Revisão)
 **Contexto da fase:** Fase 1 — Design Estratégico
 
 ## Contexto
@@ -20,15 +21,15 @@ public class Matricula {
 ```java
 // PREFERIR: referência por ID entre Aggregates
 public class Matricula {
-    private AlunoId alunoId;       // apenas o identificador
-    private TurmaId turmaId;       // apenas o identificador
+    private UUID alunoId;          // apenas o identificador
+    private UUID turmaId;          // apenas o identificador
     private PeriodoLetivo periodo; // Value Object: faz parte do Aggregate
 }
 ```
 
-Com referência por objeto, qualquer operação em `Matrícula` carrega o `Aluno` completo — com todos os dados de endereço, histórico, contatos e responsáveis financeiros que o BC Financeiro ou Acadêmico precisam — mesmo quando o BC Matrícula só precisa saber se o aluno está ativo. Isso cria acoplamento entre Aggregates de BCs distintos e viola o princípio de que cada BC tem seu próprio modelo, independente dos demais.
+Com referência por objeto, qualquer operação em `Matrícula` carrega o `Aluno` completo — mesmo quando o BC Matrícula só precisa saber se o aluno está ativo. Isso cria acoplamento entre Aggregates de BCs distintos e viola o princípio de que cada BC tem seu próprio modelo, independente dos demais.
 
-No schema SQL, essa decisão se reflete da seguinte forma: a tabela `matricula` tem uma coluna `aluno_id UUID`, mas **sem** `FOREIGN KEY REFERENCES alunos(id)`. A ausência de FK entre tabelas de BCs diferentes é intencional — os BCs podem estar em bancos distintos no futuro, e FK relacional entre bancos distintos é impossível. A consistência entre os contextos é garantida por Domain Events, não por FK relacional.
+No schema SQL, essa decisão se reflete assim: a tabela `matricula` tem uma coluna `aluno_id UUID`, mas **sem** `FOREIGN KEY REFERENCES alunos(id)`. A ausência de FK entre tabelas de BCs diferentes é intencional — os BCs podem estar em bancos distintos no futuro, e FK relacional entre bancos distintos é impossível. A consistência entre os contextos é garantida por Domain Events, não por FK relacional.
 
 ## Alternativas Consideradas
 
@@ -36,69 +37,81 @@ No schema SQL, essa decisão se reflete da seguinte forma: a tabela `matricula` 
 
 **Prós:**
 - Acesso conveniente a todos os dados do aluno diretamente do Aggregate
-- Sem necessidade de carregar `Aluno` separadamente no Application Service
 
 **Contras:**
-- Acopla o BC Matrícula ao modelo de domínio do BC Aluno — qualquer mudança no modelo de `Aluno` pode quebrar `Matricula`
-- Viola o princípio de que cada BC tem seu próprio modelo de Aluno (veja `bounded-contexts.md` — o Aluno do BC Matrícula é diferente do Aluno do BC Financeiro)
-- Carrega dados desnecessários: para verificar se um aluno pode se matricular, não precisamos de endereço, responsáveis ou histórico de pagamentos
+- Acopla o BC Matrícula ao modelo de domínio do BC Aluno
+- Carrega dados desnecessários
 
 ### Opção B: FOREIGN KEY Relacional Entre Tabelas de BCs Distintos
 
 **Prós:**
 - Integridade referencial garantida pelo banco de dados
-- Conveniente para relatórios que precisam cruzar dados de múltiplos contextos
 
 **Contras:**
-- Cria acoplamento de schema entre Bounded Contexts: se o BC Aluno renomear ou reestruturar sua tabela, o banco de dados de Matrícula quebra
-- Impossível quando BCs estão em bancos distintos (cenário comum em produção com microserviços)
-- Esconde o acoplamento — o desenvolvedor que adiciona uma FK não percebe que está violando a fronteira entre BCs
+- Cria acoplamento de schema entre Bounded Contexts
+- Impossível quando BCs estão em bancos distintos
 
-### Opção C: Referência por ID Apenas para BCs Externos, Objetos Para Entidades do Mesmo BC (Decisão Tomada)
+### Opção C: Referência por ID Apenas para BCs Externos (Decisão Tomada)
 
 **Prós:**
-- Equilíbrio entre conveniência (entidades internas são objetos) e isolamento (referências externas são IDs)
 - `ItemMatricula` faz parte do Aggregate `Matricula` — carregá-lo por objeto é correto
-- `AlunoId` e `TurmaId` são referências externas — IDs tipados evitam confusão em tempo de compilação
+- Referências externas (`alunoId`, `turmaId`) são apenas UUIDs — sem carregar objetos de outros BCs
 
 **Contras:**
-- O desenvolvedor precisa aprender quando usar ID e quando usar objeto — a regra "mesmo BC = objeto, BC diferente = ID" precisa ser explícita
-- Requer disciplina da equipe para não misturar os dois padrões
+- O Application Service precisa carregar `Aluno` e `Matricula` separadamente quando ambos são necessários
 
 ## Decisão
 
-Aggregates de Bounded Contexts diferentes são referenciados apenas por **ID tipado** (`AlunoId`, `TurmaId`). Esses IDs são `record`s Java (Value Objects), não `UUID`s crus — evitam confusão entre IDs de tipos diferentes em tempo de compilação:
+Aggregates de Bounded Contexts diferentes são referenciados apenas por **UUID**. Entidades internas ao mesmo Aggregate (como `ItemMatricula` dentro de `Matricula`) são referenciadas por objeto.
+
+No schema SQL: `aluno_id UUID NOT NULL` na tabela `matricula`, sem `FOREIGN KEY REFERENCES alunos(id)`.
+
+## Revisão de 2026-06-25: Remoção dos IDs Tipados
+
+A versão original desta ADR adotava `AlunoId`, `MatriculaId` e `TurmaId` como `record`s Java com o argumento de segurança em tempo de compilação:
 
 ```java
-// Sem IDs tipados — erro silencioso possível
-public void matricular(UUID alunoId, UUID turmaId) {
-    // Alguém pode passar os parâmetros na ordem errada
-    // e o compilador não detecta
-}
-
-// Com IDs tipados — erro detectado em compilação
-public void matricular(AlunoId alunoId, TurmaId turmaId) {
-    // Impossível passar TurmaId onde AlunoId é esperado
-}
+// Motivação original — detectar inversão de parâmetros em compilação
+public void matricular(AlunoId alunoId, TurmaId turmaId) { ... }
 ```
 
-Entidades internas ao mesmo Aggregate (como `ItemMatricula` dentro de `Matricula`) são referenciadas por objeto — é correto e necessário que o Aggregate carregue seus próprios filhos.
+**Por que foram removidos:**
 
-No schema SQL: `aluno_id UUID NOT NULL` na tabela `matricula`, sem `FOREIGN KEY REFERENCES alunos(id)`. A ausência de FK é comentada no script de migração para deixar a intenção explícita.
+O custo de manutenção dos wrappers supera o benefício na prática deste projeto:
+
+1. **Value Objects têm comportamento — IDs não.** O princípio central do projeto é que VOs existem para encapsular regras e comportamento (`Cpf` valida dígitos, `PeriodoLetivo` calcula semestre, `NomeDisciplina` normaliza e limita 100 chars). `AlunoId(UUID valor)` não tem comportamento — é apenas um `UUID` embrulhado sem lógica.
+
+2. **O custo é real:** cada novo ID requer um record, um TypeHandler MyBatis, um import em cada arquivo que o usa, e `.valor()` em toda chamada. São 3 arquivos a menos, ~800 linhas removidas, e todos os métodos ficaram mais diretos.
+
+3. **A proteção de inversão de parâmetros raramente acontece:** construtores com múltiplos UUIDs do mesmo tipo são o cenário de risco. No Aggregate `Matricula`, o construtor privado de criação não é chamado diretamente pelo código de aplicação — o factory method `criar()` é chamado com `aluno.getId()` e `turma.getId()`, onde os tipos já estão associados aos seus objetos.
+
+**O que permanece inalterado:**
+
+- A regra central desta ADR: referência por ID entre Aggregates de BCs distintos — `UUID`, não objeto completo
+- A ausência de FK relacional entre tabelas de BCs diferentes
+- `ItemMatricula` continua sendo referenciado por objeto (é parte do mesmo Aggregate)
+
+**VOs mantidos — por ter comportamento real:**
+
+| Value Object | Por que fica |
+|---|---|
+| `Cpf` | Validação algoritmo módulo 11 |
+| `PeriodoLetivo` | Cálculo de semestre, descricao(), comparação |
+| `NomeDisciplina` | Strip, validação de branco e máx. 100 chars |
 
 ## Consequências
 
 ### Positivas
 
-- Aggregates menores e focados — `Matricula` carrega apenas os dados necessários para suas invariantes, não o modelo completo de `Aluno` e `Turma`
-- Sem carga desnecessária de dados: para verificar se um aluno pode se matricular, busca-se apenas `AlunoId` + status ativo, não o objeto completo com 20 campos
-- Possibilidade de BCs em bancos distintos no futuro: sem FK relacional entre tabelas de contextos diferentes, a migração para bancos separados não exige quebrar o schema
-- Detecção em tempo de compilação de confusão entre IDs: `AlunoId` não é `TurmaId` — o compilador Java rejeita a troca
+- Aggregates menores e focados — `Matricula` carrega apenas os dados necessários para suas invariantes
+- Sem carga desnecessária de dados: para verificar se um aluno pode se matricular, busca-se apenas `UUID` + status ativo
+- Possibilidade de BCs em bancos distintos no futuro: sem FK relacional entre tabelas de contextos diferentes
 
 ### Negativas (Trade-offs)
 
-- O Application Service precisa carregar `Aluno` e `Matricula` separadamente quando ambos são necessários — mais código de orquestração. O desenvolvedor acostumado a navegar `matricula.getAluno().getNome()` precisará fazer duas queries explícitas
-- Sem FK relacional entre tabelas de BCs distintos, a consistência depende da lógica da aplicação e dos Domain Events — se um evento for perdido, dados inconsistentes podem existir sem que o banco de dados detecte
+- O Application Service precisa carregar `Aluno` e `Matricula` separadamente quando ambos são necessários
+- Sem FK relacional entre tabelas de BCs distintos, a consistência depende da lógica da aplicação e dos Domain Events
+- Sem IDs tipados, uma inversão de parâmetros `(UUID alunoId, UUID turmaId)` não é detectada pelo compilador — requer atenção nos pontos de construção do Aggregate
 
 ## Referências
 
@@ -108,8 +121,8 @@ No schema SQL: `aluno_id UUID NOT NULL` na tabela `matricula`, sem `FOREIGN KEY 
 
 ## Na prática
 
-**[Matricula.java](../../erp-matricula-ddd/src/main/java/br/com/escola/matricula/dominio/modelo/Matricula.java)** — os campos são `AlunoId alunoId` e `TurmaId turmaId` (não `Aluno aluno` e `Turma turma`). Verifique os campos nas linhas 58-63: `private final AlunoId alunoId` e `private final TurmaId turmaId`. O Aggregate Matrícula não carrega o objeto `Aluno` completo — carrega apenas `AlunoId`. Isso significa que uma mudança no modelo de `Aluno` (adicionar campos, renomear atributos) não invalida automaticamente o Aggregate Matrícula.
+**[Matricula.java](../../erp-matricula-ddd/src/main/java/br/com/escola/matricula/dominio/modelo/Matricula.java)** — os campos são `UUID alunoId` e `UUID turmaId` (não `Aluno aluno` e `Turma turma`). O Aggregate Matrícula não carrega o objeto `Aluno` completo — carrega apenas o UUID. Isso significa que uma mudança no modelo de `Aluno` não invalida automaticamente o Aggregate Matrícula.
 
-**[MatriculaController.java](../../erp-matricula-ddd/src/main/java/br/com/escola/matricula/interfaces/MatriculaController.java)** — o Controller constrói um `Aluno` placeholder com dados mínimos (apenas o ID e um CPF fixo) porque o BC Matrícula não tem repositório de `Aluno`. Isso justifica por que a referência por ID é suficiente: o `VerificadorElegibilidadeMatricula` precisa apenas de `aluno.estaAtivo()` — dado que vem com o objeto `Aluno` construído com o campo `ativo=true` (representando a premissa de que o Controller validou que o aluno existe e está ativo antes de criar o Command).
+**[MatriculaController.java](../../erp-matricula-ddd/src/main/java/br/com/escola/matricula/interfaces/MatriculaController.java)** — o Controller constrói um `Aluno` placeholder com dados mínimos porque o BC Matrícula não tem repositório de `Aluno`. O `VerificadorElegibilidadeMatricula` precisa apenas de `aluno.estaAtivo()`.
 
-Cada Bounded Context gerencia seu próprio ciclo de vida: o BC Matrícula não tem repositório de `Aluno` porque o modelo de `Aluno` relevante para matrícula (tem CPF, está ativo?) é diferente do modelo de `Aluno` relevante para o BC Financeiro (tem endereço de cobrança, tem responsável?) e para o BC Acadêmico (tem histórico de notas, tem vínculo com turmas?).
+Cada Bounded Context gerencia seu próprio ciclo de vida: o BC Matrícula não tem repositório de `Aluno` porque o modelo de `Aluno` relevante para matrícula é diferente do modelo relevante para o BC Financeiro e para o BC Acadêmico.
