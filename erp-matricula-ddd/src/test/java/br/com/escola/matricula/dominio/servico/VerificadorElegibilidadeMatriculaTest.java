@@ -5,10 +5,8 @@ import br.com.escola.matricula.dominio.excecao.MatriculaDuplicadaException;
 import br.com.escola.matricula.dominio.excecao.PeriodoFechadoException;
 import br.com.escola.matricula.dominio.modelo.Aluno;
 import br.com.escola.matricula.dominio.modelo.Turma;
-import br.com.escola.matricula.dominio.vo.AlunoId;
 import br.com.escola.matricula.dominio.vo.Cpf;
 import br.com.escola.matricula.dominio.vo.PeriodoLetivo;
-import br.com.escola.matricula.dominio.vo.TurmaId;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -58,7 +56,7 @@ class VerificadorElegibilidadeMatriculaTest {
      * Representa o caso normal de aluno elegível para matrícula.
      */
     private Aluno criarAlunoAtivo() {
-        return new Aluno(new AlunoId(UUID.randomUUID()), CPF_TESTE, "João da Silva", true);
+        return new Aluno(UUID.randomUUID(), CPF_TESTE, "João da Silva", true);
     }
 
     /**
@@ -66,7 +64,7 @@ class VerificadorElegibilidadeMatriculaTest {
      * Representa aluno que não pode ser matriculado (ex: inadimplente).
      */
     private Aluno criarAlunoInativo() {
-        return new Aluno(new AlunoId(UUID.randomUUID()), CPF_TESTE, "Maria Inativa", false);
+        return new Aluno(UUID.randomUUID(), CPF_TESTE, "Maria Inativa", false);
     }
 
     /**
@@ -78,7 +76,7 @@ class VerificadorElegibilidadeMatriculaTest {
      */
     private Turma criarTurmaComPeriodoFechado() {
         var periodo = new PeriodoLetivo(2020, 1);
-        return new Turma(new TurmaId(UUID.randomUUID()), "Turma Passada", periodo, 30);
+        return new Turma(UUID.randomUUID(), "Turma Passada", periodo, 30);
     }
 
     // ─── Testes ─────────────────────────────────────────────────────────────────
@@ -92,7 +90,7 @@ class VerificadorElegibilidadeMatriculaTest {
         var alunoAtivo = criarAlunoAtivo();
         // Turma com período "aberto" fixo: 01/jan a 31/dez de 9999 — independe de LocalDate.now()
         var periodo = new PeriodoLetivo(9999, 2);
-        var turma = new Turma(new TurmaId(UUID.randomUUID()), "Turma A", periodo, 30) {
+        var turma = new Turma(UUID.randomUUID(), "Turma A", periodo, 30) {
             @Override public boolean periodoEstaAberto() { return true; }
         };
 
@@ -145,7 +143,7 @@ class VerificadorElegibilidadeMatriculaTest {
         // O verificador verifica o período ANTES da duplicidade; o período deve estar aberto
         // para que a execução chegue até a verificação de MatriculaDuplicadaException.
         var periodo = new PeriodoLetivo(9999, 2);
-        var turma = new Turma(new TurmaId(UUID.randomUUID()), "Turma B", periodo, 30) {
+        var turma = new Turma(UUID.randomUUID(), "Turma B", periodo, 30) {
             @Override public boolean periodoEstaAberto() { return true; }
         };
 

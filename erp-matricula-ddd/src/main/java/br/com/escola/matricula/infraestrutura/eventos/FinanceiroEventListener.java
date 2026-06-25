@@ -43,7 +43,7 @@ public class FinanceiroEventListener {
     @TransactionalEventListener
     public void aoMatricular(AlunoMatriculado evento) {
         log.info("[BC Financeiro] Criando contrato de cobrança para matrícula {}",
-                 evento.matriculaId().valor());
+                 evento.matriculaId());
         // Stub — implementação real: Fase v2, BC-01 (Bounded Context Financeiro)
     }
 
@@ -58,7 +58,7 @@ public class FinanceiroEventListener {
     @TransactionalEventListener
     public void aoCancelar(MatriculaCancelada evento) {
         log.info("[BC Financeiro] Processando cancelamento de cobrança para matrícula {}",
-                 evento.matriculaId().valor());
+                 evento.matriculaId());
         // Stub — implementação real: Fase v2, BC-01
     }
 }

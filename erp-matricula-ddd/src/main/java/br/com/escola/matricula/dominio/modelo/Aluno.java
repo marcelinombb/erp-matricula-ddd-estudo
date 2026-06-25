@@ -1,9 +1,9 @@
 package br.com.escola.matricula.dominio.modelo;
 
-import br.com.escola.matricula.dominio.vo.AlunoId;
 import br.com.escola.matricula.dominio.vo.Cpf;
 
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * Entidade que representa um Aluno do sistema escolar.
@@ -35,7 +35,7 @@ import java.util.Objects;
 public class Aluno {
 
     /** Identidade permanente do aluno — nunca muda durante o ciclo de vida. */
-    private final AlunoId id;
+    private final UUID id;
 
     /** CPF do aluno — imutável (Value Object). */
     private final Cpf cpf;
@@ -57,7 +57,7 @@ public class Aluno {
      * @param nome nome completo do aluno (nunca nulo)
      * @param ativo {@code true} se o aluno está ativo no sistema
      */
-    public Aluno(AlunoId id, Cpf cpf, String nome, boolean ativo) {
+    public Aluno(UUID id, Cpf cpf, String nome, boolean ativo) {
         this.id = Objects.requireNonNull(id, "Aluno deve ter um id");
         this.cpf = Objects.requireNonNull(cpf, "Aluno deve ter um CPF");
         this.nome = Objects.requireNonNull(nome, "Aluno deve ter um nome");
@@ -65,7 +65,7 @@ public class Aluno {
     }
 
     /** Retorna o identificador único do aluno. */
-    public AlunoId getId() {
+    public UUID getId() {
         return id;
     }
 

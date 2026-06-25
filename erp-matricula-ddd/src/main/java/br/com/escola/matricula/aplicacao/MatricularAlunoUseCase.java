@@ -3,8 +3,9 @@ package br.com.escola.matricula.aplicacao;
 import br.com.escola.matricula.dominio.modelo.Matricula;
 import br.com.escola.matricula.dominio.repositorio.MatriculaRepositorio;
 import br.com.escola.matricula.dominio.servico.VerificadorElegibilidadeMatricula;
-import br.com.escola.matricula.dominio.vo.MatriculaId;
 import org.springframework.context.ApplicationEventPublisher;
+
+import java.util.UUID;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -86,7 +87,7 @@ public class MatricularAlunoUseCase {
      * @throws br.com.escola.matricula.dominio.excecao.PeriodoFechadoException     se o período não está aberto
      * @throws br.com.escola.matricula.dominio.excecao.MatriculaDuplicadaException se já existe matrícula ativa no período
      */
-    public MatriculaId executar(MatricularAlunoCommand command) {
+    public UUID executar(MatricularAlunoCommand command) {
         // 1. Validar elegibilidade (Domain Service — lança exceção se não elegível)
         // REFD-01: Em MatriculaServiceImpl.matricular() (camadas), esta verificação era um bloco
         // de ~10 linhas de if/else (aluno ativo, período aberto) dentro do próprio Service.

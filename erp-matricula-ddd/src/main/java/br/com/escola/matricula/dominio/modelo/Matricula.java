@@ -6,11 +6,8 @@ import br.com.escola.matricula.dominio.evento.MatriculaCancelada;
 import br.com.escola.matricula.dominio.excecao.DisciplinaJaMatriculadaException;
 import br.com.escola.matricula.dominio.excecao.LimiteDisciplinasExcedidoException;
 import br.com.escola.matricula.dominio.excecao.MatriculaCanceladaException;
-import br.com.escola.matricula.dominio.vo.AlunoId;
-import br.com.escola.matricula.dominio.vo.MatriculaId;
 import br.com.escola.matricula.dominio.vo.NomeDisciplina;
 import br.com.escola.matricula.dominio.vo.PeriodoLetivo;
-import br.com.escola.matricula.dominio.vo.TurmaId;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -52,13 +49,13 @@ public class Matricula {
     // --- Campos imutáveis (identidade e contexto da matrícula) ---
 
     /** Identificador único desta matrícula. */
-    private final MatriculaId id;
+    private final UUID id;
 
-    /** Referência por ID ao Aluno matriculado — ADR-003. */
-    private final AlunoId alunoId;
+    /** UUID do Aluno matriculado — referência por ID sem carregar o Aggregate completo. */
+    private final UUID alunoId;
 
-    /** Referência por ID à Turma — ADR-003. */
-    private final TurmaId turmaId;
+    /** UUID da Turma — referência por ID sem carregar o Aggregate completo. */
+    private final UUID turmaId;
 
     /** Período letivo desta matrícula. */
     private final PeriodoLetivo periodoLetivo;
@@ -98,8 +95,8 @@ public class Matricula {
      * </ul>
      * </p>
      */
-    private Matricula(AlunoId alunoId, TurmaId turmaId, PeriodoLetivo periodoLetivo) {
-        this.id = new MatriculaId(UUID.randomUUID());
+    private Matricula(UUID alunoId, UUID turmaId, PeriodoLetivo periodoLetivo) {
+        this.id = UUID.randomUUID();
         this.alunoId = alunoId;
         this.turmaId = turmaId;
         this.periodoLetivo = periodoLetivo;
@@ -130,7 +127,7 @@ public class Matricula {
      * @param status       status atual (pode ser Ativa, Cancelada, Concluida)
      * @param disciplinas  disciplinas já incluídas (cópia defensiva é feita internamente)
      */
-    public Matricula(MatriculaId id, AlunoId alunoId, TurmaId turmaId,
+    public Matricula(UUID id, UUID alunoId, UUID turmaId,
                      PeriodoLetivo periodoLetivo, StatusMatricula status,
                      List<ItemMatricula> disciplinas) {
         this.id = id;
@@ -153,7 +150,7 @@ public class Matricula {
      * @param periodoLetivo período letivo da matrícula
      * @return nova instância de {@code Matricula} no estado {@code Ativa}
      */
-    public static Matricula criar(AlunoId alunoId, TurmaId turmaId, PeriodoLetivo periodoLetivo) {
+    public static Matricula criar(UUID alunoId, UUID turmaId, PeriodoLetivo periodoLetivo) {
         // REFD-02: No módulo camadas (MatriculaServiceImpl.matricular()), criação era:
         // new Matricula(); matricula.setStatus("ATIVA"); — dois passos separáveis via setter público.
         // Aqui, criar() garante status Ativa como parte da construção — sem setter público possível.
@@ -265,17 +262,17 @@ public class Matricula {
     // =========================================================================
 
     /** Retorna o identificador único desta matrícula. */
-    public MatriculaId getId() {
+    public UUID getId() {
         return id;
     }
 
-    /** Retorna a referência ao identificador do aluno. */
-    public AlunoId getAlunoId() {
+    /** Retorna o UUID do aluno matriculado. */
+    public UUID getAlunoId() {
         return alunoId;
     }
 
-    /** Retorna a referência ao identificador da turma. */
-    public TurmaId getTurmaId() {
+    /** Retorna o UUID da turma. */
+    public UUID getTurmaId() {
         return turmaId;
     }
 

@@ -1,10 +1,10 @@
 package br.com.escola.matricula.dominio.modelo;
 
 import br.com.escola.matricula.dominio.vo.PeriodoLetivo;
-import br.com.escola.matricula.dominio.vo.TurmaId;
 
 import java.time.LocalDate;
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * Entidade que representa uma Turma oferecida em um período letivo específico.
@@ -23,7 +23,7 @@ import java.util.Objects;
 public class Turma {
 
     /** Identificador único da turma. */
-    private final TurmaId id;
+    private final UUID id;
 
     /** Nome descritivo da turma (ex: "Matemática Básica — Turma A"). */
     private final String nome;
@@ -44,7 +44,7 @@ public class Turma {
      * @throws NullPointerException     se id, nome ou periodoLetivo forem nulos
      * @throws IllegalArgumentException se vagasMaximas for menor ou igual a zero
      */
-    public Turma(TurmaId id, String nome, PeriodoLetivo periodoLetivo, int vagasMaximas) {
+    public Turma(UUID id, String nome, PeriodoLetivo periodoLetivo, int vagasMaximas) {
         this.id = Objects.requireNonNull(id, "Turma deve ter um id");
         this.nome = Objects.requireNonNull(nome, "Turma deve ter um nome");
         this.periodoLetivo = Objects.requireNonNull(periodoLetivo, "Turma deve ter um período letivo");
@@ -57,7 +57,7 @@ public class Turma {
     }
 
     /** Retorna o identificador único da turma. */
-    public TurmaId getId() {
+    public UUID getId() {
         return id;
     }
 

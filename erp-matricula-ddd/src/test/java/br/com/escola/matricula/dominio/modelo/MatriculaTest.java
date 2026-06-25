@@ -6,11 +6,8 @@ import br.com.escola.matricula.dominio.evento.MatriculaCancelada;
 import br.com.escola.matricula.dominio.excecao.DisciplinaJaMatriculadaException;
 import br.com.escola.matricula.dominio.excecao.LimiteDisciplinasExcedidoException;
 import br.com.escola.matricula.dominio.excecao.MatriculaCanceladaException;
-import br.com.escola.matricula.dominio.vo.AlunoId;
-import br.com.escola.matricula.dominio.vo.MatriculaId;
 import br.com.escola.matricula.dominio.vo.NomeDisciplina;
 import br.com.escola.matricula.dominio.vo.PeriodoLetivo;
-import br.com.escola.matricula.dominio.vo.TurmaId;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -64,8 +61,8 @@ class MatriculaTest {
      */
     private Matricula criarMatriculaAtiva() {
         Matricula matricula = Matricula.criar(
-            new AlunoId(UUID.randomUUID()),
-            new TurmaId(UUID.randomUUID()),
+            UUID.randomUUID(),
+            UUID.randomUUID(),
             new PeriodoLetivo(2026, 1)
         );
         // Descarta AlunoMatriculado gerado pelo criar() — semântica: coletarEventos() limpa a lista
@@ -98,9 +95,9 @@ class MatriculaTest {
         // given — usa construtor de reconstituição para simular matrícula já cancelada
         // (não usa criar() seguido de cancelar() — testa o Guard 1 diretamente)
         var matriculaCancelada = new Matricula(
-            new MatriculaId(UUID.randomUUID()),
-            new AlunoId(UUID.randomUUID()),
-            new TurmaId(UUID.randomUUID()),
+            UUID.randomUUID(),
+            UUID.randomUUID(),
+            UUID.randomUUID(),
             new PeriodoLetivo(2026, 1),
             new StatusMatricula.Cancelada(LocalDateTime.now().minusDays(1)),
             List.of()
@@ -163,8 +160,8 @@ class MatriculaTest {
     @DisplayName("deve emitir evento AlunoMatriculado ao criar matrícula")
     void deveEmitirEventoAlunoMatriculadoAoCriar() {
         // given — valores conhecidos para verificar os campos do evento
-        var alunoId = new AlunoId(UUID.randomUUID());
-        var turmaId = new TurmaId(UUID.randomUUID());
+        var alunoId = UUID.randomUUID();
+        var turmaId = UUID.randomUUID();
         var periodo = new PeriodoLetivo(2026, 1);
 
         // when
@@ -228,8 +225,8 @@ class MatriculaTest {
     void coletarEventosDeveRetornarListaVaziaNaSegundaChamada() {
         // given — Matricula.criar() gera AlunoMatriculado na lista interna
         var matricula = Matricula.criar(
-            new AlunoId(UUID.randomUUID()),
-            new TurmaId(UUID.randomUUID()),
+            UUID.randomUUID(),
+            UUID.randomUUID(),
             new PeriodoLetivo(2026, 1)
         );
 

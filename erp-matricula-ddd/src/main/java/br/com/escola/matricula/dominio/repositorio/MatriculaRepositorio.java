@@ -1,12 +1,11 @@
 package br.com.escola.matricula.dominio.repositorio;
 
 import br.com.escola.matricula.dominio.modelo.Matricula;
-import br.com.escola.matricula.dominio.vo.AlunoId;
-import br.com.escola.matricula.dominio.vo.MatriculaId;
 import br.com.escola.matricula.dominio.vo.PeriodoLetivo;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 /**
  * Interface de Repositório declarada no DOMÍNIO — não na infraestrutura.
@@ -46,33 +45,24 @@ public interface MatriculaRepositorio {
      * @param id identificador da matrícula
      * @return {@code Optional} com a matrícula, ou vazio se não encontrada
      */
-    Optional<Matricula> buscarPorId(MatriculaId id);
+    Optional<Matricula> buscarPorId(UUID id);
 
-    // REFD-05 (DDD-05): Compare com MatriculaRepository (camadas) — findByAlunoId(UUID alunoId).
-    // Aqui: parâmetro AlunoId (Value Object com semântica) em vez de UUID cru. O tipo do
-    // parâmetro documenta a intenção; ao lado de buscarPorId(MatriculaId), a diferença é legível.
     /**
      * Busca todas as matrículas de um aluno (em qualquer estado).
      *
-     * @param alunoId identificador do aluno
+     * @param alunoId UUID do aluno
      * @return lista de matrículas do aluno (pode ser vazia)
      */
-    List<Matricula> buscarPorAluno(AlunoId alunoId);
+    List<Matricula> buscarPorAluno(UUID alunoId);
 
-    // REFD-05 (DDD-05): No módulo camadas não existe equivalente com semântica de negócio.
-    // MatriculaRepository.countDisciplinas(UUID) expõe uma contagem SQL como método — não uma pergunta
-    // de negócio. Aqui, o nome é uma frase de negócio: "existe matrícula ativa para aluno no período?".
     /**
      * Verifica se existe uma matrícula ativa para o aluno no período especificado.
      *
-     * <p>Usado pelo {@code VerificadorElegibilidadeMatricula} para detectar
-     * tentativas de matrícula duplicada.</p>
-     *
-     * @param alunoId identificador do aluno
+     * @param alunoId UUID do aluno
      * @param periodo período letivo a verificar
      * @return {@code true} se existe matrícula com status {@code Ativa} para o aluno no período
      */
-    boolean existeMatriculaAtiva(AlunoId alunoId, PeriodoLetivo periodo);
+    boolean existeMatriculaAtiva(UUID alunoId, PeriodoLetivo periodo);
 
     // REFD-05 (DDD-05): No módulo camadas, o Service chamava insert(Matricula) e itemMatriculaRepository.insert(item)
     // separadamente — o chamador decidia como persistir as partes. Aqui, salvar() persiste o

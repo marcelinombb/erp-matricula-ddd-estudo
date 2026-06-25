@@ -83,8 +83,8 @@ public record MatriculaDto(
                 .toList();
 
         return new MatriculaDto(
-                matricula.getId().valor().toString(),
-                matricula.getAlunoId().valor().toString(),
+                matricula.getId().toString(),
+                matricula.getAlunoId().toString(),
                 statusDescricao,
                 matricula.getDisciplinas().size(),
                 disciplinas

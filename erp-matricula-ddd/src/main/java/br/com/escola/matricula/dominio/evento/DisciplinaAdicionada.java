@@ -1,10 +1,9 @@
 package br.com.escola.matricula.dominio.evento;
 
-import br.com.escola.matricula.dominio.vo.AlunoId;
-import br.com.escola.matricula.dominio.vo.MatriculaId;
 import br.com.escola.matricula.dominio.vo.NomeDisciplina;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 /**
  * Domain Event publicado quando uma disciplina é adicionada a uma matrícula existente.
@@ -21,19 +20,12 @@ import java.time.LocalDateTime;
  * </ul>
  * </p>
  *
- * <p><strong>Por que é um Domain Event e não um método de callback?</strong></p>
- *
- * <p>O BC Matrícula não deve conhecer como o BC Acadêmico registra disciplinas.
- * O evento desacopla: Matrícula publica o fato "disciplina foi adicionada";
- * Acadêmico decide como reagir. Se Acadêmico mudar sua lógica interna, Matrícula
- * não é afetado.</p>
- *
  * <p><strong>Sem interface base (Decisão D-11):</strong> Domain Events são
  * {@code record}s independentes sem interface comum. Simples e pedagógico.</p>
  */
 public record DisciplinaAdicionada(
-    MatriculaId matriculaId,
-    AlunoId alunoId,
+    UUID matriculaId,
+    UUID alunoId,
     NomeDisciplina disciplina,
     LocalDateTime ocorridoEm
 ) {

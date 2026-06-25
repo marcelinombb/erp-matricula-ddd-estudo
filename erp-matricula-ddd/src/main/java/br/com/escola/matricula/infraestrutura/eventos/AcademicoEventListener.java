@@ -35,7 +35,7 @@ public class AcademicoEventListener {
     @TransactionalEventListener
     public void aoMatricular(AlunoMatriculado evento) {
         log.info("[BC Academico] Registrando vínculo aluno-turma para matrícula {}",
-                 evento.matriculaId().valor());
+                 evento.matriculaId());
         // Stub — implementação real: Fase v2, BC-02 (Bounded Context Acadêmico)
     }
 
@@ -50,7 +50,7 @@ public class AcademicoEventListener {
     @TransactionalEventListener
     public void aoDisciplinaAdicionada(DisciplinaAdicionada evento) {
         log.info("[BC Academico] Atualizando histórico: disciplina {} adicionada à matrícula {}",
-                 evento.disciplina().valor(), evento.matriculaId().valor());
+                 evento.disciplina().valor(), evento.matriculaId());
         // Stub — implementação real: Fase v2, BC-02
     }
 }

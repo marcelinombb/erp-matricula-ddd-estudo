@@ -771,7 +771,7 @@ spring:
 
 ---
 
-## Open Questions
+## Open Questions (RESOLVED)
 
 1. **Renomeação vs. criação de novo diretório para `erp-matricula-ddd`**
    - O que sabemos: o CONTEXT.md marca como deferred para o planner decidir
