@@ -125,7 +125,122 @@ Sem `@Transactional` para queries somente-leitura (a menos que necessário por c
 
 ---
 
-## 4. MyBatis: Pitfalls Críticos
+## 4. Como o MyBatis Reconstrói Objetos de Domínio
+
+O MyBatis não sabe criar `Matricula`. Ele sabe criar `MatriculaRow`. A conversão é responsabilidade do `MatriculaRowMapper`. O fluxo completo é:
+
+```
+SQL query
+   │
+   ▼
+XML ResultMap              ← mapeia colunas SQL → MatriculaRow (+ List<ItemMatriculaRow>)
+   │
+   ▼
+MatriculaRow               ← objeto plano, só dados, espelho da tabela, sem comportamento
+   │
+   ▼
+MatriculaRowMapper.toDomain()  ← ÚNICO lugar que conhece os dois modelos
+   │
+   ▼
+Matricula (domínio)        ← objeto rico com comportamento (cancelar, adicionarDisciplina…)
+```
+
+### 4.1 Os três componentes e seus papéis
+
+| Classe | Responsabilidade | Pacote |
+|--------|-----------------|--------|
+| `MatriculaRow` | Espelha as colunas da tabela — só campos públicos, sem lógica | `infraestrutura/persistencia/` |
+| `MatriculaRowMapper` | Converte Row ↔ Domínio — o único que conhece os dois mundos | `infraestrutura/persistencia/` |
+| `MatriculaRepositorioMyBatis` | Chama Mapper SQL → obtém Row → chama RowMapper → retorna domínio | `infraestrutura/persistencia/` |
+
+### 4.2 `MatriculaRow` — por que não é um `record`?
+
+`MatriculaRow` é uma classe com campos públicos porque o MyBatis popula via reflexão sem construtor com argumentos. Não tem comportamento — é só um contêiner de dados. Compare:
+
+```java
+// MatriculaRow — dados planos (infraestrutura)
+public class MatriculaRow {
+    public UUID id;
+    public UUID alunoId;
+    public String status;           // "ATIVA", "CANCELADA", "CONCLUIDA"
+    public LocalDate periodoInicio; // banco guarda datas; domínio usa PeriodoLetivo(ano, semestre)
+    public LocalDateTime canceladaEm;
+    public List<ItemMatriculaRow> itens = new ArrayList<>();
+}
+
+// Matricula — comportamento rico (domínio)
+// tem cancelar(), adicionarDisciplina(), coletarEventos()…
+// usa PeriodoLetivo(ano, semestre), StatusMatricula (sealed), List<ItemMatricula>
+```
+
+### 4.3 `MatriculaRowMapper` — a fronteira explícita
+
+```java
+// toDomain: banco → domínio
+public Matricula toDomain(MatriculaRow row) {
+    var periodo = new PeriodoLetivo(
+        row.periodoInicio.getYear(),
+        row.periodoInicio.getMonthValue() <= 6 ? 1 : 2  // data SQL → semestre
+    );
+    var status = reconstruirStatus(row);  // String → sealed StatusMatricula
+    var disciplinas = row.itens.stream()
+        .map(item -> new ItemMatricula(new NomeDisciplina(item.disciplina)))
+        .toList();
+    return new Matricula(row.id, row.alunoId, row.turmaId, periodo, status, disciplinas);
+}
+
+// fromDomain: domínio → banco
+public MatriculaRow fromDomain(Matricula matricula) {
+    var row = new MatriculaRow();
+    row.id = matricula.getId();
+    row.periodoInicio = LocalDate.of(ano, semestre == 1 ? 2 : 8, 1);  // semestre → data SQL
+    row.status = switch (matricula.getStatus()) {
+        case StatusMatricula.Ativa a     -> "ATIVA";
+        case StatusMatricula.Cancelada c -> "CANCELADA";
+        case StatusMatricula.Concluida c -> "CONCLUIDA";
+    };
+    // …
+    return row;
+}
+```
+
+Conversões não-triviais acontecem aqui (e só aqui): `PeriodoLetivo` ↔ datas SQL, `StatusMatricula` sealed ↔ `VARCHAR`.
+
+### 4.4 O XML só produz `Row` — nunca domínio
+
+O `resultMap` no XML aponta para `MatriculaRow`, não para `Matricula`:
+
+```xml
+<resultMap id="MatriculaResultMap" type="MatriculaRow">
+  <id     property="id"      column="matricula_id"/>
+  <result property="status"  column="status"/>
+  <collection property="itens" ofType="ItemMatriculaRow" notNullColumn="item_disciplina">
+    <result property="disciplina" column="item_disciplina"/>
+  </collection>
+</resultMap>
+```
+
+O XML não conhece `Matricula`. Quem faz a ponte é o `MatriculaRepositorioMyBatis`:
+
+```java
+public Optional<Matricula> buscarPorId(UUID id) {
+    MatriculaRow row = mapper.buscarPorId(id);          // XML → Row
+    return Optional.ofNullable(row).map(rowMapper::toDomain); // Row → Domínio
+}
+```
+
+### 4.5 Para adicionar conversão de novo campo
+
+1. Adicionar coluna ao SQL + alias no `<select>`
+2. Adicionar campo em `XxxRow`
+3. Mapear no `<resultMap>` com `<result property="…" column="…"/>`
+4. Converter em `XxxRowMapper.toDomain()` e `fromDomain()`
+
+Referências: `MatriculaRow.java`, `MatriculaRowMapper.java`, `MatriculaMapper.xml`, `MatriculaRepositorioMyBatis.java`
+
+---
+
+## 5. MyBatis: Pitfalls Críticos
 
 ### Pitfall 1 — UUID PostgreSQL exige `jdbcType=OTHER`
 
@@ -183,7 +298,7 @@ Nunca fazer INSERT/UPDATE item-a-item com diff — tratar a coleção como unida
 
 ---
 
-## 5. Value Objects: Padrão com Java 21 Record
+## 6. Value Objects: Padrão com Java 21 Record
 
 ```java
 // dominio/vo/NovoVO.java
@@ -203,7 +318,7 @@ public record NovoVO(String valor) {
 
 ---
 
-## 6. Schema PostgreSQL: Convenções
+## 7. Schema PostgreSQL: Convenções
 
 Detalhes em `src/main/resources/db/migration/V1__schema.sql` e `docs/adrs/ADR-003-*.md`.
 
@@ -216,7 +331,7 @@ Regras resumidas:
 
 ---
 
-## 7. Convenções de Nomenclatura
+## 8. Convenções de Nomenclatura
 
 Todos os identificadores em **português** (ADR-004). Ver `docs/adrs/ADR-004-codigo-em-portugues.md`.
 
@@ -239,7 +354,7 @@ Todos os identificadores em **português** (ADR-004). Ver `docs/adrs/ADR-004-cod
 
 ---
 
-## 8. Referências Rápidas
+## 9. Referências Rápidas
 
 Caminhos relativos a `erp-matricula-ddd/src/main/java/br/com/escola/matricula/` salvo indicação:
 
