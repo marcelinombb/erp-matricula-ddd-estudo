@@ -238,6 +238,73 @@ public Optional<Matricula> buscarPorId(UUID id) {
 
 Referências: `MatriculaRow.java`, `MatriculaRowMapper.java`, `MatriculaMapper.xml`, `MatriculaRepositorioMyBatis.java`
 
+### 4.6 Quando usar TypeHandler em vez de RowMapper
+
+Dois mecanismos distintos fazem a conversão VO ↔ banco:
+
+| Mecanismo | Usa quando | Exemplo |
+|-----------|-----------|---------|
+| `RowMapper` | VO tem **mais de uma coluna** no banco | `PeriodoLetivo(ano, semestre)` → duas colunas `DATE` |
+| `TypeHandler` | VO tem **exatamente uma coluna** no banco | `Cpf` → uma coluna `VARCHAR(11)` |
+
+**TypeHandler** é registrado uma vez e o MyBatis aplica automaticamente em qualquer query que retorne ou receba aquele tipo Java — não é preciso escrever conversão no RowMapper.
+
+#### Estrutura canônica — `CpfTypeHandler`
+
+```java
+@MappedTypes(Cpf.class)          // tipo Java que este handler converte
+@MappedJdbcTypes(JdbcType.VARCHAR) // tipo JDBC correspondente
+public class CpfTypeHandler extends BaseTypeHandler<Cpf> {
+
+    // escrita: Java → banco (INSERT / UPDATE / WHERE)
+    @Override
+    public void setNonNullParameter(PreparedStatement ps, int i, Cpf cpf, JdbcType jdbcType)
+            throws SQLException {
+        ps.setString(i, cpf.valor()); // extrai o valor primitivo do VO
+    }
+
+    // leitura por nome de coluna (ResultMap e ResultType)
+    @Override
+    public Cpf getNullableResult(ResultSet rs, String columnName) throws SQLException {
+        String valor = rs.getString(columnName);
+        return valor != null ? new Cpf(valor) : null; // reconstrói o VO
+    }
+
+    // leitura por índice (ResultSet posicional)
+    @Override
+    public Cpf getNullableResult(ResultSet rs, int columnIndex) throws SQLException {
+        String valor = rs.getString(columnIndex);
+        return valor != null ? new Cpf(valor) : null;
+    }
+
+    // leitura de stored procedures (obrigatório pela interface)
+    @Override
+    public Cpf getNullableResult(CallableStatement cs, int columnIndex) throws SQLException {
+        String valor = cs.getString(columnIndex);
+        return valor != null ? new Cpf(valor) : null;
+    }
+}
+```
+
+#### Registro automático — `application.yml`
+
+```yaml
+mybatis:
+  type-handlers-package: br.com.escola.matricula.infraestrutura.persistencia.typehandler
+```
+
+Todos os handlers no pacote são detectados automaticamente. Não é preciso registrar `@Bean` manualmente.
+
+#### Para adicionar um TypeHandler para um novo VO
+
+1. Criar `NovoVOTypeHandler` em `infraestrutura/persistencia/typehandler/`
+2. Herdar `BaseTypeHandler<NovoVO>`
+3. Anotar com `@MappedTypes(NovoVO.class)` e `@MappedJdbcTypes(JdbcType.VARCHAR)` (ou o tipo JDBC correto)
+4. Implementar os 4 métodos — `setNonNullParameter` extrai o valor primitivo; `getNullableResult` reconstrói o VO
+5. **Nada mais** — o package scanning registra automaticamente
+
+Referências: `typehandler/CpfTypeHandler.java`, `typehandler/UUIDTypeHandler.java`
+
 ---
 
 ## 5. MyBatis: Pitfalls Críticos
