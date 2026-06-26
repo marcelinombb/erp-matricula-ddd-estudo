@@ -421,7 +421,138 @@ Todos os identificadores em **português** (ADR-004). Ver `docs/adrs/ADR-004-cod
 
 ---
 
-## 9. Referências Rápidas
+## 9. Adicionando um Novo Bounded Context
+
+Um Bounded Context (BC) é um namespace independente com seu próprio modelo de domínio. Ele não enxerga os internos de outros BCs — só se comunica via Domain Events.
+
+### 9.1 Onde o novo BC vive
+
+Cada BC é um pacote irmão de `matricula/` sob a raiz `br.com.escola`:
+
+```
+br.com.escola/
+├── matricula/          ← BC existente
+│   ├── aplicacao/
+│   ├── dominio/
+│   ├── infraestrutura/
+│   └── interfaces/
+└── financeiro/         ← novo BC (exemplo)
+    ├── aplicacao/
+    ├── dominio/
+    │   ├── modelo/
+    │   ├── repositorio/
+    │   ├── servico/
+    │   └── vo/
+    ├── infraestrutura/
+    │   ├── config/
+    │   └── persistencia/
+    └── interfaces/
+```
+
+### 9.2 Atualizar `ErpMatriculaApplication.java`
+
+`@SpringBootApplication` só faz scan do próprio pacote e subpacotes. Ao adicionar um BC irmão, elevar a raiz de scan para `br.com.escola` e ampliar o `@MapperScan`:
+
+```java
+// ANTES — só escaneia br.com.escola.matricula.*
+@SpringBootApplication
+@MapperScan("br.com.escola.matricula.infraestrutura.persistencia")
+
+// DEPOIS — escaneia br.com.escola.* (todos os BCs)
+@SpringBootApplication(scanBasePackages = "br.com.escola")
+@MapperScan({
+    "br.com.escola.matricula.infraestrutura.persistencia",
+    "br.com.escola.financeiro.infraestrutura.persistencia"
+})
+```
+
+### 9.3 Checklist de artefatos do novo BC
+
+Mesma estrutura do BC Matrícula — criar nesta ordem:
+
+```
+1. [ ] financeiro/dominio/vo/           — Value Objects próprios do BC Financeiro
+2. [ ] financeiro/dominio/modelo/       — Aggregate Root do BC Financeiro
+3. [ ] financeiro/dominio/repositorio/  — interface de repositório (no domínio, não na infra)
+4. [ ] financeiro/dominio/servico/      — Domain Services sem @Service
+5. [ ] financeiro/aplicacao/            — UseCases, Commands, DTOs
+6. [ ] financeiro/infraestrutura/config/FinanceiroDomainServicesConfig.java  — @Bean dos Domain Services
+7. [ ] financeiro/infraestrutura/persistencia/  — Row, RowMapper, Mapper, RepositorioMyBatis
+8. [ ] src/main/resources/mapper/FinanceiroMapper.xml
+9. [ ] src/main/resources/db/migration/V{N}__financeiro_schema.sql
+10.[ ] financeiro/interfaces/           — Controller REST (se o BC expõe endpoints próprios)
+```
+
+### 9.4 Como os BCs se comunicam — Domain Events
+
+BCs **nunca** importam o modelo de domínio um do outro. A comunicação é via Domain Events publicados pelo BC produtor e consumidos por listeners no BC consumidor.
+
+**Fluxo existente no projeto** — BC Matrícula → BC Financeiro:
+
+```
+MatricularAlunoUseCase          (BC Matrícula)
+  └─ repositorio.salvar()
+  └─ publishEvent(AlunoMatriculado)  ← evento é um record em dominio/evento/
+       │
+       ▼  (após commit — @TransactionalEventListener)
+FinanceiroEventListener          (BC Financeiro, em infraestrutura/eventos/)
+  └─ aoMatricular(AlunoMatriculado evento)
+       └─ cria contrato de cobrança no BC Financeiro
+```
+
+O listener atual é um stub. Para promovê-lo ao BC real:
+
+1. Mover `FinanceiroEventListener` para `br.com.escola.financeiro.infraestrutura.eventos/`
+2. Injetar um UseCase do BC Financeiro em vez de só logar:
+
+```java
+// br.com.escola.financeiro.infraestrutura.eventos.FinanceiroEventListener
+@Component
+public class FinanceiroEventListener {
+
+    private final CriarContratoCobrancaUseCase criarContrato;
+
+    @TransactionalEventListener
+    public void aoMatricular(AlunoMatriculado evento) {
+        // importa apenas o evento (record) de br.com.escola.matricula.dominio.evento
+        // NUNCA importa Matricula, MatriculaRepositorio ou qualquer domínio interno do BC Matrícula
+        criarContrato.executar(new CriarContratoCommand(
+            evento.matriculaId(),
+            evento.alunoId(),
+            evento.periodoLetivo()
+        ));
+    }
+}
+```
+
+### 9.5 Anti-padrão — nunca importar o domínio interno de outro BC
+
+```java
+// ERRADO — BC Financeiro enxerga a estrutura interna do BC Matrícula
+import br.com.escola.matricula.dominio.modelo.Matricula;
+import br.com.escola.matricula.dominio.repositorio.MatriculaRepositorio;
+
+public class ContratoCobrancaService {
+    private final MatriculaRepositorio matriculaRepo; // PROIBIDO — BC cruzado
+    public void processar(Matricula matricula) { ... } // PROIBIDO — modelo cruzado
+}
+
+// CERTO — BC Financeiro só conhece o evento publicado pelo BC Matrícula
+import br.com.escola.matricula.dominio.evento.AlunoMatriculado; // apenas o contrato de integração
+
+public class FinanceiroEventListener {
+    @TransactionalEventListener
+    public void aoMatricular(AlunoMatriculado evento) { ... } // recebe só o que foi publicado
+}
+```
+
+**Regra:** a única dependência permitida entre BCs é importar `dominio/evento/` do BC produtor — nunca `dominio/modelo/`, `dominio/repositorio/` ou `aplicacao/`.
+
+Referências: `infraestrutura/eventos/FinanceiroEventListener.java`, `infraestrutura/eventos/AcademicoEventListener.java`, `dominio/evento/AlunoMatriculado.java`, `ErpMatriculaApplication.java`
+
+---
+
+## 10. Referências Rápidas
 
 Caminhos relativos a `erp-matricula-ddd/src/main/java/br/com/escola/matricula/` salvo indicação:
 
