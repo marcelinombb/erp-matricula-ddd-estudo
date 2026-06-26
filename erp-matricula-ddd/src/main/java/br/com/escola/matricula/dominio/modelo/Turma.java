@@ -9,11 +9,11 @@ import java.util.UUID;
 /**
  * Entidade que representa uma Turma oferecida em um período letivo específico.
  *
- * <p>{@code Turma} é referenciada por {@code TurmaId} no Aggregate {@code Matricula} —
+ * <p>{@code Turma} é referenciada por UUID no Aggregate {@code Matricula} —
  * sem carregar o objeto completo. Isso evita acoplamento entre Aggregates de Bounded
  * Contexts distintos. Ver ADR-003 (docs/adrs/ADR-003-referencia-por-id.md).</p>
  *
- * <p><strong>equals/hashCode por identidade ({@code TurmaId}):</strong> duas turmas
+ * <p><strong>equals/hashCode por identidade (UUID):</strong> duas turmas
  * com o mesmo ID são a mesma turma, independente de capacidade ou nome.</p>
  *
  * <p>Em v1, a verificação de vagas disponíveis não está implementada no escopo do
@@ -121,7 +121,7 @@ public class Turma {
     }
 
     /**
-     * Duas Turmas são iguais se e somente se têm o mesmo {@code TurmaId}.
+     * Duas Turmas são iguais se e somente se têm o mesmo {@code id} (UUID).
      */
     @Override
     public boolean equals(Object o) {
@@ -131,7 +131,7 @@ public class Turma {
     }
 
     /**
-     * Hash baseado apenas no {@code TurmaId}, consistente com {@code equals}.
+     * Hash baseado apenas no {@code id}, consistente com {@code equals}.
      */
     @Override
     public int hashCode() {

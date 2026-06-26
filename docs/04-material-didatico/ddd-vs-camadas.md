@@ -81,8 +81,8 @@ As anotações `@Entity`, `@Id`, `@Column`, `@OneToMany` entram na classe de dom
 ```java
 // erp-matricula-ddd/src/main/java/br/com/escola/matricula/dominio/modelo/Matricula.java
 public class Matricula {
-    private final MatriculaId id;
-    private final AlunoId alunoId;
+    private final UUID id;
+    private final UUID alunoId;
     private StatusMatricula status;
     private final List<ItemMatricula> disciplinas;
 
@@ -125,9 +125,9 @@ Dois arquivos com papéis opostos:
 // 1. Interface no DOMÍNIO — o domínio define o contrato
 //    erp-matricula-ddd/src/main/java/br/com/escola/matricula/dominio/repositorio/MatriculaRepositorio.java
 public interface MatriculaRepositorio {
-    Optional<Matricula> buscarPorId(MatriculaId id);
-    List<Matricula> buscarPorAluno(AlunoId alunoId);
-    boolean existeMatriculaAtiva(AlunoId alunoId, PeriodoLetivo periodo);
+    Optional<Matricula> buscarPorId(UUID id);
+    List<Matricula> buscarPorAluno(UUID alunoId);
+    boolean existeMatriculaAtiva(UUID alunoId, PeriodoLetivo periodo);
     void salvar(Matricula matricula);
     // Zero imports de framework — puro Java
 }
@@ -210,7 +210,7 @@ O handler HTTP recebe uma `RuntimeException` com uma mensagem String. Para retor
 public class LimiteDisciplinasExcedidoException extends RuntimeException {
     private final int limite;
     private final int atual;
-    private final MatriculaId matriculaId;
+    private final UUID matriculaId;
 
     // getLimite(), getAtual(), getMatriculaId() — dados estruturados disponíveis
 }

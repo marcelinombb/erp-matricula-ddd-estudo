@@ -30,7 +30,7 @@ public class Matricula {
 ```java
 // COM MYBATIS — modelo de domínio limpo (DECISÃO TOMADA)
 public class Matricula {
-    private final MatriculaId id;
+    private final UUID id;
     private final List<ItemMatricula> itens;
 
     // Zero imports de framework — puro Java
@@ -122,7 +122,7 @@ Esta decisão é visível em dois arquivos que devem ser lidos juntos:
 **[MatriculaRowMapper.java](../../erp-matricula-ddd/src/main/java/br/com/escola/matricula/infraestrutura/persistencia/MatriculaRowMapper.java)** — a classe que separa explicitamente os dois mundos. O Javadoc da linha 17 nomeia isso diretamente: "ÚNICO arquivo que conhece tanto `MatriculaRow` quanto `Matricula`."
 
 O padrão de conversão é explícito e navegável:
-- **Banco → domínio:** `MatriculaRowMapper.toDomain()` converte `MatriculaRow` em `Matricula`, reconstruindo os Value Objects (`AlunoId`, `TurmaId`, `PeriodoLetivo`) e a sealed interface `StatusMatricula`.
+- **Banco → domínio:** `MatriculaRowMapper.toDomain()` converte `MatriculaRow` em `Matricula`, reconstruindo o Value Object `PeriodoLetivo` e a sealed interface `StatusMatricula`. Os IDs (`id`, `alunoId`, `turmaId`) são `UUID` usados diretamente.
 - **Domínio → banco:** `MatriculaRowMapper.fromDomain()` converte `Matricula` em `MatriculaRow`, serializando os Value Objects de volta para tipos primitivos e strings.
 
 Nenhuma linha de código do domínio sabe que o banco existe. Qualquer mudança no schema (adicionar coluna, renomear campo) impacta `MatriculaRow` e `MatriculaRowMapper` — nunca `Matricula.java`.

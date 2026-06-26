@@ -30,9 +30,9 @@ Os três eventos cobrem o ciclo de vida completo da matrícula do ponto de vista
 // Java 21: record = imutabilidade por padrão = ideal para eventos
 // DDD fit: evento é um fato histórico — o passado não muda, record garante isso
 public record AlunoMatriculado(
-    MatriculaId matriculaId,
-    AlunoId alunoId,
-    TurmaId turmaId,
+    UUID matriculaId,
+    UUID alunoId,
+    UUID turmaId,
     PeriodoLetivo periodoLetivo,
     LocalDateTime ocorridoEm  // quando aconteceu — não quando foi processado
 ) {}
@@ -40,7 +40,7 @@ public record AlunoMatriculado(
 
 O `record` Java 21 é o tipo ideal para eventos de domínio: imutável por definição (sem setters possíveis), com `equals`/`hashCode` e `toString` gerados automaticamente, e sem boilerplate. Um evento é um fato histórico — "matrícula realizada no dia X" não muda depois que aconteceu. O `record` expressa essa imutabilidade na linguagem.
 
-Os campos carregam apenas **IDs e Value Objects** — nunca o objeto de domínio inteiro. `AlunoMatriculado` carrega `AlunoId`, não um objeto `Aluno` com todos os seus dados. Isso é deliberado: um evento que carrega um objeto mutável poderia ser modificado depois da publicação, tornando-o um fato histórico alterável — o que é uma contradição. Além disso, serializar o `Aluno` inteiro num evento acoplaria o consumidor ao modelo interno do BC Matrícula.
+Os campos carregam apenas **IDs e Value Objects** — nunca o objeto de domínio inteiro. `AlunoMatriculado` carrega o `UUID` do aluno, não um objeto `Aluno` com todos os seus dados. Isso é deliberado: um evento que carrega um objeto mutável poderia ser modificado depois da publicação, tornando-o um fato histórico alterável — o que é uma contradição. Além disso, serializar o `Aluno` inteiro num evento acoplaria o consumidor ao modelo interno do BC Matrícula.
 
 ---
 
@@ -50,15 +50,15 @@ Seguem o mesmo padrão de `AlunoMatriculado` — records imutáveis com apenas I
 
 ```java
 public record DisciplinaAdicionada(
-    MatriculaId matriculaId,
-    AlunoId alunoId,
+    UUID matriculaId,
+    UUID alunoId,
     NomeDisciplina disciplina,
     LocalDateTime ocorridoEm
 ) {}
 
 public record MatriculaCancelada(
-    MatriculaId matriculaId,
-    AlunoId alunoId,
+    UUID matriculaId,
+    UUID alunoId,
     PeriodoLetivo periodoLetivo,
     LocalDateTime ocorridoEm
 ) {}
@@ -101,7 +101,7 @@ O ponto-chave: `Matricula` não tem `import org.springframework`. O Aggregate co
 
 ```java
 // No UseCase (aplicacao/) — o Spring existe aqui, não no domínio
-public void executar(MatriculaId id, NomeDisciplina disciplina) {
+public void executar(UUID id, NomeDisciplina disciplina) {
     Matricula matricula = repositorio.buscarPorId(id).orElseThrow();
     matricula.adicionarDisciplina(disciplina);  // Aggregate coleta o evento internamente
     repositorio.salvar(matricula);
@@ -183,9 +183,9 @@ public class AlunoMatriculado {
 // Java 21: record = imutabilidade por padrão = ideal para eventos
 // DDD fit: evento é um fato histórico — o passado não muda, record garante isso
 public record AlunoMatriculado(
-    MatriculaId matriculaId,  // ID — não o objeto Matricula
-    AlunoId alunoId,          // ID — não o objeto Aluno
-    TurmaId turmaId,          // ID — não o objeto Turma
+    UUID matriculaId,            // ID — não o objeto Matricula
+    UUID alunoId,                // ID — não o objeto Aluno
+    UUID turmaId,                // ID — não o objeto Turma
     PeriodoLetivo periodoLetivo, // VO imutável (record)
     LocalDateTime ocorridoEm    // timestamp — quando o fato ocorreu
 ) {}

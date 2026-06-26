@@ -12,10 +12,9 @@ O problema não é a ausência de validação — é que a validação não tem 
 |----|-------------|----------------------------------|-------------|
 | `Cpf` | `record Cpf(String valor)` | Remove máscara, verifica 11 dígitos, algoritmo dígito verificador | ALTA |
 | `PeriodoLetivo` | `record PeriodoLetivo(int ano, int semestre)` | `ano >= 2000`, `semestre 1..2` | BAIXA |
-| `MatriculaId` | `record MatriculaId(UUID valor)` | `Objects.requireNonNull(valor)` | MÍNIMA |
-| `AlunoId` | `record AlunoId(UUID valor)` | `Objects.requireNonNull(valor)` | MÍNIMA |
-| `TurmaId` | `record TurmaId(UUID valor)` | `Objects.requireNonNull(valor)` | MÍNIMA |
 | `NomeDisciplina` | `record NomeDisciplina(String valor)` | não nulo, não branco, máx 100 chars | BAIXA |
+
+> **Nota sobre IDs:** `Matricula`, `Aluno` e `Turma` usam `UUID` diretamente como identificador. Wrappers tipados (`MatriculaId`, `AlunoId`, `TurmaId`) foram avaliados e descartados: Value Objects precisam ter comportamento ou regras de validação próprias. Um wrapper com apenas `Objects.requireNonNull` não acrescenta valor suficiente para justificar a complexidade extra. `Cpf`, `PeriodoLetivo` e `NomeDisciplina` permanecem como VOs porque têm validação real e semântica própria.
 
 > **Lição:** Value Objects não têm identidade — dois `PeriodoLetivo(2026, 1)` são iguais porque representam o mesmo período. O Java 21 `record` implementa `equals`/`hashCode` automaticamente por todos os campos — exatamente o comportamento que DDD espera de um VO.
 
@@ -153,47 +152,22 @@ public record NomeDisciplina(String valor) {
 
 ---
 
-### IDs Tipados
+### IDs como UUID
 
-`MatriculaId`, `AlunoId` e `TurmaId` seguem o mesmo padrão: um `record` com um único campo `UUID valor` e validação de nulo. A razão de existirem como tipos separados é demonstrada no ADR-003 — com UUID cru, o compilador não detecta parâmetros trocados; com IDs tipados, a troca é um erro de compilação.
+`Matricula`, `Aluno` e `Turma` usam `UUID` diretamente como identificador. A referência entre Aggregates de Bounded Contexts distintos é feita por UUID — o princípio de referência por ID (ADR-003) é preservado, mas sem wrapper de tipo.
 
-> Os IDs tipados (`AlunoId`, `TurmaId`, `MatriculaId`) são Value Objects que funcionam como chaves de referência entre Aggregates — ver [ADR-003](../adrs/ADR-003-referencia-por-id.md).
-
-```java
-// Java 21: record como ID tipado — estrutura mínima para máxima segurança de tipos
-// DDD fit: AlunoId e TurmaId são tipos distintos; o compilador impede confusão entre eles
-
-public record MatriculaId(UUID valor) {
-    public MatriculaId {
-        Objects.requireNonNull(valor, "MatriculaId não pode ser nulo");
-    }
-}
-
-public record AlunoId(UUID valor) {
-    public AlunoId {
-        Objects.requireNonNull(valor, "AlunoId não pode ser nulo");
-    }
-}
-
-public record TurmaId(UUID valor) {
-    public TurmaId {
-        Objects.requireNonNull(valor, "TurmaId não pode ser nulo");
-    }
-}
-```
-
-Sem IDs tipados:
+> Os IDs são `UUID` simples — chaves de referência entre Aggregates. Ver [ADR-003](../adrs/ADR-003-referencia-por-id.md) para o princípio de referência por ID.
 
 ```java
-// Compilador aceita — mas a ordem dos parâmetros está errada
-matricular(turmaId, alunoId); // UUID, UUID — silenciosamente incorreto
-```
-
-Com IDs tipados:
-
-```java
-// Compilador rejeita — AlunoId esperado, TurmaId fornecido
-matricular(turmaId, alunoId); // erro de compilação: incompatible types
+// Campos UUID usados diretamente nos Aggregates
+// A separação entre Aggregates é garantida pela arquitetura,
+// não pelo sistema de tipos — ver ADR-003
+public class Matricula {
+    private final UUID id;
+    private final UUID alunoId;   // referência por ID — ver ADR-003
+    private final UUID turmaId;   // referência por ID — ver ADR-003
+    // ...
+}
 ```
 
 ---

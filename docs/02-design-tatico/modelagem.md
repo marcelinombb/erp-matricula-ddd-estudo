@@ -10,19 +10,19 @@ Use este documento como referência rápida depois de ter lido os seis arquivos 
 
 ## MOD-01: Diagrama de Classes
 
-O diagrama de classes mostra todos os elementos do domínio de Matrícula e seus relacionamentos estáticos. Observe que `Matricula` referencia `AlunoId` e `TurmaId` — não os objetos `Aluno` e `Turma` — implementando [ADR-003](../adrs/ADR-003-referencia-por-id.md). `StatusMatricula` é uma `sealed interface` com três implementações como `record` — ver [agregados.md](./agregados.md).
+O diagrama de classes mostra todos os elementos do domínio de Matrícula e seus relacionamentos estáticos. Observe que `Matricula` referencia o aluno e a turma por `UUID` — não pelos objetos `Aluno` e `Turma` — implementando [ADR-003](../adrs/ADR-003-referencia-por-id.md). `StatusMatricula` é uma `sealed interface` com três implementações como `record` — ver [agregados.md](./agregados.md).
 
 ```mermaid
 classDiagram
     %% Aggregate Root
     class Matricula {
-        +MatriculaId id
-        +AlunoId alunoId
-        +TurmaId turmaId
+        +UUID id
+        +UUID alunoId
+        +UUID turmaId
         +PeriodoLetivo periodoLetivo
         +StatusMatricula status
         +List~ItemMatricula~ disciplinas
-        +criar(AlunoId, TurmaId, PeriodoLetivo) Matricula
+        +criar(UUID, UUID, PeriodoLetivo) Matricula
         +adicionarDisciplina(NomeDisciplina)
         +cancelar()
         +coletarEventos() List
@@ -44,19 +44,7 @@ classDiagram
         +LocalDateTime concluidaEm
         <<record>>
     }
-    %% Value Objects (IDs tipados — ADR-003)
-    class MatriculaId {
-        +UUID valor
-        <<record>>
-    }
-    class AlunoId {
-        +UUID valor
-        <<record>>
-    }
-    class TurmaId {
-        +UUID valor
-        <<record>>
-    }
+    %% Value Objects
     class PeriodoLetivo {
         +int ano
         +int semestre
@@ -72,21 +60,21 @@ classDiagram
     }
     %% Entidades
     class Aluno {
-        +AlunoId id
+        +UUID id
         +Cpf cpf
         +boolean ativo
         +estaAtivo() boolean
     }
     class Turma {
-        +TurmaId id
+        +UUID id
         +int capacidadeMaxima
         +PeriodoLetivo periodo
     }
     %% Repository Interface
     class MatriculaRepositorio {
         <<interface>>
-        +buscarPorId(MatriculaId) Optional~Matricula~
-        +buscarPorAluno(AlunoId) List~Matricula~
+        +buscarPorId(UUID) Optional~Matricula~
+        +buscarPorAluno(UUID) List~Matricula~
         +salvar(Matricula)
     }
 
@@ -95,18 +83,13 @@ classDiagram
     StatusMatricula <|-- Ativa
     StatusMatricula <|-- Cancelada
     StatusMatricula <|-- Concluida
-    Matricula --> MatriculaId : identificada por
-    Matricula --> AlunoId : referencia (ADR-003)
-    Matricula --> TurmaId : referencia (ADR-003)
     Matricula --> PeriodoLetivo : ocorre em
     ItemMatricula --> NomeDisciplina : nomeia
-    Aluno --> AlunoId : identificado por
     Aluno --> Cpf : tem
-    Turma --> TurmaId : identificada por
     MatriculaRepositorio ..> Matricula : persiste
 ```
 
-> **O que observar:** As linhas `-->` de `Matricula` para `AlunoId` e `TurmaId` — não para `Aluno` e `Turma`. Esse é o padrão de referência por ID (ADR-003) visualizado. Domain Events não aparecem aqui — estão no sequence diagram.
+> **O que observar:** `Matricula` armazena `alunoId` e `turmaId` como `UUID` — não como objetos `Aluno` e `Turma`. Esse é o padrão de referência por ID (ADR-003) visualizado. Domain Events não aparecem aqui — estão no sequence diagram.
 
 ---
 
@@ -117,7 +100,7 @@ O diagrama de agregados mostra os limites do Aggregate `Matricula` — o que est
 ```mermaid
 flowchart LR
     subgraph AGG["Aggregate: Matricula (limite de consistência)"]
-        MAT["MatriculaId\nAlunoId\nTurmaId\nPeriodoLetivo\nStatusMatricula"]
+        MAT["UUID id\nUUID alunoId\nUUID turmaId\nPeriodoLetivo\nStatusMatricula"]
         IT1["ItemMatricula\n(NomeDisciplina)"]
         IT2["ItemMatricula\n(NomeDisciplina)"]
         MAT --> IT1
@@ -128,8 +111,8 @@ flowchart LR
     TURMA["Turma\n(Aggregate separado)"]
     REPO["MatriculaRepositorio\n(interface de domínio)"]
 
-    AGG -->|"referência por AlunoId\n(ADR-003 — sem objeto Aluno)"| ALUNO
-    AGG -->|"referência por TurmaId\n(ADR-003 — sem objeto Turma)"| TURMA
+    AGG -->|"referência por UUID alunoId\n(ADR-003 — sem objeto Aluno)"| ALUNO
+    AGG -->|"referência por UUID turmaId\n(ADR-003 — sem objeto Turma)"| TURMA
     REPO -->|"carrega / salva"| AGG
 ```
 

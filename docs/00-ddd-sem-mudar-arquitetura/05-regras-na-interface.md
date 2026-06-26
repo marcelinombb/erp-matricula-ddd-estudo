@@ -81,12 +81,12 @@ public MatriculaResponse matricular(@RequestBody @Valid MatricularRequest reques
     // O Controller não decide nada de negócio.
     // Converte os dados da requisição e delega.
     var command = new MatricularAlunoCommand(
-        new AlunoId(request.alunoId()),
-        new TurmaId(request.turmaId()),
+        UUID.fromString(request.alunoId()),
+        UUID.fromString(request.turmaId()),
         PeriodoLetivo.de(request.periodoInicio(), request.periodoFim())
     );
-    MatriculaId matriculaId = matricularAlunoUseCase.executar(command);
-    return new MatriculaResponse(matriculaId.valor());
+    UUID matriculaId = matricularAlunoUseCase.executar(command);
+    return new MatriculaResponse(matriculaId);
 }
 ```
 

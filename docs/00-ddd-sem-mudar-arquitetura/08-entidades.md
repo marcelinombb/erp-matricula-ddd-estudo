@@ -53,7 +53,7 @@ Arquivo de referência:
 // Arquivo: erp-matricula-ddd/src/main/java/.../dominio/modelo/Aluno.java
 public class Aluno {
 
-    private final AlunoId id;  // identidade imutável — nunca muda durante o ciclo de vida
+    private final UUID id;  // identidade imutável — nunca muda durante o ciclo de vida
     private boolean ativo;     // estado mutável — aluno pode ser desativado
 
     // Semântica de negócio — não getter booleano isAtivo()
@@ -62,7 +62,7 @@ public class Aluno {
     // Comportamento encapsulado — não setter setAtivo(false)
     public void desativar() { this.ativo = false; }
 
-    // equals/hashCode baseados APENAS em AlunoId
+    // equals/hashCode baseados APENAS no UUID id
     // Dois alunos são o mesmo se têm o mesmo ID — não importa se o nome mudou
     @Override
     public boolean equals(Object o) {
@@ -82,7 +82,7 @@ Arquivo Java:
 
 ## O contraste de identidade
 
-Dois alunos com o mesmo nome são pessoas diferentes — `equals` usa `AlunoId`, não `nome`.
+Dois alunos com o mesmo nome são pessoas diferentes — `equals` usa `UUID id`, não `nome`.
 Dois `PeriodoLetivo(2026, 1)` são o mesmo período — é um Value Object, `equals` usa `ano` e
 `semestre`. Esta distinção define quando usar Entidade (tem identidade que persiste no tempo)
 vs. Value Object (sem identidade própria, identificado pelos seus valores).
@@ -92,6 +92,6 @@ vs. Value Object (sem identidade própria, identificado pelos seus valores).
 ## O que foi ganho
 
 `desativar()` encapsula a transição de estado — código externo não pode chamar `setAtivo(false)`
-e criar um aluno em estado inconsistente. A identidade explícita por `AlunoId` garante que um
+e criar um aluno em estado inconsistente. A identidade explícita por UUID garante que um
 aluno transferido de turma (com dados atualizados) é reconhecido como o mesmo aluno em qualquer
 coleção Java que use `equals/hashCode`.

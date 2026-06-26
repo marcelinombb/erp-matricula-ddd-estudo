@@ -5,10 +5,9 @@ Consulte esta tabela quando quiser ver um conceito DDD em código real.
 | Conceito DDD | Arquivo | O que observar |
 |---|---|---|
 | Aggregate Root | [Matricula.java](../erp-matricula-ddd/src/main/java/br/com/escola/matricula/dominio/modelo/Matricula.java) | Métodos adicionarDisciplina() e cancelar() encapsulam invariantes — nenhuma regra de negócio fora daqui |
-| Value Object (tipado) | [AlunoId.java](../erp-matricula-ddd/src/main/java/br/com/escola/matricula/dominio/vo/AlunoId.java) | Record Java 21 com validação no construtor compacto |
 | Value Object (com lógica) | [Cpf.java](../erp-matricula-ddd/src/main/java/br/com/escola/matricula/dominio/vo/Cpf.java) | Validação de dígito verificador embutida — substitui String primitivo |
 | Value Object (período) | [PeriodoLetivo.java](../erp-matricula-ddd/src/main/java/br/com/escola/matricula/dominio/vo/PeriodoLetivo.java) | Abstração de (ano, semestre) — sem acoplamento a datas do calendário |
-| Entidade | [Aluno.java](../erp-matricula-ddd/src/main/java/br/com/escola/matricula/dominio/modelo/Aluno.java) | equals/hashCode por identidade (AlunoId), não por atributos |
+| Entidade | [Aluno.java](../erp-matricula-ddd/src/main/java/br/com/escola/matricula/dominio/modelo/Aluno.java) | equals/hashCode por UUID id, não por atributos |
 | Estado (Sealed Interface) | [StatusMatricula.java](../erp-matricula-ddd/src/main/java/br/com/escola/matricula/dominio/modelo/StatusMatricula.java) | Pattern matching exaustivo sem default — compilador verifica todos os estados |
 | Domain Event | [AlunoMatriculado.java](../erp-matricula-ddd/src/main/java/br/com/escola/matricula/dominio/evento/AlunoMatriculado.java) | Record imutável com dados do fato — publicado após persistência |
 | Interface de Repositório | [MatriculaRepositorio.java](../erp-matricula-ddd/src/main/java/br/com/escola/matricula/dominio/repositorio/MatriculaRepositorio.java) | Zero imports de framework — pertence ao domínio, não à infraestrutura |

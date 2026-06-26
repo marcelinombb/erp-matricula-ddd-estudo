@@ -60,7 +60,7 @@ A Published Language complementa o Open Host Service: o OHS define que "existe u
 
 Financeiro e Acadêmico implementam uma **ACL** ao receber eventos de Matrícula: traduzem os dados do evento para seus próprios conceitos internos.
 
-Exemplo concreto: ao receber `AlunoMatriculado`, o BC Financeiro não cria um objeto `Matricula` interno — ele cria um `Contrato` com um `AlunoId` e uma `DataVigencia` derivada do `periodoLetivo`. O modelo de Matrícula não "contamina" o domínio financeiro; os dados são traduzidos para a linguagem do BC Financeiro.
+Exemplo concreto: ao receber `AlunoMatriculado`, o BC Financeiro não cria um objeto `Matricula` interno — ele cria um `Contrato` com um `alunoId` (UUID) e uma `DataVigencia` derivada do `periodoLetivo`. O modelo de Matrícula não "contamina" o domínio financeiro; os dados são traduzidos para a linguagem do BC Financeiro.
 
 A ACL protege a autonomia de cada contexto: Financeiro pode evoluir seu modelo de domínio sem depender de como Matrícula estrutura os seus dados internamente, porque a tradução acontece na camada de anticorrupção.
 

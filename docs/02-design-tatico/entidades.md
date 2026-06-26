@@ -12,7 +12,7 @@ Essa distinção é central: quando um objeto tem **identidade própria que pers
 
 | Característica | Value Object (ex: `Cpf`) | Entidade (ex: `Aluno`) |
 |---------------|--------------------------|------------------------|
-| Identidade | Sem identidade — comparado por valor | Tem identidade — `AlunoId` persiste |
+| Identidade | Sem identidade — comparado por valor | Tem identidade — `UUID id` persiste |
 | Imutabilidade | Imutável — `record` Java 21 | Pode mudar estado (status ativo/inativo) |
 | `equals`/`hashCode` | Por todos os campos (gerado pelo `record`) | Apenas pelo `id` — implementado manualmente |
 | Tipo Java 21 | `record` — imutabilidade garantida pelo compilador | `class` — permite estado mutável |
@@ -25,38 +25,30 @@ Essa distinção é central: quando um objeto tem **identidade própria que pers
 
 ### Aluno
 
-**Identidade:** `AlunoId` — um `record` com um `UUID`. O `AlunoId` é imutável; o aluno ao qual ele pertence pode mudar de status, mas o ID nunca muda.
+**Identidade:** `UUID id` — imutável; o aluno ao qual ele pertence pode mudar de status, mas o ID nunca muda.
 
 **Ciclo de vida:** Criado quando cadastrado na secretaria. Pode ser inativado (por inadimplência ou solicitação). Pode ser reativado. Nunca é excluído — o histórico de matrículas depende da existência do registro.
 
 **Responsabilidades:** Carregar o status que determina elegibilidade para matrícula. O método `estaAtivo()` é a interface que o `VerificadorElegibilidadeMatricula` usa — sem precisar conhecer a lógica interna de ativação/inativação.
 
 ```java
-// Java 21: record como identidade tipada — o compilador distingue AlunoId de TurmaId
-// DDD fit: ID como Value Object garante que IDs de tipos diferentes não se confundem em compilação
-public record AlunoId(UUID valor) {
-    public AlunoId {
-        Objects.requireNonNull(valor, "AlunoId não pode ser nulo");
-    }
-}
-
 // Java 21: class comum com estado mutável (não record)
 // DDD fit: Entidade = identidade estável + estado mutável ao longo do tempo
 public class Aluno {
 
-    private final AlunoId id;  // identidade — final, nunca muda
-    private boolean ativo;     // estado — pode mudar, por isso não é record
+    private final UUID id;  // identidade — final, nunca muda
+    private boolean ativo;  // estado — pode mudar, por isso não é record
 
     // NÃO é um record porque status pode mudar — record é imutável
     // Um record com campo boolean gera um objeto novo a cada mudança de estado,
     // perdendo a identidade que distingue Entidades de Value Objects.
 
-    public Aluno(AlunoId id, boolean ativo) {
+    public Aluno(UUID id, boolean ativo) {
         this.id = Objects.requireNonNull(id, "Aluno deve ter um id");
         this.ativo = ativo;
     }
 
-    public AlunoId getId() { return id; }
+    public UUID getId() { return id; }
 
     public boolean estaAtivo() { return ativo; }
 
@@ -82,32 +74,24 @@ public class Aluno {
 
 ### Turma
 
-**Identidade:** `TurmaId` — mesmo padrão de `AlunoId`.
+**Identidade:** `UUID id` — mesmo padrão de `Aluno`.
 
 **Ciclo de vida:** Criada pela secretaria para um período letivo específico, com capacidade máxima definida. Em v1, a verificação de vagas disponíveis não está implementada no escopo do Aggregate — a turma existe como referência para a matrícula.
 
-**Responsabilidades:** Fornecer a identidade (`TurmaId`) que a `Matricula` usa como referência. Carregar a capacidade máxima e o período letivo ao qual pertence.
+**Responsabilidades:** Fornecer o UUID que a `Matricula` usa como referência. Carregar a capacidade máxima e o período letivo ao qual pertence.
 
-> `Turma` é referenciada por `TurmaId` no Aggregate `Matricula` — sem carregar o objeto completo. Ver [ADR-003](../adrs/ADR-003-referencia-por-id.md).
+> `Turma` é referenciada por UUID no Aggregate `Matricula` — sem carregar o objeto completo. Ver [ADR-003](../adrs/ADR-003-referencia-por-id.md).
 
 ```java
-// Java 21: record como identidade tipada de Turma
-// DDD fit: TurmaId e AlunoId são tipos distintos — o compilador previne confusão
-public record TurmaId(UUID valor) {
-    public TurmaId {
-        Objects.requireNonNull(valor, "TurmaId não pode ser nulo");
-    }
-}
-
 // Java 21: class para Entidade com identidade estável
 // DDD fit: Turma tem ID próprio e dados que descrevem a oferta do período letivo
 public class Turma {
 
-    private final TurmaId id;
+    private final UUID id;
     private final int capacidadeMaxima;
     private final PeriodoLetivo periodo;
 
-    public Turma(TurmaId id, int capacidadeMaxima, PeriodoLetivo periodo) {
+    public Turma(UUID id, int capacidadeMaxima, PeriodoLetivo periodo) {
         this.id = Objects.requireNonNull(id, "Turma deve ter um id");
         if (capacidadeMaxima <= 0) {
             throw new IllegalArgumentException("Capacidade máxima deve ser positiva: " + capacidadeMaxima);
@@ -116,7 +100,7 @@ public class Turma {
         this.periodo = Objects.requireNonNull(periodo, "Turma deve ter um período letivo");
     }
 
-    public TurmaId getId() { return id; }
+    public UUID getId() { return id; }
 
     public int getCapacidadeMaxima() { return capacidadeMaxima; }
 
@@ -172,34 +156,44 @@ public boolean equals(Object o) {
     if (this == o) return true;
     if (!(o instanceof Aluno outro)) return false;
     return id.equals(outro.id);
-    // Dois alunos são iguais se e somente se têm o mesmo AlunoId.
+    // Dois alunos são iguais se e somente se têm o mesmo UUID id.
     // Não importa se o nome mudou, se o CPF foi corrigido — o ID define quem é quem.
 }
 ```
 
-### Erro 2: ID primitivo como `String` ou `UUID` cru
+### Erro 2: Confundir identidade com igualdade estrutural
 
-Com UUID cru, o compilador não distingue `alunoId` de `turmaId` — ambos são `UUID`. Uma inversão de parâmetros passa em compilação e só gera erro em runtime (ou nem isso, se a lógica for permissiva).
+Com UUID como identificador, a responsabilidade de implementar `equals`/`hashCode` corretamente cai sobre o desenvolvedor. O erro comum é comparar por atributos (como Value Object) em vez de por ID (como Entidade).
 
 ```java
-// ERRADO — UUID cru: o compilador não detecta parâmetros invertidos
-public class Matricula {
-    private UUID alunoId;   // UUID
-    private UUID turmaId;   // UUID — tipos idênticos, compilador aceita qualquer ordem
-}
+// ERRADO — equals por atributos em uma Entidade
+public class Aluno {
+    private UUID id;
+    private String nome;
 
-// Chamada com parâmetros invertidos — compila sem erro:
-new Matricula(turmaId, alunoId); // bug silencioso: turmaId onde alunoId é esperado
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Aluno outro)) return false;
+        return this.nome.equals(outro.nome); // compara pelo nome — dois alunos com o mesmo nome seriam "iguais"
+    }
+}
 ```
 
 ```java
-// CERTO — IDs tipados: o compilador detecta parâmetros invertidos em tempo de compilação
-public class Matricula {
-    private AlunoId alunoId;   // AlunoId — tipo distinto
-    private TurmaId turmaId;   // TurmaId — tipo distinto
-}
+// CERTO — equals pelo UUID id
+public class Aluno {
+    private final UUID id;
+    private String nome;
 
-// Compilador rejeita — AlunoId esperado, TurmaId fornecido:
-new Matricula(turmaId, alunoId); // erro de compilação: incompatible types
-// Ver [ADR-003](../adrs/ADR-003-referencia-por-id.md) para a justificativa completa.
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Aluno outro)) return false;
+        return id.equals(outro.id); // identidade pelo UUID — imutável
+    }
+
+    @Override
+    public int hashCode() { return id.hashCode(); }
+}
+// Ver [ADR-003](../adrs/ADR-003-referencia-por-id.md) para o princípio de referência por ID.
 ```

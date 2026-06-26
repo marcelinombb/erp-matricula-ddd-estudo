@@ -92,13 +92,13 @@ factory method `criar()` e o construtor privado.
 ```java
 // Arquivo: erp-matricula-ddd/.../dominio/modelo/Matricula.java
 
-public static Matricula criar(AlunoId alunoId, TurmaId turmaId, PeriodoLetivo periodoLetivo) {
+public static Matricula criar(UUID alunoId, UUID turmaId, PeriodoLetivo periodoLetivo) {
     return new Matricula(alunoId, turmaId, periodoLetivo);
 }
 
 // Construtor privado — estado inicial garantido pelo próprio Aggregate:
-private Matricula(AlunoId alunoId, TurmaId turmaId, PeriodoLetivo periodoLetivo) {
-    this.id = new MatriculaId(UUID.randomUUID());
+private Matricula(UUID alunoId, UUID turmaId, PeriodoLetivo periodoLetivo) {
+    this.id = UUID.randomUUID();
     this.status = new StatusMatricula.Ativa();  // sempre Ativa na criação — sem setter possível
     this.disciplinas = new ArrayList<>();
     this.eventos = new ArrayList<>();
@@ -126,7 +126,7 @@ método `executar()`.
 ```java
 // Arquivo: erp-matricula-ddd/.../aplicacao/MatricularAlunoUseCase.java
 
-public MatriculaId executar(MatricularAlunoCommand command) {
+public UUID executar(MatricularAlunoCommand command) {
     // 1. Verificar elegibilidade — Domain Service decide, lança exceção se não pode
     verificador.verificar(command.aluno(), command.turma(), command.periodo());
 

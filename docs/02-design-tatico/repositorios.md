@@ -16,14 +16,14 @@ A solução DDD é a inversão dessa dependência: a classe `Matricula` não sab
 // Java 21: interface pura — zero imports de framework
 // DDD fit: domínio define o contrato; infraestrutura cumpre — Regra de Dependência em ação
 public interface MatriculaRepositorio {
-    Optional<Matricula> buscarPorId(MatriculaId id);
-    List<Matricula> buscarPorAluno(AlunoId alunoId);
-    boolean existeMatriculaAtiva(AlunoId alunoId, PeriodoLetivo periodo);
+    Optional<Matricula> buscarPorId(UUID id);
+    List<Matricula> buscarPorAluno(UUID alunoId);
+    boolean existeMatriculaAtiva(UUID alunoId, PeriodoLetivo periodo);
     void salvar(Matricula matricula);
 }
 ```
 
-Observe o que não está aqui: sem `extends JpaRepository`, sem `import org.springframework.data`, sem `import org.apache.ibatis`. A interface `MatriculaRepositorio` é definida em termos do próprio domínio: recebe e retorna `MatriculaId`, `AlunoId`, `PeriodoLetivo`, `Matricula` — todos objetos do domínio.
+Observe o que não está aqui: sem `extends JpaRepository`, sem `import org.springframework.data`, sem `import org.apache.ibatis`. A interface `MatriculaRepositorio` é definida em termos do próprio domínio: recebe e retorna `UUID`, `PeriodoLetivo`, `Matricula` — todos tipos do domínio ou do JDK.
 
 Os nomes dos métodos são em português (`buscarPorId`, `buscarPorAluno`) — mantendo a Linguagem Ubíqua também nas interfaces. Ver [ADR-004](../adrs/ADR-004-codigo-em-portugues.md).
 
@@ -105,15 +105,15 @@ public interface MatriculaRepository extends JpaRepository<Matricula, UUID> {
 // Java 21: interface pura — zero imports de framework
 // DDD fit: domínio define o contrato; infraestrutura cumpre — Regra de Dependência em ação
 public interface MatriculaRepositorio {
-    Optional<Matricula> buscarPorId(MatriculaId id);    // buscarPorId em português
-    List<Matricula> buscarPorAluno(AlunoId alunoId);    // MatriculaId, AlunoId — não UUID cru
-    boolean existeMatriculaAtiva(AlunoId alunoId, PeriodoLetivo periodo);
+    Optional<Matricula> buscarPorId(UUID id);              // buscarPorId em português
+    List<Matricula> buscarPorAluno(UUID alunoId);          // nomes expressam semântica de negócio
+    boolean existeMatriculaAtiva(UUID alunoId, PeriodoLetivo periodo);
     void salvar(Matricula matricula);
     // zero imports de framework — o domínio define o contrato em seus próprios termos
 }
 ```
 
-O contraste central: `MatriculaRepository` (ERRADO) herda de `JpaRepository` — o domínio depende do framework. `MatriculaRepositorio` (CERTO) é interface pura — o domínio é independente. Além disso, o CERTO usa `MatriculaId` e `AlunoId` em vez de `UUID` cru — o tipo diferencia em compilação uma ID da outra. Ver [ADR-003](../adrs/ADR-003-referencia-por-id.md) sobre IDs tipados.
+O contraste central: `MatriculaRepository` (ERRADO) herda de `JpaRepository` — o domínio depende do framework. `MatriculaRepositorio` (CERTO) é interface pura — o domínio é independente. Os nomes dos métodos expressam a semântica de negócio (`buscarPorAluno`, `existeMatriculaAtiva`), não termos técnicos de framework. Ver [ADR-003](../adrs/ADR-003-referencia-por-id.md) para o princípio de referência por ID.
 
 ### Erro 2: `@Entity` na classe de domínio
 
@@ -140,9 +140,9 @@ public class Matricula {
 ```java
 // CERTO — domínio limpo, sem anotações de persistência — ver ADR-001
 public class Matricula {
-    private final MatriculaId id;
-    private final AlunoId alunoId;
-    private final TurmaId turmaId;
+    private final UUID id;
+    private final UUID alunoId;
+    private final UUID turmaId;
     private final PeriodoLetivo periodoLetivo;
     private StatusMatricula status;
     private final List<ItemMatricula> disciplinas;

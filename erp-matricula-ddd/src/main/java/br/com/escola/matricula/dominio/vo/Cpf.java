@@ -18,7 +18,7 @@ import java.util.Objects;
  * Isso é o comportamento correto para um Value Object: identidade por valor.</p>
  *
  * <p>Diferença para Entidade: {@code Cpf} não tem identidade própria — é comparado
- * por valor. {@code Aluno} tem identidade ({@code AlunoId}) — é comparado pelo ID.
+ * por valor. {@code Aluno} tem identidade (UUID) — é comparado pelo ID.
  * Ver {@link br.com.escola.matricula.dominio.modelo.Aluno}.</p>
  */
 public record Cpf(String valor) {

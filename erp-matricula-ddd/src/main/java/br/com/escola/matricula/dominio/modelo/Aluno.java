@@ -14,7 +14,7 @@ import java.util.UUID;
  * um aluno tem identidade própria que persiste no tempo, independente de seus atributos.
  * Um aluno pode mudar de nome após casamento, mudar de endereço, ter seu status alterado
  * de ativo para inativo — e continua sendo o mesmo aluno, com o mesmo histórico e as
- * mesmas matrículas passadas. O {@code AlunoId} não muda.</p>
+ * mesmas matrículas passadas. O identificador (UUID) não muda.</p>
  *
  * <p>Compare com {@code Cpf}: dois CPFs com o mesmo valor são indistinguíveis —
  * são o mesmo CPF. Dois Alunos com o mesmo nome podem ser pessoas completamente diferentes.</p>
@@ -29,7 +29,7 @@ import java.util.UUID;
  *
  * <p><strong>equals/hashCode por identidade:</strong></p>
  *
- * <p>Dois {@code Aluno} são iguais se e somente se têm o mesmo {@code AlunoId}.
+ * <p>Dois {@code Aluno} são iguais se e somente se têm o mesmo {@code id} (UUID).
  * Não importa se o nome mudou, se o CPF foi corrigido — o ID define quem é quem.</p>
  */
 public class Aluno {
@@ -97,7 +97,7 @@ public class Aluno {
     }
 
     /**
-     * Dois Alunos são iguais se e somente se têm o mesmo {@code AlunoId}.
+     * Dois Alunos são iguais se e somente se têm o mesmo {@code id} (UUID).
      * Atributos como nome e CPF não participam da comparação — é a identidade que define.
      */
     @Override
@@ -108,7 +108,7 @@ public class Aluno {
     }
 
     /**
-     * Hash baseado apenas no {@code AlunoId}, consistente com {@code equals}.
+     * Hash baseado apenas no {@code id}, consistente com {@code equals}.
      */
     @Override
     public int hashCode() {

@@ -41,13 +41,13 @@ Em `erp-matricula-ddd`, `MatriculaRepositorio` é uma interface pura no pacote d
 ```java
 // DEPOIS: interface no domínio — sem imports de infraestrutura, sem anotações de framework
 // erp-matricula-ddd/src/main/java/br/com/escola/matricula/dominio/repositorio/MatriculaRepositorio.java
-// Imports presentes: apenas tipos do próprio domínio (Matricula, AlunoId, MatriculaId, PeriodoLetivo)
+// Imports presentes: apenas tipos do próprio domínio (Matricula, PeriodoLetivo) e java.util.UUID
 // Zero imports: sem @Mapper, sem org.apache.ibatis, sem org.springframework.data
 public interface MatriculaRepositorio {
 
-    Optional<Matricula> buscarPorId(MatriculaId id);               // recebe tipo de domínio, não UUID cru
-    List<Matricula> buscarPorAluno(AlunoId alunoId);               // parâmetro com semântica
-    boolean existeMatriculaAtiva(AlunoId alunoId, PeriodoLetivo periodo); // frase de negócio
+    Optional<Matricula> buscarPorId(UUID id);                      // nome expressivo em português
+    List<Matricula> buscarPorAluno(UUID alunoId);                  // parâmetro com semântica
+    boolean existeMatriculaAtiva(UUID alunoId, PeriodoLetivo periodo); // frase de negócio
     void salvar(Matricula matricula);                              // persiste o Aggregate inteiro
 }
 ```

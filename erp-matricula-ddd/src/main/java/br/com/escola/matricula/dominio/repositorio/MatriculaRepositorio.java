@@ -18,7 +18,7 @@ import java.util.UUID;
  * <p>Observe o que não está aqui: sem {@code extends JpaRepository}, sem
  * {@code import org.springframework.data}, sem {@code import org.apache.ibatis}.
  * Esta interface é definida em termos do próprio domínio: recebe e retorna
- * {@code MatriculaId}, {@code AlunoId}, {@code PeriodoLetivo}, {@code Matricula} —
+ * {@code UUID}, {@code PeriodoLetivo}, {@code Matricula} —
  * todos objetos do domínio. Ver docs/02-design-tatico/repositorios.md.</p>
  *
  * <p><strong>Implementação:</strong> {@code MatriculaRepositorioMyBatis} em
@@ -37,8 +37,7 @@ import java.util.UUID;
 public interface MatriculaRepositorio {
 
     // REFD-05 (DDD-05): Compare com MatriculaRepository (camadas) — findById(UUID id) com @Mapper.
-    // Aqui: recebe MatriculaId (Value Object), não UUID cru. O compilador impede passar um
-    // TurmaId por engano — UUID cru não carrega semântica de domínio.
+    // Ambos recebem UUID — a diferença está na localização (domínio vs infraestrutura) e no nome da linguagem ubíqua.
     /**
      * Busca uma matrícula pelo seu identificador único.
      *

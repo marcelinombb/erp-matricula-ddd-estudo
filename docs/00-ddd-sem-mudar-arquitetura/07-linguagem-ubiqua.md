@@ -58,13 +58,13 @@ Arquivos de referência:
 
 // "matricular aluno" é como a secretaria nomeia a operação — não "impl", não "service"
 // "executar(command)" — o UseCase executa uma intenção de negócio
-public MatriculaId executar(MatricularAlunoCommand command) { ... }
+public UUID executar(MatricularAlunoCommand command) { ... }
 
 // Arquivo: .../dominio/repositorio/MatriculaRepositorio.java
 // "buscarPorId" — português do domínio, não "findById"
-// MatriculaId como parâmetro — tipo com semântica de domínio, não UUID cru
-Optional<Matricula> buscarPorId(MatriculaId id);
-List<Matricula> buscarPorAluno(AlunoId alunoId);
+// "buscarPorAluno" — semântica de negócio, não "findByAlunoId"
+Optional<Matricula> buscarPorId(UUID id);
+List<Matricula> buscarPorAluno(UUID alunoId);
 
 // Arquivo: .../dominio/modelo/StatusMatricula.java
 // Tipos selados — não strings. O compilador rejeita estado inválido.

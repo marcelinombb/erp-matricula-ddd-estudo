@@ -66,7 +66,7 @@ Verifique: `grep -r "import org.springframework" dominio/` deve retornar zero re
 
 ### `dominio/repositorio/`
 
-**Por que está aqui:** Interfaces de repositório. O domínio define o contrato porque os UseCases precisam dessas interfaces para funcionar. A interface define os métodos em termos do domínio: `buscarPorId(MatriculaId)`, não `findById(UUID)`.
+**Por que está aqui:** Interfaces de repositório. O domínio define o contrato porque os UseCases precisam dessas interfaces para funcionar. A interface define os métodos em termos do domínio: `buscarPorAluno(UUID)` com nome expressivo, não `findByAlunoId(UUID)` com nome de framework.
 
 **O que você NUNCA verá aqui:** `extends JpaRepository`, `import org.springframework.data`, `import org.apache.ibatis`. A interface é puro Java — sem dependência de framework.
 
@@ -82,7 +82,7 @@ Verifique: `grep -r "import org.springframework" dominio/` deve retornar zero re
 
 ### `dominio/vo/`
 
-**Por que está aqui:** Value Objects substituem primitivos com validação embutida e semântica clara. `AlunoId` é diferente de `TurmaId` — o compilador não permite trocar os dois. `Cpf` valida o dígito verificador no construtor — nunca existe um `Cpf` inválido no sistema.
+**Por que está aqui:** Value Objects substituem primitivos com validação embutida e semântica clara. `Cpf` valida o dígito verificador no construtor — nunca existe um `Cpf` inválido no sistema. `PeriodoLetivo` valida ano e semestre — nunca existe um período inválido. `NomeDisciplina` valida comprimento e conteúdo.
 
 **O que você NUNCA verá aqui:** Setters, identidade por referência, estado mutável. Value Objects são imutáveis por definição — criados uma vez, comparados por valor.
 

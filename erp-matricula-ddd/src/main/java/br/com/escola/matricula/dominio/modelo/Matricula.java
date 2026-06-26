@@ -88,7 +88,7 @@ public class Matricula {
      *
      * <p>Gera automaticamente:
      * <ul>
-     *   <li>Um novo {@code MatriculaId} via {@code UUID.randomUUID()}</li>
+     *   <li>Um UUID via {@code UUID.randomUUID()}</li>
      *   <li>Status inicial {@code Ativa}</li>
      *   <li>Lista vazia de disciplinas</li>
      *   <li>Evento {@code AlunoMatriculado} coletado</li>

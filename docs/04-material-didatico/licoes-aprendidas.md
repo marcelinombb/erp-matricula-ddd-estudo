@@ -57,7 +57,7 @@ O `MatricularAlunoCommand` recebe objetos `Aluno` e `Turma` completos — não a
 ```java
 // MatriculaController.java — custo real da decisão
 var aluno = new Aluno(
-    new AlunoId(UUID.fromString(request.alunoId())),
+    UUID.fromString(request.alunoId()),
     new Cpf("52998224725"), // CPF placeholder
     "N/A",
     true
@@ -74,7 +74,7 @@ O ganho pedagógico é alto — o desenvolvedor vê exatamente como o banco se c
 
 ### Sem Lombok significa mais boilerplate para Entidades
 
-Java 21 records eliminaram o problema para Value Objects (`AlunoId`, `Cpf`, `PeriodoLetivo`) e Commands (`MatricularAlunoCommand`). Mas Entidades como `Aluno` ainda requerem construtores, getters e `equals`/`hashCode` escritos manualmente — porque precisam de identidade por ID, não por igualdade estrutural.
+Java 21 records eliminaram o problema para Value Objects (`Cpf`, `PeriodoLetivo`, `NomeDisciplina`) e Commands (`MatricularAlunoCommand`). Mas Entidades como `Aluno` ainda requerem construtores, getters e `equals`/`hashCode` escritos manualmente — porque precisam de identidade por ID, não por igualdade estrutural.
 
 A decisão de excluir Lombok (documentada no CLAUDE.md) foi pedagógica: o boilerplate que Lombok esconde é o mesmo boilerplate que demonstra a diferença entre Entidade e Value Object. Mas o custo é real para quem está escrevendo o código.
 
@@ -103,7 +103,7 @@ Documentado como `PROD-01` nos requisitos de produção. Não implementado no v1
 
 ### Commands com IDs primitivos em vez de objetos de domínio completos
 
-`MatricularAlunoCommand` recebe `Aluno` e `Turma` completos. Em produção, um Command mais simples com `AlunoId` e `TurmaId` simplificaria o Controller: não seria necessário construir objetos placeholder com dados fictícios. O `UseCase` carregaria os objetos completos pelos repositórios antes de delegar ao Domain Service.
+`MatricularAlunoCommand` recebe `Aluno` e `Turma` completos. Em produção, um Command mais simples com `UUID alunoId` e `UUID turmaId` simplificaria o Controller: não seria necessário construir objetos placeholder com dados fictícios. O `UseCase` carregaria os objetos completos pelos repositórios antes de delegar ao Domain Service.
 
 ### Testes unitários do Aggregate antes de implementar (TDD)
 

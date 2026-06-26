@@ -14,18 +14,18 @@ No domínio de Matrícula, o Aggregate Root é `Matricula`. Todas as regras sobr
 
 ```
 Aggregate Root: Matricula
-├── MatriculaId (VO — identidade)
-├── AlunoId (VO — referência por ID, ADR-003)
-├── TurmaId (VO — referência por ID, ADR-003)
+├── UUID id (identidade)
+├── UUID alunoId (referência por ID, ADR-003)
+├── UUID turmaId (referência por ID, ADR-003)
 ├── PeriodoLetivo (VO — parte do Aggregate)
 ├── StatusMatricula (sealed interface)
 ├── List<ItemMatricula> (entidade interna)
 └── List<DomainEvent> (eventos coletados — sem dependência de Spring)
 ```
 
-`AlunoId` e `TurmaId` são referências por ID — o Aggregate não carrega os objetos `Aluno` ou `Turma` dentro de si. Isso é intencional: `Matricula` precisa saber apenas que existe um aluno identificado por esse ID, não seu nome, CPF, endereço ou histórico financeiro. Carregar o `Aluno` completo criaria acoplamento entre Aggregates de Bounded Contexts distintos. Ver [ADR-003](../adrs/ADR-003-referencia-por-id.md).
+`alunoId` e `turmaId` são referências por UUID — o Aggregate não carrega os objetos `Aluno` ou `Turma` dentro de si. Isso é intencional: `Matricula` precisa saber apenas que existe um aluno identificado por esse UUID, não seu nome, CPF, endereço ou histórico financeiro. Carregar o `Aluno` completo criaria acoplamento entre Aggregates de Bounded Contexts distintos. Ver [ADR-003](../adrs/ADR-003-referencia-por-id.md).
 
-Os VOs `MatriculaId`, `AlunoId`, `TurmaId`, `PeriodoLetivo` e `NomeDisciplina` são documentados em [value-objects.md](./value-objects.md).
+Os VOs `PeriodoLetivo` e `NomeDisciplina` são documentados em [value-objects.md](./value-objects.md).
 
 ---
 
@@ -33,7 +33,7 @@ Os VOs `MatriculaId`, `AlunoId`, `TurmaId`, `PeriodoLetivo` e `NomeDisciplina` s
 
 `ItemMatricula` representa uma disciplina incluída na matrícula. Diferente de `Aluno` e `Turma`, `ItemMatricula` não tem significado fora do Aggregate `Matricula` — uma disciplina incluída só existe como parte de uma matrícula. Por isso, `ItemMatricula` é uma **entidade interna** do Aggregate, e não uma Entidade independente (seu catálogo fica aqui, não em `entidades.md`).
 
-Como entidade interna, `ItemMatricula` não precisa de ID próprio. Sua identidade é derivada da `Matricula` que a contém — é identificada pelo par (MatriculaId, NomeDisciplina). Por ser imutável após criação e não ter ciclo de vida independente, pode ser implementada como `record`:
+Como entidade interna, `ItemMatricula` não precisa de ID próprio. Sua identidade é derivada da `Matricula` que a contém — é identificada pelo par (UUID da matrícula, NomeDisciplina). Por ser imutável após criação e não ter ciclo de vida independente, pode ser implementada como `record`:
 
 ```java
 // ItemMatricula: entidade interna do Aggregate — sem ID próprio
@@ -122,9 +122,9 @@ public class Matricula {
     // valor configurável — definido pela instituição
     private static final int LIMITE_DISCIPLINAS = 6;
 
-    private final MatriculaId id;
-    private final AlunoId alunoId;       // referência por ID — ver ADR-003
-    private final TurmaId turmaId;       // referência por ID — ver ADR-003
+    private final UUID id;
+    private final UUID alunoId;          // referência por ID — ver ADR-003
+    private final UUID turmaId;          // referência por ID — ver ADR-003
     private final PeriodoLetivo periodoLetivo;
     private StatusMatricula status;
     private final List<ItemMatricula> disciplinas;
@@ -204,7 +204,7 @@ public class AdicionarDisciplinaUseCase {
     private final MatriculaRepositorio repositorio;
     private final EventPublisher publicador;
 
-    public void executar(MatriculaId id, NomeDisciplina disciplina) {
+    public void executar(UUID id, NomeDisciplina disciplina) {
         Matricula matricula = repositorio.buscarPorId(id)
             .orElseThrow(() -> new MatriculaNaoEncontradaException(id));
 

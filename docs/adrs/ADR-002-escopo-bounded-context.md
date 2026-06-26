@@ -57,7 +57,7 @@ public class FinanceiroIntegracaoListener {
     @TransactionalEventListener
     public void aoAlunoMatriculado(AlunoMatriculadoEvent evento) {
         // STUB: Em produção, criaria contrato financeiro para o aluno
-        // AlunoId alunoId = evento.alunoId();
+        // UUID alunoId = evento.alunoId();
         // PeriodoLetivo periodo = evento.periodo();
         // financeiroService.criarContrato(alunoId, periodo);
         log.info("BC Financeiro recebeu AlunoMatriculado para aluno {}", evento.alunoId());

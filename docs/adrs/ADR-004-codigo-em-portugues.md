@@ -69,18 +69,18 @@ Todos os identificadores de código Java (`class`, `interface`, `record`, nomes 
 ```java
 // Classes de domínio
 public class Matricula { ... }
-public record AlunoId(UUID valor) { ... }
-public enum StatusMatricula { ATIVA, CANCELADA }
+public class Aluno { ... }
+public sealed interface StatusMatricula permits StatusMatricula.Ativa, StatusMatricula.Cancelada, StatusMatricula.Concluida { ... }
 
 // Métodos de domínio
-public Matricula matricular(AlunoId alunoId, TurmaId turmaId, PeriodoLetivo periodo) { ... }
-public void adicionarDisciplina(DisciplinaId disciplinaId) { ... }
+public Matricula matricular(UUID alunoId, UUID turmaId, PeriodoLetivo periodo) { ... }
+public void adicionarDisciplina(NomeDisciplina disciplina) { ... }
 public void cancelar() { ... }
 
 // Repositório (interface de domínio)
 public interface MatriculaRepositorio {
-    Optional<Matricula> buscarPorId(MatriculaId id);
-    List<Matricula> buscarPorAluno(AlunoId alunoId);
+    Optional<Matricula> buscarPorId(UUID id);
+    List<Matricula> buscarPorAluno(UUID alunoId);
     void salvar(Matricula matricula);
 }
 ```

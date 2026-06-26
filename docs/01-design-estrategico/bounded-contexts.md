@@ -44,8 +44,8 @@ Neste projeto, o mapeamento é **1:1**: cada subdomínio tem um Bounded Context 
 Outros contextos **não podem** consultar as tabelas de Matrícula diretamente nem chamar métodos internos de suas entidades. A interface pública do BC Matrícula são seus eventos de domínio.
 
 **Linguagem própria:**
-- **Aluno** — neste contexto: representado apenas por `AlunoId`. O que importa é a elegibilidade (ativo? sem impedimentos?). Dados completos do aluno ficam em outro contexto.
-- **Turma** — referenciada por `TurmaId`. Relevante pela sua capacidade (vagas disponíveis) e vínculo com o período letivo.
+- **Aluno** — neste contexto: representado apenas por UUID (alunoId). O que importa é a elegibilidade (ativo? sem impedimentos?). Dados completos do aluno ficam em outro contexto.
+- **Turma** — referenciada por UUID (turmaId). Relevante pela sua capacidade (vagas disponíveis) e vínculo com o período letivo.
 - **Matrícula** — o Aggregate Root. Vínculo de um Aluno a um PeriodoLetivo, com zero ou mais disciplinas escolhidas.
 - **PeriodoLetivo** — Value Object imutável: par (ano, semestre). Ex: `2026-1`. Determina quando a matrícula ocorre e se ainda pode ser modificada.
 - **Vaga** — disponibilidade restante em uma Turma. A Turma tem capacidade máxima; Vaga representa o espaço não ocupado.

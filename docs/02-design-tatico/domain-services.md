@@ -86,7 +86,7 @@ public class MatricularAlunoUseCase {
     private final MatriculaRepositorio matriculaRepositorio;
     private final EventPublisher publicador;
 
-    public MatriculaCriadaDto executar(AlunoId alunoId, TurmaId turmaId, PeriodoLetivo periodo) {
+    public MatriculaCriadaDto executar(UUID alunoId, UUID turmaId, PeriodoLetivo periodo) {
         Aluno aluno = alunoRepositorio.buscarPorId(alunoId)
             .orElseThrow(() -> new AlunoNaoEncontradoException(alunoId));
 
@@ -151,7 +151,7 @@ public class MatricularAlunoUseCase {
     private final AlunoRepositorio alunoRepositorio;
     private final MatriculaRepositorio matriculaRepositorio;
 
-    public void executar(AlunoId alunoId, TurmaId turmaId, PeriodoLetivo periodo) {
+    public void executar(UUID alunoId, UUID turmaId, PeriodoLetivo periodo) {
         Aluno aluno = alunoRepositorio.buscarPorId(alunoId).orElseThrow();
 
         // Domain Service cuida da decisão — reutilizável, nomeado pelo domínio
