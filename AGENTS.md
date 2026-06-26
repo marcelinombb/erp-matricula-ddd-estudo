@@ -1,10 +1,8 @@
 # AGENTS.md — Guia Operacional para Agentes de IA
 
-Este repositório contém o projeto didático **ERP Matrícula DDD**, com dois módulos paralelos:
-- `erp-matricula-ddd/` — implementação com Domain-Driven Design (porta 8080)
-- `erp-matricula-camadas/` — implementação com arquitetura em camadas tradicional (porta 8081)
+Este guia cobre o módulo **`erp-matricula-ddd/`** — implementação com Domain-Driven Design (porta 8080).
 
-Este guia cobre **apenas o módulo DDD**. Para contexto pedagógico completo (por que DDD, decisões de design, ADRs), consulte [README.md](README.md).
+Para contexto pedagógico completo (por que DDD, decisões de design, ADRs), consulte [README.md](README.md).
 
 ---
 
