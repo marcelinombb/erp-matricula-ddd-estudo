@@ -5,7 +5,7 @@ milestone_name: Testes como Evidência de Design
 status: executing
 stopped_at: Phase 9 context gathered
 last_updated: "2026-06-24T14:43:13.953Z"
-last_activity: 2026-06-24 -- Phase 09 execution started
+last_activity: 2026-06-26 - Completed quick task 260625-u3i: Escrever AGENTS.md para guiar agentes de ia
 progress:
   total_phases: 3
   completed_phases: 1
@@ -68,6 +68,12 @@ Progress: [██████████] 100%
 ### Blockers/Concerns
 
 None.
+
+### Quick Tasks Completed
+
+| # | Description | Date | Commit | Directory |
+|---|-------------|------|--------|-----------|
+| 260625-u3i | Escrever AGENTS.md para guiar agentes de ia a desenvolver usando DDD com MyBatis e Spring | 2026-06-26 | 2980f63 | [260625-u3i-escrever-agents-md-para-guiar-agentes-de](.planning/quick/260625-u3i-escrever-agents-md-para-guiar-agentes-de/) |
 
 ## Deferred Items
 
